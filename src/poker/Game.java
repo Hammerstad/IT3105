@@ -2,7 +2,10 @@ package poker;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+
+import utilities.CardUtilities;
 
 import ai.Player;
 
@@ -114,14 +117,65 @@ public class Game {
 	public static void main(String[] args) {
 		Game game = new Game(9);
 		for (PlayerInterface player : game.players) {
-			System.out.println("new player: ");
-			System.out.println(player.getHand()[0].value + " "
-					+ player.getHand()[0].suit);
-			System.out.println(player.getHand()[1].value + " "
-					+ player.getHand()[1].suit);
-			System.out.println();
+			Card[] hand = player.getHand();
+			Card[] table = game.table;
+			List<Card> allCards = new ArrayList<Card>(Arrays.asList(hand));
+			allCards.addAll(Arrays.asList(table));
+			allCards.removeAll(Collections.singletonList(null));
+			Card[] handAsList = new Card[allCards.size()];
+			handAsList = allCards.toArray(handAsList);
+
+			checkShit(handAsList);
 		}
-		System.out.println(game.deck.size());
+		Card[] straightFlush = new Card[] { new Card(13, Suit.CLUB),
+				new Card(12, Suit.CLUB), new Card(11, Suit.CLUB),
+				new Card(10, Suit.CLUB), new Card(9, Suit.CLUB) };
+		Card[] fullHouse = new Card[] { new Card(13, Suit.CLUB),
+				new Card(13, Suit.SPADE), new Card(13, Suit.DIAMOND),
+				new Card(12, Suit.CLUB), new Card(12, Suit.DIAMOND) };
+		Card[] fourOfAKind = new Card[] { new Card(13, Suit.CLUB),
+				new Card(13, Suit.CLUB), new Card(11, Suit.CLUB),
+				new Card(13, Suit.CLUB), new Card(13, Suit.CLUB) };
+		Card[] threeOfAKind = new Card[] { new Card(13, Suit.CLUB),
+				new Card(13, Suit.CLUB), new Card(11, Suit.CLUB),
+				new Card(13, Suit.CLUB), new Card(9, Suit.CLUB) };
+		Card[] twoPairs = new Card[] { new Card(13, Suit.CLUB),
+				new Card(13, Suit.CLUB), new Card(11, Suit.CLUB),
+				new Card(11, Suit.CLUB), new Card(9, Suit.CLUB) };
+		Card[] pair = new Card[] { new Card(13, Suit.CLUB),
+				new Card(13, Suit.CLUB), new Card(11, Suit.CLUB),
+				new Card(10, Suit.CLUB), new Card(9, Suit.CLUB) };
+		checkShit(straightFlush);
+		checkShit(fullHouse);
+		checkShit(fourOfAKind);
+		checkShit(threeOfAKind);
+		checkShit(twoPairs);
+		checkShit(pair);
+
+	}
+
+	public static void checkShit(Card[] handAsList) {
+		// LOTS OF CHECKS AND SYSOUTS:
+		System.out.print("Hand: ");
+		for (int i = 0; i < handAsList.length; i++) {
+			System.out.print(handAsList[i].suit + " " + handAsList[i].value
+					+ ", ");
+		}
+		System.out.println("\nIs straight flush: "
+				+ CardUtilities.isStraightFlush(handAsList));
+		System.out.println("Is flush: " + CardUtilities.isFlush(handAsList));
+		System.out.println("Is straight: "
+				+ CardUtilities.isStraight(handAsList));
+		System.out.println("Is full house: "
+				+ CardUtilities.isFullHouse(handAsList));
+		System.out.println("Is four of a kind: "
+				+ CardUtilities.isFourOfAKind(handAsList));
+		System.out.println("Is three of a kind: "
+				+ CardUtilities.isThreeOfAKind(handAsList));
+		System.out.println("Is two pairs: "
+				+ CardUtilities.isTwoPairs(handAsList));
+		System.out.println("Is a pair: " + CardUtilities.isPair(handAsList));
+
 	}
 }
 
