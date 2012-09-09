@@ -20,6 +20,9 @@ public class Game {
 	Card[] table;
 	List<PlayerInterface> activePlayers;
 	GameState state;
+	
+	//End of round
+	Player winner;
 
 	public Game(int players) {
 		this.newDeck = newDeck();
@@ -43,8 +46,8 @@ public class Game {
 			setState(GameState.START);
 		}
 	}
-	
-	public int playRounds(int rounds){
+
+	public int playRounds(int rounds) {
 		int won = 0;
 		for (int i = 0; i < rounds; i++) {
 			deck = new ArrayList<Card>(newDeck);
@@ -52,10 +55,10 @@ public class Game {
 			activePlayers = new ArrayList<PlayerInterface>(
 					Arrays.asList(players));
 			setState(GameState.START);
-			// TODO: If player 0 won, won++
+			if (winner == players[0])
+				won++;
 		}
-		return (int)(Math.random()*rounds);
-		//TODO: return won;
+		return won;
 	}
 
 	void setState(GameState state) {
@@ -90,10 +93,11 @@ public class Game {
 			bet(GameState.FINAL_BETTING, GameState.SHOWDOWN);
 			break;
 		case SHOWDOWN:
-//			System.out.println("SHOWDOWN: " + players[0].getHand()[0].suit
-//					+ players[0].getHand()[0].value + " "
-//					+ players[0].getHand()[1].suit
-//					+ players[0].getHand()[1].value);
+			// System.out.println("SHOWDOWN: " + players[0].getHand()[0].suit
+			// + players[0].getHand()[0].value + " "
+			// + players[0].getHand()[1].suit
+			// + players[0].getHand()[1].value);
+			//TODO: Decide winner
 			break;
 		}
 	}
