@@ -8,7 +8,34 @@ import poker.Suit;
 
 public class CardUtilities {
 
-    public static int[] isStraightFlush(Card[] hand) {
+    public static int[] classification(Card[] hand) {
+        int[] classification;
+        if ((classification = isStraightFlush(hand)) != null) {
+        } else if ((classification = isFourOfAKind(hand)) != null) {
+        } else if ((classification = isFullHouse(hand)) != null) {
+        } else if ((classification = isFlush(hand)) != null) {
+        } else if ((classification = isStraight(hand)) != null) {
+        } else if ((classification = isThreeOfAKind(hand)) != null) {
+        } else if ((classification = isTwoPairs(hand)) != null) {
+        } else if ((classification = isPair(hand)) != null) {
+        } else if ((classification = isHighCard(hand)) != null) {
+        } else {
+            classification = new int[6];
+        }
+        return paddToFive(classification);
+    }
+
+    private static int[] paddToFive(int[] unpadded) {
+        if (unpadded.length == 6) {
+            return unpadded;
+        } else {
+            int[] o = new int[6];
+            System.arraycopy(unpadded, 0, o, 0, unpadded.length);
+            return o;
+        }
+    }
+
+    private static int[] isStraightFlush(Card[] hand) {
         if (hand.length < 5) {
             return null;
         }
@@ -29,7 +56,7 @@ public class CardUtilities {
         return null;
     }
 
-    public static int[] isStraight(Card[] hand) {
+    private static int[] isStraight(Card[] hand) {
         if (hand.length < 5) {
             return null;
         }
@@ -53,7 +80,7 @@ public class CardUtilities {
 
     }
 
-    public static int[] isFlush(Card[] hand) {
+    private static int[] isFlush(Card[] hand) {
         if (hand.length < 5) {
             return null;
         }
@@ -86,17 +113,17 @@ public class CardUtilities {
         return null;
     }
 
-    public static int[] isFullHouse(Card[] hand) {
+    private static int[] isFullHouse(Card[] hand) {
         if (hand.length < 5) {
             return null;
         }
-        int[] numberOfDifferentValues = new int[13];
+        int[] numberOfDifferentValues = new int[14];
         for (Card element : hand) {
             numberOfDifferentValues[element.value - 1]++;
         }
         int foundThreeOfAKind = 0;
         int foundAPair = 0;
-        for (int elementNo = 0; elementNo < 13; elementNo++) {
+        for (int elementNo = 0; elementNo < 14; elementNo++) {
             int element = numberOfDifferentValues[elementNo];
 //        for (int element : numberOfDifferentValues) {
             if (element == 3 & foundThreeOfAKind <= 0) {
@@ -114,11 +141,11 @@ public class CardUtilities {
         }
     }
 
-    public static int[] isFourOfAKind(Card[] hand) {
+    private static int[] isFourOfAKind(Card[] hand) {
         if (hand.length < 4) {
             return null;
         }
-        int[] numberOfDifferentValues = new int[13];
+        int[] numberOfDifferentValues = new int[14];
         for (Card element : hand) {
             numberOfDifferentValues[element.value - 1]++;
         }
@@ -143,11 +170,11 @@ public class CardUtilities {
         return null;
     }
 
-    public static int[] isThreeOfAKind(Card[] hand) {
+    private static int[] isThreeOfAKind(Card[] hand) {
         if (hand.length < 3) {
             return null;
         }
-        int[] numberOfDifferentValues = new int[13];
+        int[] numberOfDifferentValues = new int[14];
         for (Card element : hand) {
             numberOfDifferentValues[element.value - 1]++;
         }
@@ -173,11 +200,11 @@ public class CardUtilities {
         return null;
     }
 
-    public static int[] isTwoPairs(Card[] hand) {
+    private static int[] isTwoPairs(Card[] hand) {
         if (hand.length < 4) {
             return null;
         }
-        int[] numberOfDifferentValues = new int[13];
+        int[] numberOfDifferentValues = new int[14];
         for (Card element : hand) {
             numberOfDifferentValues[element.value - 1]++;
         }
@@ -193,14 +220,14 @@ public class CardUtilities {
         Arrays.sort(pairs);
         //Reversing list
         int l = pairs.length;
-        for (int i = 0;i < l/2;i++){
-            pairs[i] ^= pairs[l-1-i];
-            pairs[l-1-i] ^= pairs[i];
-            pairs[i] ^= pairs[l-1-i];
+        for (int i = 0; i < l / 2; i++) {
+            pairs[i] ^= pairs[l - 1 - i];
+            pairs[l - 1 - i] ^= pairs[i];
+            pairs[i] ^= pairs[l - 1 - i];
         }
-        
+
         if (numberOfPairs >= 2) {
-            
+
             int[] o = new int[4];
             o[0] = 3;
 //            Arrays.sort(pairs);
@@ -220,8 +247,8 @@ public class CardUtilities {
         return null;
     }
 
-    public static int[] isPair(Card[] hand) {
-        int[] numberOfDifferentValues = new int[13];
+    private static int[] isPair(Card[] hand) {
+        int[] numberOfDifferentValues = new int[14];
         for (Card element : hand) {
             numberOfDifferentValues[element.value - 1]++;
         }
@@ -247,13 +274,14 @@ public class CardUtilities {
         }
         return null;
     }
-    public static int[] isHighCard(Card[] hand) {
+
+    private static int[] isHighCard(Card[] hand) {
         int l = (hand.length >= 5) ? 5 : hand.length;
-        int[] o = new int[l+1];
+        int[] o = new int[l + 1];
         o[0] = 1;
         Arrays.sort(hand);
-        for (int i = 0;i < l;i++){
-            o[i] = hand[i].value;
+        for (int i = 0; i < l; i++) {
+            o[i+1] = hand[i].value;
         }
         return o;
     }
