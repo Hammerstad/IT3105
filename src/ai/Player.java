@@ -26,4 +26,8 @@ public class Player implements PlayerInterface {
 	public Card[] getHand() {
 		return hand;
 	}
+	
+	public void resetHand(){
+		this.hand = new Card[2];
+	}
 }
