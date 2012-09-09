@@ -1,6 +1,7 @@
 package utilities;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import poker.Card;
 import poker.Suit;
@@ -35,14 +36,14 @@ public class CardUtilities {
         Arrays.sort(hand, new Comparator<Card>() {
             @Override
             public int compare(Card arg0, Card arg1) {
-                return arg0.value - arg1.value;
+                return arg1.value - arg0.value;
             }
         });
         int highVal = 0;
         for (int i = hand.length; i >= 5; i--) {
             Card[] temp = Arrays.copyOfRange(hand, i - 5, i);
             for (int j = 0; j < temp.length - 1; j++) {
-                if (temp[j].value != temp[j + 1].value - 1) {
+                if (temp[j].value != temp[j + 1].value + 1) {
                     return null;
                 }
             }
@@ -66,10 +67,11 @@ public class CardUtilities {
             if (element >= 5) {
                 //Found a flush
                 int[] output = new int[6];
-                int[] pickFive = new int[element + 1];
-                int pickFiveInd = 1;
+                int[] pickFive = new int[element];
+                int pickFiveInd = 0;
                 output[0] = 6;
 
+                Arrays.sort(hand);
                 for (Card c : hand) {
                     if (c.suit.getSuitValue() == elementNO) {
                         pickFive[pickFiveInd++] = c.value;
@@ -97,7 +99,7 @@ public class CardUtilities {
         for (int elementNo = 0; elementNo < 13; elementNo++) {
             int element = numberOfDifferentValues[elementNo];
 //        for (int element : numberOfDifferentValues) {
-            if (element == 3 & foundThreeOfAKind < 0) {
+            if (element == 3 & foundThreeOfAKind <= 0) {
                 foundThreeOfAKind = elementNo + 1;
                 continue;
             }
@@ -188,16 +190,27 @@ public class CardUtilities {
                 pairs[numberOfPairs++] = elementNo + 1;
             }
         }
+        Arrays.sort(pairs);
+        //Reversing list
+        int l = pairs.length;
+        for (int i = 0;i < l/2;i++){
+            pairs[i] ^= pairs[l-1-i];
+            pairs[l-1-i] ^= pairs[i];
+            pairs[i] ^= pairs[l-1-i];
+        }
+        
         if (numberOfPairs >= 2) {
+            
             int[] o = new int[4];
             o[0] = 3;
-            Arrays.sort(pairs);
+//            Arrays.sort(pairs);
             o[1] = pairs[0];
             o[2] = pairs[1];
 
             Arrays.sort(hand);
+            Arrays.sort(pairs);
             for (Card c : hand) {
-                if (pairs[Arrays.binarySearch(pairs, c.value)] != c.value) {
+                if (Arrays.binarySearch(pairs, c.value) < 0) {
                     o[3] = c.value;
                     break;
                 }
@@ -224,20 +237,24 @@ public class CardUtilities {
                 for (Card c : hand) {
                     if (c.value != elementNo + 1) {
                         o[2 + highsInd++] = c.value;
-                        if (highsInd == 5) {
+                        if (highsInd == 3) {
                             break;
                         }
                     }
                 }
+                return o;
             }
         }
         return null;
     }
     public static int[] isHighCard(Card[] hand) {
-        int[] o = new int[6];
+        int l = (hand.length >= 5) ? 5 : hand.length;
+        int[] o = new int[l+1];
         o[0] = 1;
         Arrays.sort(hand);
-        System.arraycopy(hand, 0, o, 1, (hand.length >= 5) ? 5 : hand.length);
+        for (int i = 0;i < l;i++){
+            o[i] = hand[i].value;
+        }
         return o;
     }
 }

@@ -13,6 +13,10 @@ public class Card implements Comparable<Card> {
     //Decending order
     @Override
     public int compareTo(Card o) {
-        return this.value - o.value;
+        return o.value - this.value;
+    }
+    @Override
+    public String toString() {
+        return suit+"" + value;
     }
 }
