@@ -22,10 +22,10 @@ public class CardUtilities {
         } else {
             classification = new int[6];
         }
-        return paddToFive(classification);
+        return paddToSix(classification);
     }
 
-    private static int[] paddToFive(int[] unpadded) {
+    private static int[] paddToSix(int[] unpadded) {
         if (unpadded.length == 6) {
             return unpadded;
         } else {
