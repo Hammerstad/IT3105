@@ -2,10 +2,9 @@ package ai;
 
 import poker.Game;
 import poker.GameState;
-import poker.PlayerInterface;
 import utilities.HandStrength;
 
-public class PlayerPhaseI extends PlayerInterface {
+public class PlayerPhaseI extends AbstractPlayer {
 
     private double riskAversion;
 

@@ -1,35 +1,47 @@
 package ai;
 
 import poker.Game;
-import poker.PlayerInterface;
 import utilities.HandStrength;
 import utilities.PreflopReader;
 
-public class PlayerPhaseII extends PlayerInterface {
+/**
+ * A Phase II Player. Bases his betting on preflop calculations and handstrength calculations.
+ */
+public class PlayerPhaseII extends AbstractPlayer {
 
-	static double[][][][] preflopTable;
-	int noOpponents;
-	double willBetIfAbove;
-	PlayerPersonality personality;
+	static double[][][][] preflopTable; // The preflop table
+	int noOpponents; // How many opponents left
+	double willBetIfAbove; // Will bet if above this (lower value for higher number of players)
 	double riskAversion = 0; // How greedy/risky is the player
 
+	/**
+	 * Default Phase 2 player.
+	 * 
+	 * @param personality
+	 */
 	public PlayerPhaseII(PlayerPersonality personality) {
 		if (preflopTable == null) {
 			preflopTable = new PreflopReader().read("");
 		}
 		this.personality = personality;
-		setriskAversion();
+		setRiskAversion();
 	}
 
+	/**
+	 * Default Phase 2 player. Gets a random personality.
+	 */
 	public PlayerPhaseII() {
 		if (preflopTable == null) {
 			preflopTable = new PreflopReader().read("");
 		}
 		this.personality = PlayerPersonality.getRandom();
-		setriskAversion();
+		setRiskAversion();
 	}
 
-	private void setriskAversion() {
+	/**
+	 * Sets the risk aversion of a player. Greedy players are risk averse.
+	 */
+	private void setRiskAversion() {
 		switch (personality) {
 		case GREEDY:
 			riskAversion = 0.850;
@@ -43,6 +55,10 @@ public class PlayerPhaseII extends PlayerInterface {
 		}
 	}
 
+	/**
+	 * Bet function for the player. Returns how much he wants to bet.
+	 * @return -1 (FOLD) / 0 (CHECK) / double (RAISE)
+	 */
 	@Override
 	public double bet(Game game, double toCall) {
 		noOpponents = game.activePlayers.size();
@@ -61,6 +77,12 @@ public class PlayerPhaseII extends PlayerInterface {
 		}
 	}
 
+	/**
+	 * Internal function for betting, uses preflop calculations.
+	 * @param game - the game, and its state
+	 * @param toCall - how much left to the pot
+	 * @return bet
+	 */
 	private double preFlopBet(Game game, double toCall) {
 		// Do something based on preflop table
 		int suitedCards = (hand[0].suit == hand[1].suit) ? 1 : 0; // Check if cards are suited
@@ -75,6 +97,12 @@ public class PlayerPhaseII extends PlayerInterface {
 		}
 	}
 
+	/**
+	 * Internal function for betting, uses hand strength calculations.
+	 * @param game
+	 * @param toCall
+	 * @return
+	 */
 	private double postFlopBet(Game game, double toCall) {
 		double handStrength = HandStrength.handstrength(getHand(), game.table, game.activePlayers.size());
 		if (handStrength * riskAversion < willBetIfAbove) {

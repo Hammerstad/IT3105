@@ -2,13 +2,14 @@ package poker;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 import utilities.CardUtilities;
-
+import ai.AbstractPlayer;
+import ai.PlayerPersonality;
 import ai.PlayerPhaseI;
-import java.util.Collections;
-import java.util.LinkedList;
+import ai.PlayerPhaseII;
 
 public class Game {
 
@@ -18,13 +19,13 @@ public class Game {
     // Data for start of round
     public int maxReRaises = 3;
     public final List<Card> newDeck;
-    public PlayerInterface[] players;
+    public AbstractPlayer[] players;
     public Card[] presetHand;
     // Data during the rounds
     public List<Card> deck;
     public Card[] table;
-    public List<PlayerInterface> activePlayers;
-    public List<PlayerInterface> foldingPlayers;
+    public List<AbstractPlayer> activePlayers;
+    public List<AbstractPlayer> foldingPlayers;
     public GameState state;
     // End of round
     public PlayerPhaseI winner;
@@ -38,7 +39,7 @@ public class Game {
         this.players = generatePlayers(players);
         this.presetHand = null;
         this.blinds = 10;
-        this.foldingPlayers = new LinkedList<PlayerInterface>();
+        this.foldingPlayers = new LinkedList<AbstractPlayer>();
         this.toCall = new double[players];
     }
 
@@ -57,7 +58,7 @@ public class Game {
             // resetting deck
             deck = new ArrayList<Card>(newDeck);
             table = new Card[5];
-            activePlayers = new ArrayList<PlayerInterface>(
+            activePlayers = new ArrayList<AbstractPlayer>(
                     Arrays.asList(players));
 
             shuffleCards();
@@ -77,7 +78,7 @@ public class Game {
             out("Cards dealt, myHand: " + Arrays.toString(players[0].getHand()));
             out("On table: " + Arrays.toString(table));
 
-            PlayerInterface[] pi = getWinner();
+            AbstractPlayer[] pi = getWinner();
             out("Winner: " + Arrays.toString(pi));
             // System.out.println("Winner: "+Arrays.toString(pi));
             if (pi.length == 1 && pi[0] == players[0]) {
@@ -95,7 +96,7 @@ public class Game {
             case START:
                 deck = new ArrayList<Card>(newDeck);
                 table = new Card[5];
-                activePlayers = new ArrayList<PlayerInterface>(
+                activePlayers = new ArrayList<AbstractPlayer>(
                         Arrays.asList(players));
 //                System.out.println("Players: "+Arrays.toString(activePlayers.toArray()));
                 Arrays.fill(toCall, 2 * blinds);
@@ -132,15 +133,15 @@ public class Game {
                 bet(GameState.FINAL_BETTING, GameState.SHOWDOWN);
                 break;
             case SHOWDOWN:
-                PlayerInterface[] pis;
+                AbstractPlayer[] pis;
                 if (activePlayers.size() != 1) {
                     pis = getWinner();
                 } else {
-                    pis = new PlayerInterface[]{activePlayers.get(0)};
+                    pis = new AbstractPlayer[]{activePlayers.get(0)};
                 }
                 System.out.println("Winner: "+Arrays.toString(pis));
                 double potShare = this.pot / pis.length;
-                for (PlayerInterface pi : pis) {
+                for (AbstractPlayer pi : pis) {
                     pi.receiveMoney(potShare);
                     pi.wins++;
                 }
@@ -157,8 +158,10 @@ public class Game {
         for (int i = 0; i < maxReRaises; i++) {
             System.out.println("ActivePlayers: "+activePlayers.size());
             for (int pl = 0; pl < activePlayers.size(); pl++) {
-                System.out.println("Bettings. " + Arrays.toString(toCall));
-                PlayerInterface pi = activePlayers.get(pl);
+
+                
+//                System.out.println("Bettings. " + Arrays.toString(toCall));
+                AbstractPlayer pi = activePlayers.get(pl);
                 int plIndex = -1;
                 for (int j = 0;j < players.length;j++){
                     if (pi == players[j]){
@@ -180,13 +183,14 @@ public class Game {
             int act = activePlayers.size() - foldingPlayers.size();
 //            activePlayers.removeAll(this.foldingPlayers);
 //            this.foldingPlayers.clear();
+            
             System.out.println("ActivePlayers: "+Arrays.toString(activePlayers.toArray()));
             System.out.println("FoldingPlayers: "+Arrays.toString(foldingPlayers.toArray()));
-            for (PlayerInterface pi : foldingPlayers){
-                System.out.println("Removing "+pi);
+            for (AbstractPlayer pi : foldingPlayers){
+//                System.out.println("Removing "+pi);
                 activePlayers.remove(pi);
             }
-            this.foldingPlayers = new LinkedList<PlayerInterface>();
+            this.foldingPlayers = new LinkedList<AbstractPlayer>();
             if (act != activePlayers.size()){
                 System.out.println("ASIASFJOASJFOIJSAF; I HATE LssssssssssssssssssssssssssssssssssssssssssssssssssssssssSITSSSSSS");
             }
@@ -224,11 +228,13 @@ public class Game {
         deck = newDeck;
     }
 
-    PlayerInterface[] generatePlayers(int n) {
-        PlayerInterface[] newPlayers = new PlayerInterface[n];
-        for (int i = 0; i < n; i++) {
+    AbstractPlayer[] generatePlayers(int n) {
+        AbstractPlayer[] newPlayers = new AbstractPlayer[n];
+        for (int i = 0; i < n-2; i++) {
             newPlayers[i] = new PlayerPhaseI(0.5);
         }
+        newPlayers[n-2] = new PlayerPhaseII(PlayerPersonality.GREEDY);
+        newPlayers[n-1] = new PlayerPhaseII(PlayerPersonality.RISKY);
         out("Created " + n + " players");
         return newPlayers;
     }
@@ -276,13 +282,13 @@ public class Game {
         return newDeck;
     }
 
-    public PlayerInterface[] getWinner() {
+    public AbstractPlayer[] getWinner() {
         int[][] scores = new int[activePlayers.size()][6];
         Card[] fullHand = new Card[7];
         System.arraycopy(table, 0, fullHand, 0, table.length);
         // Get hand classification
         for (int i = 0; i < activePlayers.size(); i++) {
-            PlayerInterface pi = activePlayers.get(i);
+            AbstractPlayer pi = activePlayers.get(i);
             System.arraycopy(pi.getHand(), 0, fullHand, 5, 2);
 //            System.out.println("FUllHand: " + Arrays.toString(fullHand));
             scores[i] = CardUtilities.classification(fullHand);
@@ -324,7 +330,7 @@ public class Game {
                 testIndex++;
             }
         }
-        PlayerInterface[] bests = new PlayerInterface[possiblePlayers.size()];
+        AbstractPlayer[] bests = new AbstractPlayer[possiblePlayers.size()];
         for (int i = 0; i < possiblePlayers.size(); i++) {
             bests[i] = activePlayers.get(possiblePlayers.get(i));
         }
@@ -341,7 +347,7 @@ public class Game {
             game.setState(GameState.START);
         }
         int i = 1;
-        for (PlayerInterface pi : game.players) {
+        for (AbstractPlayer pi : game.players) {
             System.out.println("Player " + (i++) + ": " + pi.money + " Wins: " + pi.wins + " Folds: " + Arrays.toString(pi.folds));
         }
 
@@ -370,7 +376,7 @@ public class Game {
         pot += 3 * blinds;
     }
 
-    public void fold(PlayerInterface pi) {
+    public void fold(AbstractPlayer pi) {
         this.foldingPlayers.add(pi);
     }
 
