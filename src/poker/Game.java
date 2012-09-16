@@ -14,7 +14,7 @@ import ai.PlayerPhaseII;
 public class Game {
 
     public static void out(String s) {
-//         System.out.println(s);
+//         out(s);
     }
     // Data for start of round
     public int maxReRaises = 3;
@@ -80,7 +80,7 @@ public class Game {
 
             AbstractPlayer[] pi = getWinner();
             out("Winner: " + Arrays.toString(pi));
-            // System.out.println("Winner: "+Arrays.toString(pi));
+            // out("Winner: "+Arrays.toString(pi));
             if (pi.length == 1 && pi[0] == players[0]) {
                 won++;
             }
@@ -98,7 +98,7 @@ public class Game {
                 table = new Card[5];
                 activePlayers = new ArrayList<AbstractPlayer>(
                         Arrays.asList(players));
-//                System.out.println("Players: "+Arrays.toString(activePlayers.toArray()));
+//                out("Players: "+Arrays.toString(activePlayers.toArray()));
                 Arrays.fill(toCall, 2 * blinds);
                 shuffleCards();
                 takeBlinds();
@@ -139,13 +139,13 @@ public class Game {
                 } else {
                     pis = new AbstractPlayer[]{activePlayers.get(0)};
                 }
-                System.out.println("Winner: "+Arrays.toString(pis));
+                out("Winner: "+Arrays.toString(pis));
                 double potShare = this.pot / pis.length;
                 for (AbstractPlayer pi : pis) {
                     pi.receiveMoney(potShare);
                     pi.wins++;
                 }
-//                System.out.println("Pot size: "+pot);
+//                out("Pot size: "+pot);
                 pot = 0;
                 dealingPlayer++;
                 break;
@@ -153,14 +153,14 @@ public class Game {
     }
 
     void bet(GameState current, GameState next) {
-        System.out.println("Bettings. " + Arrays.toString(toCall));
-        System.out.println("Rounds: " + current);
+        out("Bettings. " + Arrays.toString(toCall));
+        out("Rounds: " + current);
         for (int i = 0; i < maxReRaises; i++) {
-            System.out.println("ActivePlayers: "+activePlayers.size());
+            out("ActivePlayers: "+activePlayers.size());
             for (int pl = 0; pl < activePlayers.size(); pl++) {
 
                 
-//                System.out.println("Bettings. " + Arrays.toString(toCall));
+//                out("Bettings. " + Arrays.toString(toCall));
                 AbstractPlayer pi = activePlayers.get(pl);
                 int plIndex = -1;
                 for (int j = 0;j < players.length;j++){
@@ -171,32 +171,32 @@ public class Game {
                 }
                 double d = pi.bet(this, toCall[plIndex]);
                 if (d < 0) {
-                    System.out.println("Fold, or error: " + d);
-                    System.out.println("Player "+activePlayers.get(pl) +" folded");
+                    out("Fold, or error: " + d);
+                    out("Player "+activePlayers.get(pl) +" folded");
                     foldingPlayers.add(players[plIndex]);
                 } else {
-                    System.out.println("Player "+activePlayers.get(pl)+" tossed "+d+" into the pot");
+                    out("Player "+activePlayers.get(pl)+" tossed "+d+" into the pot");
                     toCall[plIndex] -= d;
                 }
-                System.out.println("RaisCeing: " + Arrays.toString(toCall));
+                out("RaisCeing: " + Arrays.toString(toCall));
             }
             int act = activePlayers.size() - foldingPlayers.size();
 //            activePlayers.removeAll(this.foldingPlayers);
 //            this.foldingPlayers.clear();
             
-            System.out.println("ActivePlayers: "+Arrays.toString(activePlayers.toArray()));
-            System.out.println("FoldingPlayers: "+Arrays.toString(foldingPlayers.toArray()));
+            out("ActivePlayers: "+Arrays.toString(activePlayers.toArray()));
+            out("FoldingPlayers: "+Arrays.toString(foldingPlayers.toArray()));
             for (AbstractPlayer pi : foldingPlayers){
-//                System.out.println("Removing "+pi);
+//                out("Removing "+pi);
                 activePlayers.remove(pi);
             }
             this.foldingPlayers = new LinkedList<AbstractPlayer>();
             if (act != activePlayers.size()){
-                System.out.println("ASIASFJOASJFOIJSAF; I HATE LssssssssssssssssssssssssssssssssssssssssssssssssssssssssSITSSSSSS");
+                out("ASIASFJOASJFOIJSAF; I HATE LssssssssssssssssssssssssssssssssssssssssssssssssssssssssSITSSSSSS");
             }
-            System.out.println("Active players left: "+activePlayers.size());
+            out("Active players left: "+activePlayers.size());
             if (this.activePlayers.size() == 1) {
-                System.out.println("WiCnner: " + this.activePlayers.get(0) + " of " + pot);
+                out("WiCnner: " + this.activePlayers.get(0) + " of " + pot);
 //                this.activePlayers.get(0).receiveMoney(pot);
 //                this.activePlayers.get(0).wins++;
 //                pot = 0;dealingPlayer++;
@@ -211,10 +211,10 @@ public class Game {
                 sum += toCall[pl];
             }
             if (sum == 0) {
-                System.out.println("No raises");
+                out("No raises");
                 break;
             }
-            System.out.println("BetRoundEnd: " + Arrays.toString(toCall));
+            out("BetRoundEnd: " + Arrays.toString(toCall));
         }
         setState(next);
     }
@@ -290,7 +290,7 @@ public class Game {
         for (int i = 0; i < activePlayers.size(); i++) {
             AbstractPlayer pi = activePlayers.get(i);
             System.arraycopy(pi.getHand(), 0, fullHand, 5, 2);
-//            System.out.println("FUllHand: " + Arrays.toString(fullHand));
+//            out("FUllHand: " + Arrays.toString(fullHand));
             scores[i] = CardUtilities.classification(fullHand);
             out("Fullhand: " + Arrays.toString(fullHand) + " Classification: "
                     + Arrays.toString(scores[i]));
@@ -317,7 +317,7 @@ public class Game {
                 int score = scores[possiblePlayers.get(i)][testIndex];
                 if (score != maxFound) {
                     possiblePlayers.remove(i);
-                    // System.out.println("Player "+i+" have less and is removed");
+                    // out("Player "+i+" have less and is removed");
                 }
             }
             out("Number of players left after " + (testIndex + 1) + " tests: "
@@ -348,7 +348,7 @@ public class Game {
         }
         int i = 1;
         for (AbstractPlayer pi : game.players) {
-            System.out.println("Player " + (i++) + ": " + pi.money + " Wins: " + pi.wins + " Folds: " + Arrays.toString(pi.folds));
+            out("Player " + (i++) + ": " + pi.money + " Wins: " + pi.wins + " Folds: " + Arrays.toString(pi.folds));
         }
 
 //        Card[] AceLowStraight = new Card[]{
@@ -359,16 +359,16 @@ public class Game {
 //            new Card(7, Suit.HEART),
 //            new Card(9, Suit.SPADE),
 //            new Card(14, Suit.CLUB),};
-//        System.out.println("AceLow: " + Arrays.toString(CardUtilities.classification(AceLowStraight)));
+//        out("AceLow: " + Arrays.toString(CardUtilities.classification(AceLowStraight)));
     }
 
     private void takeBlinds() {
-//        System.out.println("Taking blinds from " + dealingPlayer);
+//        out("Taking blinds from " + dealingPlayer);
         int[] blindsPlayer = new int[]{
             (dealingPlayer + 1) % players.length,
             (dealingPlayer + 2) % players.length
         };
-        System.out.println("Taking blinds from "+players[blindsPlayer[0]]+" "+players[blindsPlayer[1]]);
+        out("Taking blinds from "+players[blindsPlayer[0]]+" "+players[blindsPlayer[1]]);
         players[blindsPlayer[0]].takeMoney(2 * blinds);
         toCall[blindsPlayer[0]] = 0;
         players[blindsPlayer[1]].takeMoney(blinds);
@@ -385,6 +385,6 @@ public class Game {
         for (int i = 0; i < toCall.length; i++) {
             toCall[i] += raise;
         }
-//        System.out.println("Raise: " + Arrays.toString(toCall));
+//        out("Raise: " + Arrays.toString(toCall));
     }
 }
