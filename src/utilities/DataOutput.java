@@ -8,6 +8,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -27,6 +29,14 @@ public class DataOutput {
             multiton.put(name, new DataOutput(name));
         }
         return multiton.get(name);
+    }
+    public static void close() {
+        for (DataOutput o : multiton.values()){
+            try {
+                o.writer.close();
+            } catch (IOException ex) {
+            }
+        }
     }
     private boolean init() {
         if (writer == null) {
