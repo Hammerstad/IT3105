@@ -185,11 +185,11 @@ public class Game {
     AbstractPlayer[] generatePlayers(int n) {
         AbstractPlayer[] newPlayers = new AbstractPlayer[n];
         for (int i = 0; i < n-3; i++) {
-            newPlayers[i] = new PlayerPhaseI(0.5);
+            newPlayers[i] = new PlayerPhaseI();
         }
-        newPlayers[n-3] = new PlayerPhaseII(PlayerPersonality.NORMAL);
-        newPlayers[n-2] = new PlayerPhaseII(PlayerPersonality.GREEDY);
-        newPlayers[n-1] = new PlayerPhaseII(PlayerPersonality.RISKY);
+        newPlayers[2] = new PlayerPhaseII(PlayerPersonality.NORMAL);
+        newPlayers[3] = new PlayerPhaseII(PlayerPersonality.RISK_AVERSE);
+        newPlayers[4] = new PlayerPhaseII(PlayerPersonality.RISKFUL);
         out("Created " + n + " players");
         return newPlayers;
     }

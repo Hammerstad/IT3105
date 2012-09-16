@@ -44,13 +44,13 @@ public class PlayerPhaseII extends AbstractPlayer {
 	 */
 	private void setRiskAversion() {
 		switch (personality) {
-		case GREEDY:
+		case RISK_AVERSE:
 			riskAversion = 0.900;
 			break;
 		case NORMAL:
 			riskAversion = 1.000;
 			break;
-		case RISKY:
+		case RISKFUL:
 			riskAversion = 1.100;
 			break;
 		}
@@ -58,6 +58,8 @@ public class PlayerPhaseII extends AbstractPlayer {
 
 	/**
 	 * Bet function for the player. Returns how much he wants to bet.
+	 * @param game - the game, and its state
+	 * @param toCall - how much you need to raise to match the pot
 	 * @return -1 (FOLD) / 0 (CHECK) / double (RAISE)
 	 */
 	@Override
@@ -81,7 +83,7 @@ public class PlayerPhaseII extends AbstractPlayer {
 	/**
 	 * Internal function for betting, uses preflop calculations.
 	 * @param game - the game, and its state
-	 * @param toCall - how much left to the pot
+	 * @param toCall - how much you need to raise to match the pot
 	 * @return bet
 	 */
 	private double preFlopBet(Game game, double toCall) {
