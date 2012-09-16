@@ -27,11 +27,14 @@ public class Game {
     // End of round
     public PlayerPhaseI winner;
     public double pot;
+    public double blinds;
+    public int dealingPlayer;
 
     public Game(int players) {
         this.newDeck = newDeck();
         this.players = generatePlayers(players);
         this.presetHand = null;
+        this.blinds = 10;
     }
 
     public Game(int players, Card[] presetHand) {
@@ -85,6 +88,7 @@ public class Game {
         switch (state) {
             case START:
                 shuffleCards();
+                takeBlinds();
                 dealHands();
                 break;
             case PREFLOP_BETTING:
@@ -123,6 +127,7 @@ public class Game {
                     pi.receiveMoney(potShare);
                 }
                 pot = 0;
+                dealingPlayer++;
                 break;
         }
     }
@@ -257,6 +262,14 @@ public class Game {
         Game game = new Game(9);
 
 
+    }
+
+    private void takeBlinds() {
+        PlayerInterface BB = players[(dealingPlayer+1)%players.length];
+        PlayerInterface SB = players[(dealingPlayer+2)%players.length];
+        BB.takeMoney(2*blinds);
+        SB.takeMoney(blinds);
+        pot+=3*blinds;
     }
 
     public enum GameState {
