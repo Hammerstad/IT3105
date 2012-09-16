@@ -113,7 +113,7 @@ public class Game {
                 setState(GameState.PRETURN_BETTING);
                 break;
             case PRETURN_BETTING:
-                Arrays.fill(toCall, 2 * blinds);
+                Arrays.fill(toCall, 0);
                 bet(GameState.PRETURN_BETTING, GameState.TURN);
                 break;
             case TURN:
@@ -121,7 +121,7 @@ public class Game {
                 setState(GameState.PRERIVER_BETTING);
                 break;
             case PRERIVER_BETTING:
-                Arrays.fill(toCall, 2 * blinds);
+                Arrays.fill(toCall, 0);
                 bet(GameState.PRERIVER_BETTING, GameState.RIVER);
                 break;
             case RIVER:
@@ -129,7 +129,7 @@ public class Game {
                 setState(GameState.FINAL_BETTING);
                 break;
             case FINAL_BETTING:
-                Arrays.fill(toCall, 2 * blinds);
+                Arrays.fill(toCall, 0);
                 bet(GameState.FINAL_BETTING, GameState.SHOWDOWN);
                 break;
             case SHOWDOWN:
@@ -153,11 +153,13 @@ public class Game {
     }
 
     void bet(GameState current, GameState next) {
-//        System.out.println("Bettings. " + Arrays.toString(toCall));
-//        System.out.println("Rounds: " + current);
+        System.out.println("Bettings. " + Arrays.toString(toCall));
+        System.out.println("Rounds: " + current);
         for (int i = 0; i < maxReRaises; i++) {
-//            System.out.println("ActivePlayers: "+activePlayers.size());
+            System.out.println("ActivePlayers: "+activePlayers.size());
             for (int pl = 0; pl < activePlayers.size(); pl++) {
+
+                
 //                System.out.println("Bettings. " + Arrays.toString(toCall));
                 AbstractPlayer pi = activePlayers.get(pl);
                 int plIndex = -1;
@@ -167,26 +169,23 @@ public class Game {
                         break;
                     }
                 }
-                
-                if (toCall[plIndex] == 0) {
-                    continue;
-                }
                 double d = pi.bet(this, toCall[plIndex]);
                 if (d < 0) {
-//                    System.out.println("Fold, or error: " + d);
-//                    System.out.println("Player "+activePlayers.get(pl) +" folded");
+                    System.out.println("Fold, or error: " + d);
+                    System.out.println("Player "+activePlayers.get(pl) +" folded");
                     foldingPlayers.add(players[plIndex]);
                 } else {
-//                    System.out.println("Player "+activePlayers.get(pl)+" tossed "+d+" into the pot");
+                    System.out.println("Player "+activePlayers.get(pl)+" tossed "+d+" into the pot");
                     toCall[plIndex] -= d;
                 }
-//                System.out.println("RaisCeing: " + Arrays.toString(toCall));
+                System.out.println("RaisCeing: " + Arrays.toString(toCall));
             }
             int act = activePlayers.size() - foldingPlayers.size();
 //            activePlayers.removeAll(this.foldingPlayers);
 //            this.foldingPlayers.clear();
-//            System.out.println("ActivePlayers: "+Arrays.toString(activePlayers.toArray()));
-//            System.out.println("FoldingPlayers: "+Arrays.toString(foldingPlayers.toArray()));
+            
+            System.out.println("ActivePlayers: "+Arrays.toString(activePlayers.toArray()));
+            System.out.println("FoldingPlayers: "+Arrays.toString(foldingPlayers.toArray()));
             for (AbstractPlayer pi : foldingPlayers){
 //                System.out.println("Removing "+pi);
                 activePlayers.remove(pi);
@@ -195,9 +194,9 @@ public class Game {
             if (act != activePlayers.size()){
                 System.out.println("ASIASFJOASJFOIJSAF; I HATE LssssssssssssssssssssssssssssssssssssssssssssssssssssssssSITSSSSSS");
             }
-//            System.out.println("Active players left: "+activePlayers.size());
+            System.out.println("Active players left: "+activePlayers.size());
             if (this.activePlayers.size() == 1) {
-//                System.out.println("WiCnner: " + this.activePlayers.get(0) + " of " + pot);
+                System.out.println("WiCnner: " + this.activePlayers.get(0) + " of " + pot);
 //                this.activePlayers.get(0).receiveMoney(pot);
 //                this.activePlayers.get(0).wins++;
 //                pot = 0;dealingPlayer++;
@@ -212,10 +211,10 @@ public class Game {
                 sum += toCall[pl];
             }
             if (sum == 0) {
-//                System.out.println("No raises");
+                System.out.println("No raises");
                 break;
             }
-//            System.out.println("BetRoundEnd: " + Arrays.toString(toCall));
+            System.out.println("BetRoundEnd: " + Arrays.toString(toCall));
         }
         setState(next);
     }
@@ -344,7 +343,7 @@ public class Game {
 //            new Card(11, Suit.DIAMOND)};
 //        Game game = new Game(9, cards);
         Game game = new Game(5);
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 1; i++) {
             game.setState(GameState.START);
         }
         int i = 1;
@@ -369,6 +368,7 @@ public class Game {
             (dealingPlayer + 1) % players.length,
             (dealingPlayer + 2) % players.length
         };
+        System.out.println("Taking blinds from "+players[blindsPlayer[0]]+" "+players[blindsPlayer[1]]);
         players[blindsPlayer[0]].takeMoney(2 * blinds);
         toCall[blindsPlayer[0]] = 0;
         players[blindsPlayer[1]].takeMoney(blinds);

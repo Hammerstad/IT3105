@@ -18,14 +18,15 @@ public class PlayerPhaseI extends AbstractPlayer {
 
     @Override
     public double bet(Game state, double toCall) {
-        if (toCall == 0) {
-            return 0;
-        } else if (state.state == GameState.PRETURN_BETTING
+        if (state.state == GameState.PRETURN_BETTING
                 || state.state == GameState.PRERIVER_BETTING
                 || state.state == GameState.FINAL_BETTING) {
             return postFlopBetting(state, toCall);
         } else if (state.state == GameState.PREFLOP_BETTING) {
-            if (Math.random() > 0.3) {
+            if (toCall == 0){
+                return 0;
+            }
+            else if (Math.random() > 0.3) {
 //                System.out.println("PreFlopBetting: "+state.blinds);
                 this.money -= toCall;
                 state.pot += toCall;
@@ -42,18 +43,21 @@ public class PlayerPhaseI extends AbstractPlayer {
 
     private double postFlopBetting(Game state, double toCall) {
         double d = HandStrength.handstrength(hand, state.table, state.activePlayers.size()) * (state.activePlayers.size() - 1);
-
-        if (d >= this.riskAversion || (state.activePlayers.size() - state.foldingPlayers.size()) == 1) {
+        System.out.println("D: " + d);
+        if (d >= this.riskAversion || (state.activePlayers.size() - state.foldingPlayers.size()) == 1 || toCall == 0) {
             //Bet
 //            System.out.println("Bettings: "+(2*state.blinds));
-            if (d > 0.8) {
+            if (d > 0.8 || (d > 0.5 && toCall == 0)) {
                 //raise
 //                System.out.println("Raise");
                 state.addToCall(2 * state.blinds);
                 this.money -= toCall + 2 * state.blinds;
                 state.pot += toCall + 2 * state.blinds;
-                return toCall+2*state.blinds;
-            } else {
+                return toCall + 2 * state.blinds;
+            } else if (toCall == 0) {
+                return 0;
+            }
+            else {
                 this.money -= toCall;
                 state.pot += toCall;
                 return toCall;
