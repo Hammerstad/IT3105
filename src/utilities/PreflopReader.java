@@ -20,10 +20,13 @@ public class PreflopReader {
 		df.setDecimalFormatSymbols(symbols);
 	}
 
-	public double[][][][] read() {
+	public double[][][][] read(String filename) {
+		if (filename.isEmpty()) {
+			filename = "preflop10000.txt";
+		}
 		try {
 			// Create file
-			FileInputStream fis = new FileInputStream("preflop.txt");
+			FileInputStream fis = new FileInputStream(filename);
 			BufferedReader br = new BufferedReader(new InputStreamReader(fis));
 			String temp;
 			String[] tempToArray;
@@ -57,9 +60,9 @@ public class PreflopReader {
 		for (int j = 2; j < 11; j++) {
 			for (int a = 1; a < 14; a++) {
 				for (int b = 1; b < 14; b++) {
-					if (temp[0][j - 2][a - 1][b - 1] > temp[1][j - 2][a - 1][b - 1]) {
+					if (temp[0][j - 2][a - 1][b - 1] > temp[1][j - 2][a - 1][b - 1] && (a != b)) {
 						better++;
-						System.out.println(a + "-" + b);
+						System.out.println(a + "-" + b + ":\t" + (temp[0][j - 2][a - 1][b - 1] - temp[1][j - 2][a - 1][b - 1]));
 					}
 				}
 			}
@@ -68,9 +71,10 @@ public class PreflopReader {
 	}
 
 	public static void main(String[] args) {
-		//For testing purposes, checks how screwed up our table is (if unsuited is better than suited).
+		// For testing purposes, checks how screwed up our table is (if unsuited
+		// is better than suited).
 		PreflopReader pr = new PreflopReader();
-		double[][][][] temp = pr.read();
+		double[][][][] temp = pr.read("");
 		checkDifference(temp);
 	}
 }
