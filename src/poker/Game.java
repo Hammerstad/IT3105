@@ -10,6 +10,10 @@ import ai.Player;
 import java.util.LinkedList;
 
 public class Game {
+    public static void out(String s) {
+//        System.out.println(s);
+    }
+    
     // Data for start of round
 
     int maxReRaises = 3;
@@ -31,6 +35,7 @@ public class Game {
     }
 
     public Game(int players, Card[] presetHand) {
+        out("Creating new game");
         this.newDeck = newDeck();
         this.players = generatePlayers(players);
         this.presetHand = presetHand;
@@ -63,6 +68,7 @@ public class Game {
     }
 
     public int playRoundsSimulate(int rounds, Card[] myCards) {
+        out("Starting simulation for "+Arrays.toString(myCards));
         int won = 0;
         for (int i = 0; i < rounds; i++) {
             //resetting deck
@@ -70,6 +76,8 @@ public class Game {
             table = new Card[5];
             activePlayers = new ArrayList<PlayerInterface>(Arrays.asList(players));
             shuffleCards();
+            out("Round "+i);
+            out("Deck: "+Arrays.toString(deck.toArray()));
 
             //Deal all cards, no betting needed
             this.presetHand = myCards;
@@ -80,11 +88,15 @@ public class Game {
             dealToTable();
             //River
             dealToTable();
+            out("Cards dealt, myHand: "+Arrays.toString(players[0].getHand()));
+            out("On table: "+Arrays.toString(table));
 
             PlayerInterface[] pi = getWinner();
+            out("Winner: "+Arrays.toString(pi));
 //            System.out.println("Winner: "+Arrays.toString(pi));
             if (pi.length == 1 && pi[0] == players[0])won++;
         }
+        out("Won: "+won);
         return won;
     }
 
@@ -148,6 +160,7 @@ public class Game {
         for (int i = 0; i < n; i++) {
             newPlayers[i] = new Player();
         }
+        out("Created "+n+" players");
         return newPlayers;
     }
 
@@ -190,6 +203,7 @@ public class Game {
             newDeck.add(new Card(i, Suit.SPADE));
             newDeck.add(new Card(i, Suit.HEART));
         }
+        out("New deck created, containing "+newDeck.size()+" cards");
         return newDeck;
     }
 
@@ -202,7 +216,7 @@ public class Game {
             PlayerInterface pi = players[i];
             System.arraycopy(pi.getHand(), 0, fullHand, 5, 2);
             scores[i] = CardUtilities.classification(fullHand);
-//            System.out.println("Fullhand: "+Arrays.toString(fullHand)+" Classification: "+Arrays.toString(scores[i]));
+            out("Fullhand: "+Arrays.toString(fullHand)+" Classification: "+Arrays.toString(scores[i]));
         }
         List<Integer> bestPlayers = new LinkedList<Integer>();
         List<Integer> possiblePlayers = new LinkedList<Integer>();
@@ -220,7 +234,7 @@ public class Game {
                     maxFound = score;
                 }
             }
-//            System.out.println("MaxValueFound: "+maxFound);
+            out("MaxValueFound: "+maxFound);
             //Remove all players that have less then maximum
             for (int i = 0; i < possiblePlayers.size(); i++) {
                 int score = scores[possiblePlayers.get(i)][testIndex];
@@ -229,7 +243,7 @@ public class Game {
 //                    System.out.println("Player "+i+" have less and is removed");
                 }
             }
-//            System.out.println("Number of players left after "+(testIndex+1)+" tests: "+possiblePlayers.size());
+            out("Number of players left after "+(testIndex+1)+" tests: "+possiblePlayers.size());
             //At this point possiblePlayers should only contain players with maxValue of attribute
             if (possiblePlayers.size() == 1)break;
             else {
@@ -240,6 +254,7 @@ public class Game {
         for (int i = 0; i < possiblePlayers.size(); i++) {
             bests[i] = players[possiblePlayers.get(i)];
         }
+        out("Winners: "+Arrays.toString(bests));
         return bests;
     }
 
