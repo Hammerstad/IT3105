@@ -4,6 +4,7 @@
  */
 package utilities;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
@@ -24,7 +25,8 @@ public class DataOutput {
     private DataOutput(String filename) {
         this.filename = filename;
     }
-    public static DataOutput getInstance(String name){
+    public static DataOutput getInstance(Class cls){
+        String name = cls.getName();
         if (!multiton.containsKey(name)){
             multiton.put(name, new DataOutput(name));
         }
@@ -41,7 +43,7 @@ public class DataOutput {
     private boolean init() {
         if (writer == null) {
             try {
-                writer = new FileWriter(filename + ".txt");
+                writer = new FileWriter("logging"+File.separator+filename + ".txt");
                 return true;
             } catch (IOException ex) {
                 return false;
@@ -62,6 +64,8 @@ public class DataOutput {
             writer.append(data);
             return data.length();
         }catch(Exception e){
+            System.out.println("Exception");
+            e.printStackTrace();
             return -1;
         }
     }
