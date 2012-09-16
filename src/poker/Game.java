@@ -348,7 +348,7 @@ public class Game {
         }
         int i = 1;
         for (AbstractPlayer pi : game.players) {
-            out("Player " + (i++) + ": " + pi.money + " Wins: " + pi.wins + " Folds: " + Arrays.toString(pi.folds));
+            System.out.println("Player " + (i++) + ": " + pi.money + " Wins: " + pi.wins + " Folds: " + Arrays.toString(pi.folds));
         }
 
 //        Card[] AceLowStraight = new Card[]{

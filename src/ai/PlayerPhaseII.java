@@ -86,7 +86,7 @@ public class PlayerPhaseII extends AbstractPlayer {
 	private double preFlopBet(Game game, double toCall) {
 		// Do something based on preflop table
 		int suitedCards = (hand[0].suit == hand[1].suit) ? 1 : 0; // Check if cards are suited
-		double preflopCalculation = preflopTable[suitedCards][noOpponents][hand[0].value-1][hand[1].value-1]; // Get preflop chances
+		double preflopCalculation = preflopTable[suitedCards][noOpponents][hand[0].value-2][hand[1].value-2]; // Get preflop chances
 
 		if (preflopCalculation * riskAversion < willBetIfAbove) {
 			return -1;
