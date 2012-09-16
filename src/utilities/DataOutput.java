@@ -35,6 +35,7 @@ public class DataOutput {
     public static void close() {
         for (DataOutput o : multiton.values()){
             try {
+                o.writer.flush();
                 o.writer.close();
             } catch (IOException ex) {
             }
