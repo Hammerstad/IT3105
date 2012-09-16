@@ -16,7 +16,7 @@ import poker.Suit;
  */
 public class HandStrength {
 
-    public static double handstrength(Card[] hole, Card[] flop, int opponents) {
+    public static double handstrength(Card[] hole, Card[] table, int opponents) {
         List<Card> deck = new ArrayList<Card>();
         for (int i = 2; i < 15; i++) {
             deck.add(new Card(i, Suit.DIAMOND));
@@ -30,19 +30,23 @@ public class HandStrength {
             deck.remove(c);
         }
 //        System.out.println("NOF_CARDS: "+deck.size());
-        for (Card c : flop) {
-            deck.remove(c);
+        int tableSize = 0;
+        for (Card c : table) {
+            if (c != null) {
+                deck.remove(c);
+                tableSize++;
+            }
         }
         double[] status = new double[3];
         int wins = 0, ties = 0, losses = 0;
 //        System.out.println("NOF_CARDS: "+deck.size());
-        Card[] myHand = new Card[5];
+        Card[] myHand = new Card[tableSize+2];
         System.arraycopy(hole, 0, myHand, 0, 2);
-        System.arraycopy(flop, 0, myHand, 2, 3);
-        
-        Card[] opponentHand = new Card[5];
-        System.arraycopy(flop, 0, opponentHand, 2, 3);
-        
+        System.arraycopy(table, 0, myHand, 2, tableSize);
+
+        Card[] opponentHand = new Card[tableSize+2];
+        System.arraycopy(table, 0, opponentHand, 2, tableSize);
+
         int[] holePower = CardUtilities.classification(myHand);
 //        System.out.println("MyHand: "+Arrays.toString(holePower));
         int[] opponentPower;
@@ -75,7 +79,7 @@ public class HandStrength {
 
     public static void main(String[] args) {
         Card[] hole = new Card[]{new Card(14, Suit.DIAMOND), new Card(12, Suit.CLUB)};
-        Card[] flop = new Card[]{new Card(11, Suit.HEART), new Card(4, Suit.CLUB), new Card(3, Suit.HEART)};
+        Card[] flop = new Card[]{new Card(11, Suit.HEART), new Card(4, Suit.CLUB), new Card(3, Suit.HEART), new Card(9, Suit.SPADE)};
         int opponents = 1;
 
         System.out.println(HandStrength.handstrength(hole, flop, opponents));

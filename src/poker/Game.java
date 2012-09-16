@@ -6,7 +6,7 @@ import java.util.List;
 
 import utilities.CardUtilities;
 
-import ai.Player;
+import ai.PlayerPhaseI;
 import java.util.LinkedList;
 
 public class Game {
@@ -25,7 +25,7 @@ public class Game {
     public List<PlayerInterface> activePlayers;
     public GameState state;
     // End of round
-    public Player winner;
+    public PlayerPhaseI winner;
     public double pot;
 
     public Game(int players) {
@@ -122,6 +122,7 @@ public class Game {
                 for (PlayerInterface pi : pis) {
                     pi.receiveMoney(potShare);
                 }
+                pot = 0;
                 break;
         }
     }
@@ -145,7 +146,7 @@ public class Game {
     PlayerInterface[] generatePlayers(int n) {
         PlayerInterface[] newPlayers = new PlayerInterface[n];
         for (int i = 0; i < n; i++) {
-            newPlayers[i] = new Player();
+            newPlayers[i] = new PlayerPhaseI();
         }
         out("Created " + n + " players");
         return newPlayers;
@@ -257,9 +258,9 @@ public class Game {
 
 
     }
-}
 
-enum GameState {
+    public enum GameState {
 
-    START, PREFLOP_BETTING, FLOP, PRETURN_BETTING, TURN, PRERIVER_BETTING, RIVER, FINAL_BETTING, SHOWDOWN;
+        START, PREFLOP_BETTING, FLOP, PRETURN_BETTING, TURN, PRERIVER_BETTING, RIVER, FINAL_BETTING, SHOWDOWN;
+    }
 }
