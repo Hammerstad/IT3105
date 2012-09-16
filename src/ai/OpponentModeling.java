@@ -5,6 +5,7 @@
 package ai;
 
 import poker.GameState;
+import utilities.DataOutput;
 
 /**
  *
@@ -26,6 +27,20 @@ public class OpponentModeling {
     public void addContext(Context c) {
         double[] soFar = contextTree[c.getPlayerId()][c.getGameState().getBucket()][Discretising.getBucket(c.getPlayers(), 10).bucketNo][Discretising.getBucket(c.getRaises(), 10).bucketNo][Discretising.getBucket(c.getPotOdds()).bucketNo][c.getAction().getBucket()];
         double[] newArr = new double[]{(soFar[0] * soFar[1] + c.getHandstrengthAvg()) / (soFar[1] + 1), soFar[1] + 1};
+        
+        int written = 0;
+        DataOutput output = DataOutput.getInstance(this.getClass());
+        written += output.writeLine("Added new context");
+        written += output.writeLine("	PlayerId:		"+c.getPlayerId());
+        written += output.writeLine("	Gamestate:	"+c.getGameState());
+        written += output.writeLine("	Players:		"+c.getPlayers());
+        written += output.writeLine("	Raises:		"+c.getRaises());
+        written += output.writeLine("	PotOdds:		"+c.getPotOdds());
+        written += output.writeLine("	Action:		"+c.getAction());
+        written += output.writeLine("	HS_new:		"+c.getHandstrengthAvg());
+        written += output.writeLine("	HS_avg:		"+newArr[0]);
+        written += output.writeLine("	HS_count:	"+newArr[1]);
+        written += output.writeLine("");
         contextTree[c.getPlayerId()][c.getGameState().getBucket()][Discretising.getBucket(c.getPlayers(), 10).bucketNo][Discretising.getBucket(c.getRaises(), 10).bucketNo][Discretising.getBucket(c.getPotOdds()).bucketNo][c.getAction().getBucket()] = newArr;
     }
     public double[] getData(Context c){
