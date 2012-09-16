@@ -40,32 +40,7 @@ public class Game {
 		this.players = generatePlayers(players);
 		this.presetHand = presetHand;
 
-	}
-
-	public void playRound(int rounds) {
-		for (int i = 0; i < rounds; i++) {
-			deck = new ArrayList<Card>(newDeck);
-			table = new Card[5];
-			activePlayers = new ArrayList<PlayerInterface>(
-					Arrays.asList(players));
-			setState(GameState.START);
-		}
-	}
-
-	public int playRounds(int rounds) {
-		int won = 0;
-		for (int i = 0; i < rounds; i++) {
-			deck = new ArrayList<Card>(newDeck);
-			table = new Card[5];
-			activePlayers = new ArrayList<PlayerInterface>(
-					Arrays.asList(players));
-			setState(GameState.START);
-			if (winner == players[0]) {
-				won++;
-			}
-		}
-		return won;
-	}
+	}	
 
 	public int playRoundsSimulate(int rounds, Card[] myCards) {
 		out("Starting simulation for " + Arrays.toString(myCards));
