@@ -22,8 +22,6 @@ public class PreflopMirrorer {
 			for (int players = 2; players < 10; players++) {
 				for (int a = 0; a < 13; a++) {
 					for (int b = 0; b <= a; b++) {
-						// System.out.println(((i==0)?"un":"") + "signed " + players + " | " + a + "/" + b);
-						// System.out.println(inn[i][players-2][b][a]);
 						inn[i][players - 2][b][a] = inn[i][players - 2][a][b];
 					}
 				}

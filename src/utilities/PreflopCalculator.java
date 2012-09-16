@@ -57,7 +57,7 @@ public class PreflopCalculator {
 				}
 			}
 		}
-		new PreflopWriter(table);
+		new PreflopWriter(table, true);
 	}
 
 	

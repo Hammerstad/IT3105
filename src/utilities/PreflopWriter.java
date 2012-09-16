@@ -8,11 +8,20 @@ import java.text.DecimalFormat;
  * Writes a preflop table to disk
  */
 public class PreflopWriter {
-	DecimalFormat myFormatter;
-	String filename = "preflop100000.txt";
+	private DecimalFormat myFormatter;
+	private String filename = "preflop100000.txt";
 
-	public PreflopWriter(double[][][][] matrix) {
+	/**
+	 * Standard constructor for a preflop writer. Takes a double[2][10][13][13] as input and writes to disk.
+	 * @param matrix - the matrix you want to write to disk
+	 * @param mirrored - if you want to mirror the matrix around the diagonal
+	 */
+	public PreflopWriter(double[][][][] matrix, boolean mirrored) {
 		myFormatter = new DecimalFormat("0.000");
+		if(mirrored){
+			PreflopMirrorer pm = new PreflopMirrorer();
+			matrix = pm.mirror(matrix);
+		}
 		writeTableToFile(matrix);
 	}
 

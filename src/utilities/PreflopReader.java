@@ -74,9 +74,7 @@ public class PreflopReader {
 		// For testing purposes, checks how screwed up our table is (if unsuited is better than suited).
 		PreflopReader pr = new PreflopReader();
 		double[][][][] temp = pr.read("");
-		PreflopMirrorer pm = new PreflopMirrorer();
-		double[][][][] mirrored = pm.mirror(temp);
-		new PreflopWriter(mirrored);
+		new PreflopWriter(temp, true);
 		// checkDifference(temp);
 	}
 }
