@@ -4,3 +4,9 @@ bin/
 .settings
 .DS_Store
 /build/
+preflop.txt
+txt
+build.xml
+nbproject/
+
+

@@ -10,64 +10,93 @@ import poker.Suit;
 
 public class PreflopCalculator {
 
-    public static int NOFGAMES = 100000;
+	public static int NOFGAMES = 100000;
+	DecimalFormat myFormatter;
+	double[][][][] table;
+	String filename;
+	Card[] cards;
+	Game game;
 
-    public static void main(String[] args) {
-        double[][][][] table = new double[2][9][13][13];
-        int won = 0;
-        for (int players = 2; players < 3; players++) {
-            for (int i = 2; i < 15; i++) {
-                for (int j = 2; j <= i; j++) {
-                    // TODO: 1000-100000 simulations of this card, how often
-                    // Unsuited
-                    Card[] cards = new Card[]{new Card(i, Suit.DIAMOND),
-                        new Card(j, Suit.CLUB)};
-                    Game game = new Game(players, cards);
-                    won = game.playRoundsSimulate(NOFGAMES, cards);
-                    table[0][players - 2][i - 2][j - 2] = won / (NOFGAMES*1.);
-//                    System.out.println("Cards calculated: " + Arrays.toString(cards) + " Winrate: " + (won / (NOFGAMES*1.)));
-                    // Suited
-                    if (i == j) {
-                        continue; // Because you can't have two card which has
-                        // the same suit and value
-                    }
+	public PreflopCalculator() {
+		myFormatter = new DecimalFormat("0.000");
+		table = new double[2][9][13][13];
+		filename = "preflop.txt";
+	}
 
-                    cards = new Card[]{new Card(i, Suit.DIAMOND),
-                        new Card(j, Suit.DIAMOND)};
-                    game = new Game(players, cards);
-                    won = game.playRoundsSimulate(NOFGAMES, cards);
-                    table[1][players - 2][i - 2][j - 2] = won / (NOFGAMES*1.);
-//                    System.out.println("Cards calculated: " + Arrays.toString(cards) + " Winrate: " + (won / (NOFGAMES*1.)));
-                }
-            }
-        }
+	/**
+	 * Calculates a preflopTable for x players.
+	 * 
+	 * @param noPlayers
+	 *            - number of players, 2 to 10
+	 */
+	public void calculatePreflopTable(int noPlayers) {
+		int won = 0;
+		if (noPlayers < 2)
+			noPlayers = 2;
+		if (noPlayers > 10)
+			noPlayers = 10;
+		for (int players = 2; players < noPlayers + 1; players++) {
+			for (int i = 2; i < 15; i++) {
+				for (int j = 2; j <= i; j++) {
+					// Unsuited
+					cards = new Card[] { new Card(i, Suit.DIAMOND), new Card(j, Suit.CLUB) };
+					game = new Game(players, cards);
+					won = game.playRoundsSimulate(NOFGAMES, cards);
+					table[0][players - 2][i - 2][j - 2] = won / (NOFGAMES * 1.);
+					// Suited
+					if (i == j) {
+						continue; // Because you can't have two card which has
+									// the same suit and value
 
-        DecimalFormat myFormatter = new DecimalFormat("0.000");
+					}
+					cards = new Card[] { new Card(i, Suit.DIAMOND), new Card(j, Suit.DIAMOND) };
+					game = new Game(players, cards);
+					won = game.playRoundsSimulate(NOFGAMES, cards);
+					table[1][players - 2][i - 2][j - 2] = won / (NOFGAMES * 1.);
+				}
+			}
+		}
+		writeTableToFile(table);
+	}
 
-        try {
-            // Create file
-            FileOutputStream fos = new FileOutputStream("preflop.txt");
-            DataOutputStream dos = new DataOutputStream(fos);
-            for (int players = 2; players < 11; players++) {
-                for (int j = 0; j < 2; j++) {
-                    dos.write(("Players: " + players + ((j == 0) ? " unsigned" : " signed") + "\n").getBytes());
-                    for (int a = 1; a < 14; a++) {
-                        for (int b = 1; b < 14; b++) {
-                            Double d = table[j][players - 2][a - 1][b - 1];
-                            dos.write(myFormatter.format(d).getBytes());
-                            dos.write(" ".getBytes());
-                        }
-                        fos.write('\n');
-                    }
-                    fos.write('\n');
-                }
-            }
-            // Close the output stream
-            dos.close();
-        } catch (Exception e) {
-        	// Catch exception if any
-            System.err.println("Error: " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
+	/**
+	 * Writes the table to disk
+	 * 
+	 * @param table
+	 *            - double[2][9][13][13]
+	 */
+	private void writeTableToFile(double[][][][] table) {
+		Double d;
+		try {
+			// Create file
+			FileOutputStream fos = new FileOutputStream(filename);
+			DataOutputStream dos = new DataOutputStream(fos);
+			for (int players = 2; players < 11; players++) {
+				for (int j = 0; j < 2; j++) {
+					dos.write(("Players: " + players + ((j == 0) ? " unsigned" : " signed") + "\n").getBytes());
+					for (int a = 1; a < 14; a++) {
+						for (int b = 1; b < 14; b++) {
+							d = table[j][players - 2][a - 1][b - 1];
+							dos.write(myFormatter.format(d).getBytes());
+							dos.write(" ".getBytes());
+						}
+						fos.write('\n');
+					}
+					fos.write('\n');
+				}
+			}
+			// Close the output stream
+			dos.close();
+		} catch (Exception e) {
+			// Catch exception if any
+			System.err.println("Error: " + e.getMessage());
+			e.printStackTrace();
+		}
+	}
+
+	public static void main(String[] args) {
+		//Generates a preflop table and writes to disk
+		PreflopCalculator calculator = new PreflopCalculator();
+		calculator.calculatePreflopTable(10);
+	}
 }
