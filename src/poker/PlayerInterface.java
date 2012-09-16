@@ -1,6 +1,8 @@
 package poker;
 
 public abstract class PlayerInterface {
+    private static int NO = 0;
+    private String name;
     protected Card[] hand;
     protected double money;
     public int wins;
@@ -9,8 +11,10 @@ public abstract class PlayerInterface {
     public PlayerInterface() {
         this.hand = new Card[2];
         this.folds = new int[2];
+        this.name = "PHASEIBOT"+(NO++);
     }
     public PlayerInterface(Card[] hand) {
+        this();
         this.hand = hand;
     }
     public void dealCard(Card card){
@@ -37,4 +41,7 @@ public abstract class PlayerInterface {
         this.money-=money;
     }
     public abstract double bet(Game state, double toCall);
+    public String toString() {
+        return name;
+    }
 }

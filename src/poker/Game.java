@@ -120,7 +120,7 @@ public class Game {
                 setState(GameState.PRERIVER_BETTING);
                 break;
             case PRERIVER_BETTING:
-                Arrays.fill(toCall, 2* blinds);
+                Arrays.fill(toCall, 2 * blinds);
                 bet(GameState.PRERIVER_BETTING, GameState.RIVER);
                 break;
             case RIVER:
@@ -128,21 +128,17 @@ public class Game {
                 setState(GameState.FINAL_BETTING);
                 break;
             case FINAL_BETTING:
-                Arrays.fill(toCall, 2* blinds);
+                Arrays.fill(toCall, 2 * blinds);
                 bet(GameState.FINAL_BETTING, GameState.SHOWDOWN);
                 break;
             case SHOWDOWN:
-                // System.out.println("SHOWDOWN: " + players[0].getHand()[0].suit
-                // + players[0].getHand()[0].value + " "
-                // + players[0].getHand()[1].suit
-                // + players[0].getHand()[1].value);
-                // TODO: Decide winner
                 PlayerInterface[] pis;
                 if (activePlayers.size() != 1) {
-                     pis = getWinner();
-                }else {
+                    pis = getWinner();
+                } else {
                     pis = new PlayerInterface[]{activePlayers.get(0)};
                 }
+                System.out.println("Winner: "+Arrays.toString(pis));
                 double potShare = this.pot / pis.length;
                 for (PlayerInterface pi : pis) {
                     pi.receiveMoney(potShare);
@@ -157,9 +153,11 @@ public class Game {
 
     void bet(GameState current, GameState next) {
 //        System.out.println("Bettings. " + Arrays.toString(toCall));
-//        System.out.println("Rounds: " + current);
+        System.out.println("Rounds: " + current);
         for (int i = 0; i < maxReRaises; i++) {
+            System.out.println("ActivePlayers: "+activePlayers.size());
             for (int pl = 0; pl < activePlayers.size(); pl++) {
+                System.out.println("Bettings. " + Arrays.toString(toCall));
                 PlayerInterface pi = activePlayers.get(pl);
                 if (toCall[pl] == 0) {
                     continue;
@@ -167,19 +165,24 @@ public class Game {
                 double d = pi.bet(this, toCall[pl]);
                 if (d < 0) {
 //                    System.out.println("Fold, or error: " + d);
+                    System.out.println("Player "+activePlayers.get(pl) +" folded");
+                    foldingPlayers.add(players[pl]);
                 } else {
+                    System.out.println("Player "+activePlayers.get(pl)+" tossed "+d+" into the pot");
                     toCall[pl] -= d;
                 }
 //                System.out.println("RaisCeing: " + Arrays.toString(toCall));
             }
             activePlayers.removeAll(this.foldingPlayers);
             this.foldingPlayers.clear();
+            System.out.println("Active players left: "+activePlayers.size());
             if (this.activePlayers.size() == 1) {
-//                System.out.println("WiCnner: " + this.activePlayers.get(0) + " of " + pot);
+                System.out.println("WiCnner: " + this.activePlayers.get(0) + " of " + pot);
 //                this.activePlayers.get(0).receiveMoney(pot);
 //                this.activePlayers.get(0).wins++;
 //                pot = 0;dealingPlayer++;
-                setState(GameState.SHOWDOWN);return;
+                setState(GameState.SHOWDOWN);
+                return;
             }
             int sum = 0;
             for (int pl = 0; pl < players.length; pl++) {
@@ -266,7 +269,7 @@ public class Game {
         for (int i = 0; i < activePlayers.size(); i++) {
             PlayerInterface pi = activePlayers.get(i);
             System.arraycopy(pi.getHand(), 0, fullHand, 5, 2);
-            System.out.println("FUllHand: " + Arrays.toString(fullHand));
+//            System.out.println("FUllHand: " + Arrays.toString(fullHand));
             scores[i] = CardUtilities.classification(fullHand);
             out("Fullhand: " + Arrays.toString(fullHand) + " Classification: "
                     + Arrays.toString(scores[i]));
