@@ -259,8 +259,4 @@ public class Game {
 
     }
 
-    public enum GameState {
-
-        START, PREFLOP_BETTING, FLOP, PRETURN_BETTING, TURN, PRERIVER_BETTING, RIVER, FINAL_BETTING, SHOWDOWN;
-    }
 }
