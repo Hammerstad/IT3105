@@ -15,7 +15,7 @@ public class PreflopReader {
 		table = new double[2][9][13][13];
 		df = new DecimalFormat();
 		symbols = new DecimalFormatSymbols();
-		symbols.setDecimalSeparator(',');
+		symbols.setDecimalSeparator('.');
 		symbols.setGroupingSeparator(' ');
 		df.setDecimalFormatSymbols(symbols);
 	}
@@ -25,7 +25,7 @@ public class PreflopReader {
 			filename = "preflop100000.txt";
 		}
 		try {
-			// Create file
+			// Read file
 			FileInputStream fis = new FileInputStream(filename);
 			BufferedReader br = new BufferedReader(new InputStreamReader(fis));
 			String temp;
@@ -74,7 +74,6 @@ public class PreflopReader {
 		// For testing purposes, checks how screwed up our table is (if unsuited is better than suited).
 		PreflopReader pr = new PreflopReader();
 		double[][][][] temp = pr.read("");
-		new PreflopWriter(temp, true);
-		// checkDifference(temp);
+		checkDifference(temp);
 	}
 }

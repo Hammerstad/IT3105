@@ -343,7 +343,7 @@ public class Game {
 //            new Card(11, Suit.DIAMOND)};
 //        Game game = new Game(9, cards);
         Game game = new Game(5);
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < 1000; i++) {
             game.setState(GameState.START);
         }
         int i = 1;
