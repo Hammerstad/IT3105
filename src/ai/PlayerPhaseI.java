@@ -95,8 +95,8 @@ public class PlayerPhaseI extends AbstractPlayer {
         public String toString() {
             StringBuilder sb = new StringBuilder();
             sb.append(super.toString()).append(" ");
-            sb.append("RiskAversion: "+riskAversion).append(" ");
-            sb.append("Cards: "+Arrays.toString(getHand()));
+            sb.append("RiskAversion: ").append(riskAversion).append(" ");
+            sb.append("Cards: ").append(Arrays.toString(getHand()));
             return sb.toString();
         }
 }

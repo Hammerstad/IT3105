@@ -19,7 +19,7 @@ public abstract class AbstractPlayer {
 		this.hand = new Card[2];
 		this.folds = new int[2];
                 
-		this.name = "PHASE-I-BOT " + (NO++);
+		NO++;
 	}
 
 	/**

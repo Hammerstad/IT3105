@@ -98,6 +98,7 @@ public class Game {
                 for (AbstractPlayer player : activePlayers) {
                     player.resetHand();
                 }
+                out.writeLine("New round");
                 Arrays.fill(toCall, 2 * blinds);
                 shuffleCards();
                 takeBlinds();
@@ -174,7 +175,7 @@ public class Game {
             players[i % players.length].dealCard(deck.remove(0));
         }
         for (AbstractPlayer ap : players) {
-            out.writeLine(ap.toString());
+            out.writeLine("	"+ap.toString());
         }
         setState(GameState.PREFLOP_BETTING);
     }
