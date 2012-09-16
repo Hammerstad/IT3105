@@ -65,7 +65,8 @@ public class PreflopCalculator {
             }
             // Close the output stream
             dos.close();
-        } catch (Exception e) {// Catch exception if any
+        } catch (Exception e) {
+        	// Catch exception if any
             System.err.println("Error: " + e.getMessage());
             e.printStackTrace();
         }
