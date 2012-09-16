@@ -47,7 +47,6 @@ public class HandStrength {
 			}
 		}
 		double[] status = new double[3];
-		int wins = 0, ties = 0, losses = 0;
 		Card[] myHand = new Card[tableSize + 2];
 		System.arraycopy(hole, 0, myHand, 0, 2);
 		System.arraycopy(table, 0, myHand, 2, tableSize);
