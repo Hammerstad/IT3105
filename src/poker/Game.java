@@ -43,6 +43,51 @@ public class Game {
         this.toCall = new double[players];
     }
 
+    void bet(GameState current, GameState next) {
+        List<AbstractPlayer> foldingPlayers = new LinkedList<AbstractPlayer>();
+        raises = 0;
+        for (int i = 0; i < maxReRaises; i++) {
+            for (int pl = 0; pl < activePlayers.size(); pl++) {
+                AbstractPlayer pi = activePlayers.get(pl);
+                int plIndex = -1;
+                for (int j = 0; j < players.length; j++) {
+                    if (pi == players[j]) {
+                        plIndex = j;
+                        break;
+                    }
+                }
+                double d = pi.bet(this, toCall[plIndex]);
+                if (d < 0) {
+                    foldingPlayers.add(players[plIndex]);
+                } else {
+                    if (d > toCall[plIndex]) {
+                        raises++;
+                    }
+                    toCall[plIndex] -= d;
+                }
+            }
+            for (AbstractPlayer pi : foldingPlayers) {
+                activePlayers.remove(pi);
+            }
+            foldingPlayers = new LinkedList<AbstractPlayer>();
+            if (this.activePlayers.size() == 1) {
+                setState(GameState.SHOWDOWN);
+                return;
+            }
+            int sum = 0;
+            for (int pl = 0; pl < players.length; pl++) {
+                if (!activePlayers.contains(players[pl])) {
+                    continue;
+                }
+                sum += toCall[pl];
+            }
+            if (sum == 0) {
+                break;
+            }
+        }
+        setState(next);
+    }
+
     private void setState(GameState state) {
         this.state = state;
         switch (state) {
@@ -50,6 +95,9 @@ public class Game {
                 deck = new ArrayList<Card>(newDeck);
                 table = new Card[5];
                 activePlayers = new ArrayList<AbstractPlayer>(Arrays.asList(players));
+                for (AbstractPlayer player : activePlayers) {
+                    player.resetHand();
+                }
                 Arrays.fill(toCall, 2 * blinds);
                 shuffleCards();
                 takeBlinds();
@@ -99,52 +147,6 @@ public class Game {
                 dealingPlayer++;
                 break;
         }
-    }
-
-    void bet(GameState current, GameState next) {
-        List<AbstractPlayer> foldingPlayers = new LinkedList<AbstractPlayer>();
-        raises = 0;
-        for (int i = 0; i < maxReRaises; i++) {
-            for (int pl = 0; pl < activePlayers.size(); pl++) {
-                AbstractPlayer pi = activePlayers.get(pl);
-                int plIndex = -1;
-                for (int j = 0; j < players.length; j++) {
-                    if (pi == players[j]) {
-                        plIndex = j;
-                        break;
-                    }
-                }
-                double d = pi.bet(this, toCall[plIndex]);
-                if (d < 0) {
-                    foldingPlayers.add(players[plIndex]);
-                } else {
-                    if (d > toCall[plIndex]) {
-                        raises++;
-                    }
-                    toCall[plIndex] -= d;
-                }
-            }
-            for (AbstractPlayer pi : foldingPlayers) {
-                activePlayers.remove(pi);
-            }
-            foldingPlayers = new LinkedList<AbstractPlayer>();
-            if (this.activePlayers.size() == 1) {
-                setState(GameState.SHOWDOWN);
-                return;
-            }
-            int sum = 0;
-            for (int pl = 0; pl < players.length; pl++) {
-                if (!activePlayers.contains(players[pl])) {
-                    continue;
-                }
-                sum += toCall[pl];
-            }
-            if (sum == 0) {
-                break;
-            }
-
-        }
-        setState(next);
     }
 
     void shuffleCards() {
@@ -252,7 +254,7 @@ public class Game {
     }
 
     public static void main(String[] args) {
-        int NOF_GAMES = 10;
+        int NOF_GAMES = 100;
         int NOF_PLAYERS = 5;
         Game game = new Game(NOF_PLAYERS);
         out.writeLine("Creating new game, players: " + NOF_PLAYERS + " Rounds: " + NOF_GAMES);

@@ -4,13 +4,13 @@ import poker.Card;
 import poker.Game;
 
 public abstract class AbstractPlayer {
-	private static int NO = 0; // Number of player
-	private String name; // Name of the player
+	protected static int NO = 0; // Number of player
+	protected String name; // Name of the player
 	protected Card[] hand; // The hand of the player
 	public double money; // How much money the player has
 	public int wins; // Amount of times the player has won
 	public int[] folds; // Information about folding
-	PlayerPersonality personality; //Which personality the player has
+	protected PlayerPersonality personality; //Which personality the player has
 
 	/**
 	 * Constructor for an abstract player. Creates a hand, name, etc.
@@ -18,6 +18,7 @@ public abstract class AbstractPlayer {
 	public AbstractPlayer() {
 		this.hand = new Card[2];
 		this.folds = new int[2];
+                
 		this.name = "PHASE-I-BOT " + (NO++);
 	}
 
