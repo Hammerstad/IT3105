@@ -7,6 +7,7 @@ import java.util.List;
 import utilities.CardUtilities;
 
 import ai.PlayerPhaseI;
+import java.util.Collections;
 import java.util.LinkedList;
 
 public class Game {
@@ -23,6 +24,7 @@ public class Game {
     public List<Card> deck;
     public Card[] table;
     public List<PlayerInterface> activePlayers;
+    public List<PlayerInterface> foldingPlayers;
     public GameState state;
     // End of round
     public PlayerPhaseI winner;
@@ -35,6 +37,7 @@ public class Game {
         this.players = generatePlayers(players);
         this.presetHand = null;
         this.blinds = 10;
+        this.foldingPlayers = new LinkedList<>();
     }
 
     public Game(int players, Card[] presetHand) {
@@ -54,6 +57,7 @@ public class Game {
             table = new Card[5];
             activePlayers = new ArrayList<PlayerInterface>(
                     Arrays.asList(players));
+            
             shuffleCards();
             out("Round " + i);
             out("Deck: " + Arrays.toString(deck.toArray()));
@@ -87,6 +91,11 @@ public class Game {
         this.state = state;
         switch (state) {
             case START:
+                deck = new ArrayList<Card>(newDeck);
+                table = new Card[5];
+                activePlayers = new ArrayList<PlayerInterface>(
+                        Arrays.asList(players));
+//                System.out.println("Players: "+Arrays.toString(activePlayers.toArray()));
                 shuffleCards();
                 takeBlinds();
                 dealHands();
@@ -125,7 +134,9 @@ public class Game {
                 double potShare = this.pot / pis.length;
                 for (PlayerInterface pi : pis) {
                     pi.receiveMoney(potShare);
+                    pi.wins++;
                 }
+//                System.out.println("Pot size: "+pot);
                 pot = 0;
                 dealingPlayer++;
                 break;
@@ -136,6 +147,8 @@ public class Game {
         for (PlayerInterface pi : activePlayers) {
             pi.bet(this);
         }
+        activePlayers.removeAll(this.foldingPlayers);
+        this.foldingPlayers.clear();
         setState(next);
     }
 
@@ -151,7 +164,7 @@ public class Game {
     PlayerInterface[] generatePlayers(int n) {
         PlayerInterface[] newPlayers = new PlayerInterface[n];
         for (int i = 0; i < n; i++) {
-            newPlayers[i] = new PlayerPhaseI();
+            newPlayers[i] = new PlayerPhaseI(0.0);
         }
         out("Created " + n + " players");
         return newPlayers;
@@ -259,16 +272,26 @@ public class Game {
 //        Card[] cards = new Card[]{new Card(10, Suit.DIAMOND),
 //            new Card(11, Suit.DIAMOND)};
 //        Game game = new Game(9, cards);
-        Game game = new Game(9);
-
+        Game game = new Game(5);
+        for (int i = 0; i < 100; i++) {
+            game.setState(GameState.START);
+        }
+        int i = 1;
+        for (PlayerInterface pi : game.players) {
+            System.out.println("Player " + (i++) + ": " + pi.money+" Wins: "+pi.wins+" Folds: "+Arrays.toString(pi.folds));
+        }
 
     }
 
     private void takeBlinds() {
-        PlayerInterface BB = players[(dealingPlayer+1)%players.length];
-        PlayerInterface SB = players[(dealingPlayer+2)%players.length];
-        BB.takeMoney(2*blinds);
+        System.out.println("Taking blinds from "+dealingPlayer);
+        PlayerInterface BB = players[(dealingPlayer + 1) % players.length];
+        PlayerInterface SB = players[(dealingPlayer + 2) % players.length];
+        BB.takeMoney(2 * blinds);
         SB.takeMoney(blinds);
-        pot+=3*blinds;
+        pot += 3 * blinds;
+    }
+    public void fold(PlayerInterface pi) {
+        this.foldingPlayers.add(pi);
     }
 }
