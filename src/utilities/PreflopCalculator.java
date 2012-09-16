@@ -156,7 +156,7 @@ public class PreflopCalculator {
                 scores[player] = CardUtilities.classification(cards[player]);
             }
             //Candidates for winning hand includes everybody at the start
-            List<Integer> possiblePlayers = new LinkedList<>();
+            List<Integer> possiblePlayers = new LinkedList<Integer>();
             for (int i = 0; i < players; i++) {
                 possiblePlayers.add(i);
             }

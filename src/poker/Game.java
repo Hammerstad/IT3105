@@ -37,7 +37,7 @@ public class Game {
         this.players = generatePlayers(players);
         this.presetHand = null;
         this.blinds = 10;
-        this.foldingPlayers = new LinkedList<>();
+        this.foldingPlayers = new LinkedList<PlayerInterface>();
     }
 
     public Game(int players, Card[] presetHand) {
