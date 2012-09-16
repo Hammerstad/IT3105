@@ -28,5 +28,8 @@ public abstract class PlayerInterface {
     public void receiveMoney(double money){
         this.money+=money;
     }
+    public void takeMoney(double money) {
+        this.money-=money;
+    }
     public abstract void bet(Game state);
 }
