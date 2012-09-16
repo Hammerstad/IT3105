@@ -1,10 +1,10 @@
 package ai;
 
 /**
- * A Player's personality. May be either: GREEDY, NORMAL, RISKY
+ * A Player's personality. May be either: RISK_AVERSE, NORMAL, RISKFUL
  */
 public enum PlayerPersonality {
-	RISK_AVERSE, NORMAL, RISKY;
+	RISK_AVERSE, NORMAL, RISKFUL;
 	
 	/**
 	 * Returns a random personality
@@ -18,7 +18,7 @@ public enum PlayerPersonality {
 		case 1:
 			return NORMAL;
 		case 2:
-			return RISKY;
+			return RISKFUL;
 		default:
 			return NORMAL;
 		}

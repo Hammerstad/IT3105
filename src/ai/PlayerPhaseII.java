@@ -50,7 +50,7 @@ public class PlayerPhaseII extends AbstractPlayer {
 		case NORMAL:
 			riskAversion = 1.000;
 			break;
-		case RISKY:
+		case RISKFUL:
 			riskAversion = 1.100;
 			break;
 		}
