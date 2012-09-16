@@ -34,8 +34,7 @@ public class PreflopReader {
 						temp = br.readLine();
 						tempToArray = temp.split(" ");
 						for (int b = 1; b < 14; b++) {
-							table[j][players - 2][a - 1][b - 1] = df.parse(
-									tempToArray[b - 1]).doubleValue();
+							table[j][players - 2][a - 1][b - 1] = df.parse(tempToArray[b - 1]).doubleValue();
 						}
 					}
 					br.readLine();

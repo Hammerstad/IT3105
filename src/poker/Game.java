@@ -240,8 +240,7 @@ public class Game {
 	}
 
 	public static void main(String[] args) {
-		Card[] cards = new Card[] { new Card(10, Suit.DIAMOND),
-				new Card(11, Suit.DIAMOND) };
+		Card[] cards = new Card[] { new Card(10, Suit.DIAMOND), new Card(11, Suit.DIAMOND) };
 		Game game = new Game(9, cards);
 	}
 }
