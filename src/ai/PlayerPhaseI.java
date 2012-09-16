@@ -37,7 +37,7 @@ public class PlayerPhaseI extends AbstractPlayer {
 	private double postFlopBetting(Game state, double toCall) {
 		double d = HandStrength.handstrength(hand, state.table, state.activePlayers.size()) * (state.activePlayers.size() - 1);
 		// System.out.println("D: " + d);
-		if (d >= this.riskAversion || (state.activePlayers.size() - state.foldingPlayers.size()) == 1 || toCall == 0) {
+		if (d >= this.riskAversion || (state.activePlayers.size()) == 1 || toCall == 0) {
 			// Bet
 			if (d > 0.8 || (d > 0.5 && toCall == 0)) {
 				// raise
