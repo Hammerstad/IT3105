@@ -50,7 +50,7 @@ public class HandStrength {
             opponentHand[0] = deck.get(i);
             for (int j = i + 1; j < deck.size(); j++) {
                 opponentHand[1] = deck.get(j);
-                opponentPower = CardUtilities.classification(Arrays.copyOf(opponentHand, opponentHand.length));
+                opponentPower = CardUtilities.classification(opponentHand);
 //                System.out.println("OppHand: "+Arrays.toString(opponentHand));
 //                System.out.println("OppHand: "+Arrays.toString(opponentPower));
                 status[compare(holePower, opponentPower)]++;
