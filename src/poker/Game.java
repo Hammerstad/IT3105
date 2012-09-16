@@ -230,9 +230,10 @@ public class Game {
 
     AbstractPlayer[] generatePlayers(int n) {
         AbstractPlayer[] newPlayers = new AbstractPlayer[n];
-        for (int i = 0; i < n-2; i++) {
+        for (int i = 0; i < n-3; i++) {
             newPlayers[i] = new PlayerPhaseI(0.5);
         }
+        newPlayers[n-3] = new PlayerPhaseII(PlayerPersonality.NORMAL);
         newPlayers[n-2] = new PlayerPhaseII(PlayerPersonality.GREEDY);
         newPlayers[n-1] = new PlayerPhaseII(PlayerPersonality.RISKY);
         out("Created " + n + " players");

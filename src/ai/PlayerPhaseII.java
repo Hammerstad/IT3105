@@ -45,13 +45,13 @@ public class PlayerPhaseII extends AbstractPlayer {
 	private void setRiskAversion() {
 		switch (personality) {
 		case GREEDY:
-			riskAversion = 0.850;
+			riskAversion = 0.900;
 			break;
 		case NORMAL:
 			riskAversion = 1.000;
 			break;
 		case RISKY:
-			riskAversion = 1.250;
+			riskAversion = 1.100;
 			break;
 		}
 	}
@@ -63,7 +63,7 @@ public class PlayerPhaseII extends AbstractPlayer {
 	@Override
 	public double bet(Game game, double toCall) {
 		noOpponents = game.activePlayers.size()-1;
-		willBetIfAbove = Math.pow(0.25, noOpponents);
+		willBetIfAbove = Math.pow(0.30, noOpponents);
 		switch (game.state) {
 		case PREFLOP_BETTING:
 			return preFlopBet(game, toCall);
@@ -90,7 +90,7 @@ public class PlayerPhaseII extends AbstractPlayer {
 		double preflopCalculation = preflopTable[suitedCards][noOpponents][hand[0].value-2][hand[1].value-2]; // Get preflop chances
 
 		if (preflopCalculation * riskAversion < willBetIfAbove) {
-			return -1;
+			return foldBeforeFlop();
 		} else if (preflopCalculation * riskAversion > (willBetIfAbove + 0.1 * riskAversion)) {
 			return toCall + game.blinds * riskAversion;
 		} else {
@@ -107,7 +107,7 @@ public class PlayerPhaseII extends AbstractPlayer {
 	private double postFlopBet(Game game, double toCall) {
 		double handStrength = HandStrength.handstrength(getHand(), game.table, noOpponents);
 		if (handStrength * riskAversion < willBetIfAbove) {
-			return -1;
+			return foldAfterFlop();
 		} else if (handStrength * riskAversion > (willBetIfAbove + 0.1 * riskAversion)) {
 			return toCall + game.blinds * riskAversion;
 		} else {

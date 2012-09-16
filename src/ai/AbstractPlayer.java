@@ -86,4 +86,22 @@ public abstract class AbstractPlayer {
 	public String toString() {
 		return name;
 	}
+	
+	/**
+	 * This player folds before flop.
+	 * @return -1
+	 */
+	public double foldBeforeFlop(){
+		this.folds[0]++;
+		return -1;
+	}
+	
+	/**
+	 * This player folds after flop.
+	 * @return -1
+	 */
+	public double foldAfterFlop(){
+		this.folds[1]++;
+		return -1;
+	}
 }
