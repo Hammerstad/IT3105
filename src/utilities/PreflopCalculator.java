@@ -1,8 +1,5 @@
 package utilities;
 
-import java.io.DataOutputStream;
-import java.io.FileOutputStream;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -14,7 +11,6 @@ import poker.Suit;
 public class PreflopCalculator {
 
 	public static int NOFGAMES = 100000;
-	DecimalFormat myFormatter;
 	double[][][][] table;
 	String filename;
 	Card[] cards;
@@ -25,7 +21,6 @@ public class PreflopCalculator {
 	 * </br>pc.calculatePreflopTable(int players);</br></br>This writes a preflop table to disk for x players.
 	 */
 	public PreflopCalculator() {
-		myFormatter = new DecimalFormat("0.000");
 		table = new double[2][9][13][13];
 		filename = "preflop.txt";
 	}
@@ -55,7 +50,6 @@ public class PreflopCalculator {
 					if (i == j) {
 						continue; // Because you can't have two card which has
 						// the same suit and value
-
 					}
 					cards = new Card[] { new Card(i, Suit.DIAMOND), new Card(j, Suit.DIAMOND) };
 					won = preflop(players, cards, NOFGAMES);
@@ -63,44 +57,10 @@ public class PreflopCalculator {
 				}
 			}
 		}
-		writeTableToFile(table);
+		new PreflopWriter(table, true);
 	}
 
-	/**
-	 * Writes the table to disk
-	 * 
-	 * @param table
-	 *            - double[2][9][13][13]
-	 */
-	private void writeTableToFile(double[][][][] table) {
-		Double d;
-		try {
-			// Create file
-			FileOutputStream fos = new FileOutputStream(filename);
-			DataOutputStream dos = new DataOutputStream(fos);
-			for (int players = 2; players < 11; players++) {
-				for (int j = 0; j < 2; j++) {
-					dos.write(("Players: " + players + ((j == 0) ? " unsigned" : " signed") + "\n").getBytes());
-					for (int a = 1; a < 14; a++) {
-						for (int b = 1; b < 14; b++) {
-							d = table[j][players - 2][a - 1][b - 1];
-							dos.write(myFormatter.format(d).getBytes());
-							dos.write(" ".getBytes());
-						}
-						fos.write('\n');
-					}
-					fos.write('\n');
-				}
-			}
-			// Close the output stream
-			dos.close();
-		} catch (Exception e) {
-			// Catch exception if any
-			System.err.println("Error: " + e.getMessage());
-			e.printStackTrace();
-		}
-	}
-
+	
 	/**
 	 * Used for creating a preflop table. Gets written to disk.
 	 * 

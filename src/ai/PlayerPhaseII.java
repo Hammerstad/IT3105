@@ -12,7 +12,7 @@ public class PlayerPhaseII extends AbstractPlayer {
 	static double[][][][] preflopTable; // The preflop table
 	int noOpponents; // How many opponents left
 	double willBetIfAbove; // Will bet if above this (lower value for higher number of players)
-	double riskAversion = 0; // How greedy/risky is the player
+	double riskAversion = 1.000; // How greedy/risky is the player
 
 	/**
 	 * Default Phase 2 player.
@@ -21,7 +21,8 @@ public class PlayerPhaseII extends AbstractPlayer {
 	 */
 	public PlayerPhaseII(PlayerPersonality personality) {
 		if (preflopTable == null) {
-			preflopTable = new PreflopReader().read("");
+			PreflopReader pr = new PreflopReader();
+			preflopTable = pr.read("");
 		}
 		this.personality = personality;
 		setRiskAversion();
@@ -61,8 +62,8 @@ public class PlayerPhaseII extends AbstractPlayer {
 	 */
 	@Override
 	public double bet(Game game, double toCall) {
-		noOpponents = game.activePlayers.size();
-		willBetIfAbove = Math.pow(0.75, noOpponents);
+		noOpponents = game.activePlayers.size()-1;
+		willBetIfAbove = Math.pow(0.25, noOpponents);
 		switch (game.state) {
 		case PREFLOP_BETTING:
 			return preFlopBet(game, toCall);
@@ -104,7 +105,7 @@ public class PlayerPhaseII extends AbstractPlayer {
 	 * @return
 	 */
 	private double postFlopBet(Game game, double toCall) {
-		double handStrength = HandStrength.handstrength(getHand(), game.table, game.activePlayers.size());
+		double handStrength = HandStrength.handstrength(getHand(), game.table, noOpponents);
 		if (handStrength * riskAversion < willBetIfAbove) {
 			return -1;
 		} else if (handStrength * riskAversion > (willBetIfAbove + 0.1 * riskAversion)) {
