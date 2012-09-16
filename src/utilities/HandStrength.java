@@ -60,7 +60,7 @@ public class HandStrength {
                 status[compare(holePower, opponentPower)]++;
             }
         }
-        System.out.println(Arrays.toString(status));
+//        System.out.println(Arrays.toString(status));
         return Math.pow((status[0] + (status[1] / 2)) / (status[0] + status[1] + status[2]), opponents);
 //        return 0;
     }
