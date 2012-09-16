@@ -15,7 +15,7 @@ public class PreflopReader {
 		table = new double[2][9][13][13];
 		df = new DecimalFormat();
 		symbols = new DecimalFormatSymbols();
-		symbols.setDecimalSeparator('.');
+		symbols.setDecimalSeparator(',');
 		symbols.setGroupingSeparator(' ');
 		df.setDecimalFormatSymbols(symbols);
 	}

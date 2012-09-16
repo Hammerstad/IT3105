@@ -9,16 +9,17 @@ import poker.Suit;
 public class CardUtilities {
 
     public static int[] classification(Card[] hand) {
+        Card[] copy = Arrays.copyOf(hand, hand.length);
         int[] classification;
-        if ((classification = isStraightFlush(hand)) != null) {
-        } else if ((classification = isFourOfAKind(hand)) != null) {
-        } else if ((classification = isFullHouse(hand)) != null) {
-        } else if ((classification = isFlush(hand)) != null) {
-        } else if ((classification = isStraight(hand)) != null) {
-        } else if ((classification = isThreeOfAKind(hand)) != null) {
-        } else if ((classification = isTwoPairs(hand)) != null) {
-        } else if ((classification = isPair(hand)) != null) {
-        } else if ((classification = isHighCard(hand)) != null) {
+        if ((classification = isStraightFlush(copy)) != null) {
+        } else if ((classification = isFourOfAKind(copy)) != null) {
+        } else if ((classification = isFullHouse(copy)) != null) {
+        } else if ((classification = isFlush(copy)) != null) {
+        } else if ((classification = isStraight(copy)) != null) {
+        } else if ((classification = isThreeOfAKind(copy)) != null) {
+        } else if ((classification = isTwoPairs(copy)) != null) {
+        } else if ((classification = isPair(copy)) != null) {
+        } else if ((classification = isHighCard(copy)) != null) {
         } else {
             classification = new int[6];
         }
