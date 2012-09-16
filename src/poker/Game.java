@@ -42,31 +42,6 @@ public class Game {
 
     }
 
-    public void playRound(int rounds) {
-        for (int i = 0; i < rounds; i++) {
-            deck = new ArrayList<Card>(newDeck);
-            table = new Card[5];
-            activePlayers = new ArrayList<PlayerInterface>(
-                    Arrays.asList(players));
-            setState(GameState.START);
-        }
-    }
-
-    public int playRounds(int rounds) {
-        int won = 0;
-        for (int i = 0; i < rounds; i++) {
-            deck = new ArrayList<Card>(newDeck);
-            table = new Card[5];
-            activePlayers = new ArrayList<PlayerInterface>(
-                    Arrays.asList(players));
-            setState(GameState.START);
-            if (winner == players[0]) {
-                won++;
-            }
-        }
-        return won;
-    }
-
     public int playRoundsSimulate(int rounds, Card[] myCards) {
         out("Starting simulation for " + Arrays.toString(myCards));
         int won = 0;
@@ -79,6 +54,7 @@ public class Game {
             shuffleCards();
             out("Round " + i);
             out("Deck: " + Arrays.toString(deck.toArray()));
+
 
             // Deal all cards, no betting needed
             this.presetHand = myCards;
@@ -99,6 +75,7 @@ public class Game {
                 won++;
             }
         }
+
         out("Won: " + won);
         return won;
     }
@@ -141,8 +118,10 @@ public class Game {
                 // + players[0].getHand()[1].value);
                 // TODO: Decide winner
                 PlayerInterface[] pis = getWinner();
-                double potShare = this.pot/pis.length;
-                for (PlayerInterface pi : pis)pi.receiveMoney(potShare);
+                double potShare = this.pot / pis.length;
+                for (PlayerInterface pi : pis) {
+                    pi.receiveMoney(potShare);
+                }
                 break;
         }
     }
@@ -275,6 +254,8 @@ public class Game {
 //            new Card(11, Suit.DIAMOND)};
 //        Game game = new Game(9, cards);
         Game game = new Game(9);
+
+
     }
 }
 
