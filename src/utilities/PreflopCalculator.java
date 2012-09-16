@@ -10,7 +10,7 @@ import poker.Suit;
 
 public class PreflopCalculator {
 
-    public static int NOFGAMES = 100000;
+    public static int NOFGAMES = 10;
 
     public static void main(String[] args) {
         double[][][][] table = new double[2][9][13][13];
