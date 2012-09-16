@@ -22,7 +22,7 @@ public class PreflopReader {
 
 	public double[][][][] read(String filename) {
 		if (filename.isEmpty()) {
-			filename = "preflop10000.txt";
+			filename = "preflop100000.txt";
 		}
 		try {
 			// Create file
@@ -71,10 +71,12 @@ public class PreflopReader {
 	}
 
 	public static void main(String[] args) {
-		// For testing purposes, checks how screwed up our table is (if unsuited
-		// is better than suited).
+		// For testing purposes, checks how screwed up our table is (if unsuited is better than suited).
 		PreflopReader pr = new PreflopReader();
 		double[][][][] temp = pr.read("");
-		checkDifference(temp);
+		PreflopMirrorer pm = new PreflopMirrorer();
+		double[][][][] mirrored = pm.mirror(temp);
+		new PreflopWriter(mirrored);
+		// checkDifference(temp);
 	}
 }
