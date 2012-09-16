@@ -26,14 +26,14 @@ public class PlayerPhaseI extends PlayerInterface {
                 || state.state == GameState.FINAL_BETTING) {
             return postFlopBetting(state, toCall);
         } else if (state.state == GameState.PREFLOP_BETTING) {
-            if (Math.random() > 0.0) {
+            if (Math.random() > 0.3) {
 //                System.out.println("PreFlopBetting: "+state.blinds);
                 this.money -= toCall;
                 state.pot += toCall;
                 return toCall;
             } else {
 //                System.out.println("PreFlopBetting: Fold");
-                state.foldingPlayers.add(this);
+//                state.foldingPlayers.add(this);
                 this.folds[0]++;
                 return -1;
             }
@@ -64,7 +64,7 @@ public class PlayerPhaseI extends PlayerInterface {
             //fold
 //            System.out.println("Bettings: Folds");
 //            System.out.println("FOLDING: "+d);
-            state.foldingPlayers.add(this);
+//            state.foldingPlayers.add(this);
             this.folds[1]++;
             return -1;
         }
