@@ -10,9 +10,9 @@ import utilities.PreflopReader;
 public class PlayerPhaseII extends AbstractPlayer {
 
 	static double[][][][] preflopTable; // The preflop table
-	int noOpponents; // How many opponents left
-	double willBetIfAbove; // Will bet if above this (lower value for higher number of players)
-	double riskAversion = 1.000; // How greedy/risky is the player
+	private int noOpponents; // How many opponents left
+	private double willBetIfAbove; // Will bet if above this (lower value for higher number of players)
+	private double riskAversion = 1.000; // How greedy/risky is the player
 
 	/**
 	 * Default Phase 2 player.
@@ -58,14 +58,17 @@ public class PlayerPhaseII extends AbstractPlayer {
 
 	/**
 	 * Bet function for the player. Returns how much he wants to bet.
-	 * @param game - the game, and its state
-	 * @param toCall - how much you need to raise to match the pot
+	 * 
+	 * @param game
+	 *            - the game, and its state
+	 * @param toCall
+	 *            - how much you need to raise to match the pot
 	 * @return -1 (FOLD) / 0 (CHECK) / double (RAISE)
 	 */
 	@Override
 	public double bet(Game game, double toCall) {
-		noOpponents = game.activePlayers.size()-1;
-		willBetIfAbove = Math.pow(0.30, noOpponents);
+		noOpponents = game.activePlayers.size() - 1;
+		willBetIfAbove = Math.pow(0.35, noOpponents);
 		switch (game.state) {
 		case PREFLOP_BETTING:
 			return preFlopBet(game, toCall);
@@ -82,15 +85,17 @@ public class PlayerPhaseII extends AbstractPlayer {
 
 	/**
 	 * Internal function for betting, uses preflop calculations.
-	 * @param game - the game, and its state
-	 * @param toCall - how much you need to raise to match the pot
+	 * 
+	 * @param game
+	 *            - the game, and its state
+	 * @param toCall
+	 *            - how much you need to raise to match the pot
 	 * @return bet
 	 */
 	private double preFlopBet(Game game, double toCall) {
 		// Do something based on preflop table
 		int suitedCards = (hand[0].suit == hand[1].suit) ? 1 : 0; // Check if cards are suited
-		double preflopCalculation = preflopTable[suitedCards][noOpponents][hand[0].value-2][hand[1].value-2]; // Get preflop chances
-
+		double preflopCalculation = preflopTable[suitedCards][noOpponents][hand[0].value - 2][hand[1].value - 2]; // Get preflop chances
 		if (preflopCalculation * riskAversion < willBetIfAbove) {
 			return foldBeforeFlop();
 		} else if (preflopCalculation * riskAversion > (willBetIfAbove + 0.1 * riskAversion)) {
@@ -101,9 +106,12 @@ public class PlayerPhaseII extends AbstractPlayer {
 	}
 
 	/**
-	 * Internal function for betting, uses hand strength calculations.
+	 * Internal function for betting after the flop, uses hand strength calculations.
+	 * 
 	 * @param game
+	 *            - the state of the game
 	 * @param toCall
+	 *            - how much you need to raise to match the pot
 	 * @return
 	 */
 	private double postFlopBet(Game game, double toCall) {
