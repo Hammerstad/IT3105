@@ -11,7 +11,7 @@ import utilities.PreflopReader;
  */
 public class PlayerPhaseII extends AbstractPlayer {
 
-    static double[][][][] preflopTable; // The preflop table
+    static final double[][][][] preflopTable = new PreflopReader().read(""); // The preflop table
     private int noOpponents; // How many opponents left
     private double willBetIfAbove; // Will bet if above this (lower value for higher number of players)
     private double riskAversion = 1.000; // How greedy/risky is the player
@@ -32,9 +32,6 @@ public class PlayerPhaseII extends AbstractPlayer {
     public PlayerPhaseII() {
         super();
         this.name = "Phase II Player " + NO;
-        if (preflopTable == null) {
-            preflopTable = new PreflopReader().read("");
-        }
         this.personality = PlayerPersonality.getRandom();
         setRiskAversion();
     }
@@ -93,10 +90,13 @@ public class PlayerPhaseII extends AbstractPlayer {
         int suitedCards = (hand[0].suit == hand[1].suit) ? 1 : 0; // Check if cards are suited
         double preflopCalculation = preflopTable[suitedCards][noOpponents][hand[0].value - 2][hand[1].value - 2]; // Get preflop chances
         if (preflopCalculation * riskAversion < willBetIfAbove) {
+            Game.out.writeLine("		"+name+" folds, "+Arrays.toString(getHand())+" PreflopCalc: "+preflopCalculation);
             return foldBeforeFlop();
         } else if (preflopCalculation * riskAversion > (willBetIfAbove + (1 / 0.1 * riskAversion))) {
+            Game.out.writeLine("		"+name+" raises "+(toCall + game.blinds * riskAversion)+", "+Arrays.toString(getHand())+" PreflopCalc: "+preflopCalculation);
             return toCall + game.blinds * riskAversion;
         } else {
+            Game.out.writeLine("		"+name+" calls "+toCall+", "+Arrays.toString(getHand())+" PreflopCalc: "+preflopCalculation);
             return toCall;
         }
     }
@@ -112,10 +112,13 @@ public class PlayerPhaseII extends AbstractPlayer {
     private double postFlopBet(Game game, double toCall) {
         double handStrength = HandStrength.handstrength(getHand(), game.table, noOpponents);
         if (handStrength * riskAversion < willBetIfAbove) {
+            Game.out.writeLine("		"+name+" folds, "+Arrays.toString(getHand())+" Handstrengt: "+handStrength);
             return foldAfterFlop();
         } else if (handStrength * riskAversion > (willBetIfAbove + 1 / 0.1 * riskAversion)) {
+            Game.out.writeLine("		"+name+" raises "+(toCall + game.blinds * riskAversion)+", "+Arrays.toString(getHand())+" Handstrengt: "+handStrength);
             return toCall + game.blinds * riskAversion;
         } else {
+            Game.out.writeLine("		"+name+" calls "+toCall+", "+Arrays.toString(getHand())+" Handstrengt: "+handStrength);
             return toCall;
         }
     }

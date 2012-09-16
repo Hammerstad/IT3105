@@ -44,6 +44,7 @@ public class Game {
     }
 
     void bet(GameState current, GameState next) {
+        out.writeLine("	Betting: "+current);
         List<AbstractPlayer> foldingPlayers = new LinkedList<AbstractPlayer>();
         raises = 0;
         for (int i = 0; i < maxReRaises; i++) {
