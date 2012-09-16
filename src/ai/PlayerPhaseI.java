@@ -42,7 +42,7 @@ public class PlayerPhaseI extends PlayerInterface {
     }
 
     private double postFlopBetting(Game state, double toCall) {
-        double d = HandStrength.handstrength(hand, state.table, state.activePlayers.size())*(state.activePlayers.size()-1);
+        double d = HandStrength.handstrength(hand, state.table, state.activePlayers.size()) * (state.activePlayers.size() - 1);
 
         if (d >= this.riskAversion || (state.activePlayers.size() - state.foldingPlayers.size()) == 1) {
             //Bet
@@ -50,10 +50,10 @@ public class PlayerPhaseI extends PlayerInterface {
             if (d > 0.8) {
                 //raise
 //                System.out.println("Raise");
-                state.addToCall(2*toCall);
-                this.money -= 3*toCall;
-                state.pot += 3*toCall;
-                return 3*toCall;
+                state.addToCall(2 * state.blinds);
+                this.money -= toCall + 2 * state.blinds;
+                state.pot += toCall + 2 * state.blinds;
+                return toCall+2*state.blinds;
             } else {
                 this.money -= toCall;
                 state.pot += toCall;

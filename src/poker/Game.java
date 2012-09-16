@@ -153,31 +153,50 @@ public class Game {
 
     void bet(GameState current, GameState next) {
 //        System.out.println("Bettings. " + Arrays.toString(toCall));
-        System.out.println("Rounds: " + current);
+//        System.out.println("Rounds: " + current);
         for (int i = 0; i < maxReRaises; i++) {
-            System.out.println("ActivePlayers: "+activePlayers.size());
+//            System.out.println("ActivePlayers: "+activePlayers.size());
             for (int pl = 0; pl < activePlayers.size(); pl++) {
-                System.out.println("Bettings. " + Arrays.toString(toCall));
+//                System.out.println("Bettings. " + Arrays.toString(toCall));
                 PlayerInterface pi = activePlayers.get(pl);
-                if (toCall[pl] == 0) {
+                int plIndex = -1;
+                for (int j = 0;j < players.length;j++){
+                    if (pi == players[j]){
+                        plIndex = j;
+                        break;
+                    }
+                }
+                
+                if (toCall[plIndex] == 0) {
                     continue;
                 }
-                double d = pi.bet(this, toCall[pl]);
+                double d = pi.bet(this, toCall[plIndex]);
                 if (d < 0) {
 //                    System.out.println("Fold, or error: " + d);
-                    System.out.println("Player "+activePlayers.get(pl) +" folded");
-                    foldingPlayers.add(players[pl]);
+//                    System.out.println("Player "+activePlayers.get(pl) +" folded");
+                    foldingPlayers.add(players[plIndex]);
                 } else {
-                    System.out.println("Player "+activePlayers.get(pl)+" tossed "+d+" into the pot");
-                    toCall[pl] -= d;
+//                    System.out.println("Player "+activePlayers.get(pl)+" tossed "+d+" into the pot");
+                    toCall[plIndex] -= d;
                 }
 //                System.out.println("RaisCeing: " + Arrays.toString(toCall));
             }
-            activePlayers.removeAll(this.foldingPlayers);
-            this.foldingPlayers.clear();
-            System.out.println("Active players left: "+activePlayers.size());
+            int act = activePlayers.size() - foldingPlayers.size();
+//            activePlayers.removeAll(this.foldingPlayers);
+//            this.foldingPlayers.clear();
+//            System.out.println("ActivePlayers: "+Arrays.toString(activePlayers.toArray()));
+//            System.out.println("FoldingPlayers: "+Arrays.toString(foldingPlayers.toArray()));
+            for (PlayerInterface pi : foldingPlayers){
+//                System.out.println("Removing "+pi);
+                activePlayers.remove(pi);
+            }
+            this.foldingPlayers = new LinkedList<PlayerInterface>();
+            if (act != activePlayers.size()){
+                System.out.println("ASIASFJOASJFOIJSAF; I HATE LssssssssssssssssssssssssssssssssssssssssssssssssssssssssSITSSSSSS");
+            }
+//            System.out.println("Active players left: "+activePlayers.size());
             if (this.activePlayers.size() == 1) {
-                System.out.println("WiCnner: " + this.activePlayers.get(0) + " of " + pot);
+//                System.out.println("WiCnner: " + this.activePlayers.get(0) + " of " + pot);
 //                this.activePlayers.get(0).receiveMoney(pot);
 //                this.activePlayers.get(0).wins++;
 //                pot = 0;dealingPlayer++;
@@ -322,7 +341,7 @@ public class Game {
 //            new Card(11, Suit.DIAMOND)};
 //        Game game = new Game(9, cards);
         Game game = new Game(5);
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 10; i++) {
             game.setState(GameState.START);
         }
         int i = 1;
