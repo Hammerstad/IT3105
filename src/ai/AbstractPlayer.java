@@ -18,7 +18,7 @@ public abstract class AbstractPlayer {
 	public AbstractPlayer() {
 		this.hand = new Card[2];
 		this.folds = new int[2];
-		this.name = "PHASEIBOT" + (NO++);
+		this.name = "PHASE-I-BOT " + (NO++);
 	}
 
 	/**

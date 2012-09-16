@@ -1,5 +1,6 @@
 package ai;
 
+import java.util.Arrays;
 import poker.Game;
 import poker.GameState;
 import utilities.HandStrength;
@@ -88,4 +89,12 @@ public class PlayerPhaseI extends AbstractPlayer {
 			return foldAfterFlop();
 		}
 	}
+        @Override
+        public String toString() {
+            StringBuilder sb = new StringBuilder();
+            sb.append(super.toString()).append(" ");
+            sb.append("RiskAversion: "+riskAversion).append(" ");
+            sb.append("Cards: "+Arrays.toString(getHand()));
+            return sb.toString();
+        }
 }
