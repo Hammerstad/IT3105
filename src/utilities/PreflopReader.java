@@ -34,13 +34,14 @@ public class PreflopReader {
 						temp = br.readLine();
 						tempToArray = temp.split(" ");
 						for (int b = 1; b < 14; b++) {
-							table[j][players - 2][a - 1][b - 1] = df.parse(tempToArray[b - 1]).doubleValue();
+							table[j][players - 2][a - 1][b - 1] = df.parse(
+									tempToArray[b - 1]).doubleValue();
 						}
 					}
 					br.readLine();
 				}
 			}
-			// Close the input stream
+			// Close the input streams
 			br.close();
 			fis.close();
 		} catch (Exception e) {
@@ -51,21 +52,25 @@ public class PreflopReader {
 		return table;
 	}
 
-	public static void main(String[] args) {
-		PreflopReader pr = new PreflopReader();
-		double[][][][] temp = pr.read();
-		//How many unsigned are better than signed?
+	public static void checkDifference(double[][][][] temp) {
+		// How many unsigned are better than signed?
 		int better = 0;
-		for(int j = 2; j < 11; j++){
-			for(int a = 1; a < 14; a++){
-				for(int b = 1; b < 14; b++){
-					if(temp[0][j-2][a-1][b-1]>temp[1][j-2][a-1][b-1]){
+		for (int j = 2; j < 11; j++) {
+			for (int a = 1; a < 14; a++) {
+				for (int b = 1; b < 14; b++) {
+					if (temp[0][j - 2][a - 1][b - 1] > temp[1][j - 2][a - 1][b - 1]) {
 						better++;
-						System.out.println(a+"-"+b);
+						System.out.println(a + "-" + b);
 					}
 				}
 			}
 		}
 		System.out.println(better);
+	}
+
+	public static void main(String[] args) {
+		PreflopReader pr = new PreflopReader();
+		double[][][][] temp = pr.read();
+		checkDifference(temp);
 	}
 }

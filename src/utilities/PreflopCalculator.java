@@ -3,7 +3,6 @@ package utilities;
 import java.io.DataOutputStream;
 import java.io.FileOutputStream;
 import java.text.DecimalFormat;
-import java.util.Arrays;
 
 import poker.Card;
 import poker.Game;
@@ -17,15 +16,15 @@ public class PreflopCalculator {
         double[][][][] table = new double[2][9][13][13];
         int won = 0;
         for (int players = 2; players < 3; players++) {
-            for (int i = 1; i < 14; i++) {
-                for (int j = 1; j <= i; j++) {
+            for (int i = 2; i < 15; i++) {
+                for (int j = 2; j <= i; j++) {
                     // TODO: 1000-100000 simulations of this card, how often
                     // Unsuited
                     Card[] cards = new Card[]{new Card(i, Suit.DIAMOND),
                         new Card(j, Suit.CLUB)};
                     Game game = new Game(players, cards);
                     won = game.playRoundsSimulate(NOFGAMES, cards);
-                    table[0][players - 2][i - 1][j - 1] = won / (NOFGAMES*1.);
+                    table[0][players - 2][i - 2][j - 2] = won / (NOFGAMES*1.);
 //                    System.out.println("Cards calculated: " + Arrays.toString(cards) + " Winrate: " + (won / (NOFGAMES*1.)));
                     // Suited
                     if (i == j) {
@@ -37,7 +36,7 @@ public class PreflopCalculator {
                         new Card(j, Suit.DIAMOND)};
                     game = new Game(players, cards);
                     won = game.playRoundsSimulate(NOFGAMES, cards);
-                    table[1][players - 2][i - 1][j - 1] = won / (NOFGAMES*1.);
+                    table[1][players - 2][i - 2][j - 2] = won / (NOFGAMES*1.);
 //                    System.out.println("Cards calculated: " + Arrays.toString(cards) + " Winrate: " + (won / (NOFGAMES*1.)));
                 }
             }
