@@ -36,5 +36,5 @@ public abstract class PlayerInterface {
 //        System.out.println("Taking money: "+money);
         this.money-=money;
     }
-    public abstract void bet(Game state);
+    public abstract double bet(Game state, double toCall);
 }
