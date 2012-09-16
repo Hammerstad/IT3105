@@ -95,6 +95,7 @@ public class PreflopCalculator {
 	}
 
 	public static void main(String[] args) {
+		//Generates a preflop table and writes to disk
 		PreflopCalculator calculator = new PreflopCalculator();
 		calculator.calculatePreflopTable(10);
 	}

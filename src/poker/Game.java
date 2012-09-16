@@ -271,9 +271,4 @@ public class Game {
         SB.takeMoney(blinds);
         pot+=3*blinds;
     }
-
-    public enum GameState {
-
-        START, PREFLOP_BETTING, FLOP, PRETURN_BETTING, TURN, PRERIVER_BETTING, RIVER, FINAL_BETTING, SHOWDOWN;
-    }
 }
