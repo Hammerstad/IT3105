@@ -49,6 +49,9 @@ public class Game {
 			deck = new ArrayList<Card>(newDeck);
 			table = new Card[5];
 			activePlayers = new ArrayList<AbstractPlayer>(Arrays.asList(players));
+			for(AbstractPlayer player : activePlayers){
+				player.resetHand();
+			}
 			Arrays.fill(toCall, 2 * blinds);
 			shuffleCards();
 			takeBlinds();

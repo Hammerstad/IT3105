@@ -20,18 +20,16 @@ public class PlayerPhaseII extends AbstractPlayer {
 	 * @param personality
 	 */
 	public PlayerPhaseII(PlayerPersonality personality) {
-		if (preflopTable == null) {
-			PreflopReader pr = new PreflopReader();
-			preflopTable = pr.read("");
-		}
+		this();
 		this.personality = personality;
-		setRiskAversion();
 	}
 
 	/**
 	 * Default Phase 2 player. Gets a random personality.
 	 */
 	public PlayerPhaseII() {
+		super();
+		this.name = "Phase II Player "+NO;
 		if (preflopTable == null) {
 			preflopTable = new PreflopReader().read("");
 		}
@@ -51,7 +49,7 @@ public class PlayerPhaseII extends AbstractPlayer {
 			riskAversion = 1.000;
 			break;
 		case RISKFUL:
-			riskAversion = 1.100;
+			riskAversion = 0.900;
 			break;
 		}
 	}
@@ -68,7 +66,7 @@ public class PlayerPhaseII extends AbstractPlayer {
 	@Override
 	public double bet(Game game, double toCall) {
 		noOpponents = game.activePlayers.size() - 1;
-		willBetIfAbove = Math.pow(0.35, noOpponents);
+		willBetIfAbove = Math.pow(0.15, noOpponents);
 		switch (game.state) {
 		case PREFLOP_BETTING:
 			return preFlopBet(game, toCall);
@@ -98,7 +96,7 @@ public class PlayerPhaseII extends AbstractPlayer {
 		double preflopCalculation = preflopTable[suitedCards][noOpponents][hand[0].value - 2][hand[1].value - 2]; // Get preflop chances
 		if (preflopCalculation * riskAversion < willBetIfAbove) {
 			return foldBeforeFlop();
-		} else if (preflopCalculation * riskAversion > (willBetIfAbove + 0.1 * riskAversion)) {
+		} else if (preflopCalculation * riskAversion > (willBetIfAbove + (1/0.1 * riskAversion))) {
 			return toCall + game.blinds * riskAversion;
 		} else {
 			return toCall;
@@ -118,7 +116,7 @@ public class PlayerPhaseII extends AbstractPlayer {
 		double handStrength = HandStrength.handstrength(getHand(), game.table, noOpponents);
 		if (handStrength * riskAversion < willBetIfAbove) {
 			return foldAfterFlop();
-		} else if (handStrength * riskAversion > (willBetIfAbove + 0.1 * riskAversion)) {
+		} else if (handStrength * riskAversion > (willBetIfAbove + 1/ 0.1 * riskAversion)) {
 			return toCall + game.blinds * riskAversion;
 		} else {
 			return toCall;

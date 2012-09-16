@@ -9,15 +9,17 @@ public class PlayerPhaseI extends AbstractPlayer {
 	private double riskAversion;
 
 	public PlayerPhaseI(PlayerPersonality personality) {
+		this();
 		this.personality = personality;
-		setRiskAversion();
 	}
 
 	/**
 	 * Default Phase 2 player. Gets a random personality.
 	 */
 	public PlayerPhaseI() {
+		super();
 		this.personality = PlayerPersonality.getRandom();
+		this.name = "Phase I Player "+NO;
 		setRiskAversion();
 	}
 
