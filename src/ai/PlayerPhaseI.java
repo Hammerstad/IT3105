@@ -93,7 +93,7 @@ public class PlayerPhaseI extends AbstractPlayer {
      */
     private double postFlopBetting(Game game, double toCall) {
         double handStrength = HandStrength.handstrength(getHand(), game.table.table, noOpponents);
-        if (handStrength * riskAversion < willBetIfAbove) {
+        if (handStrength * riskAversion < willBetIfAbove && toCall > 0) {
             Game.out.writeLine("		" + name + " folds, " + Arrays.toString(getHand()) + " Handstrengt: " + handStrength);
             return foldAfterFlop();
         } else if (handStrength * riskAversion > (willBetIfAbove + 0.1 / riskAversion)) {
