@@ -122,21 +122,43 @@ public class Table {
 	 * allowed.
 	 */
 	public void checkRemainingPlayers(GameState state) {
-		List<AbstractPlayer> foldingPlayers = new ArrayList<AbstractPlayer>();
-		for (AbstractPlayer player : activePlayers) {
-			int playerId = player.getPlayerId();
-			if (remainingToMatchPot[playerId] != 0) {
-				double bet = player.bet(this, state);
-				if (bet < 0) {// This means a fold
-					foldingPlayers.add(player);
-				} else {// Player wants to raise or call, we won't allow raising so...
-					pot += remainingToMatchPot[playerId];
-					currentBetForPlayers[playerId] += remainingToMatchPot[playerId];
-					remainingToMatchPot[playerId] = 0;
-				}
-			}
-		}
-	}
+        List<AbstractPlayer> foldingPlayers = new ArrayList<AbstractPlayer>();
+        for (AbstractPlayer player : activePlayers) {
+            int playerId = player.getPlayerId();
+            if (remainingToMatchPot[playerId] != 0) {
+                double bet = player.bet(this, state);
+                if (bet < 0) {// This means a fold
+                    foldingPlayers.add(player);
+                } else {// Player wants to raise or call, we won't allow raising so...
+                    pot += remainingToMatchPot[playerId];
+                    currentBetForPlayers[playerId] += remainingToMatchPot[playerId];
+                    remainingToMatchPot[playerId] = 0;
+                }
+            }
+        }
+        for (AbstractPlayer player : foldingPlayers) {
+            activePlayers.remove(player);
+        }
+    }
+
+    public AbstractPlayer nextActivePlayer(AbstractPlayer player) {
+        int positionInPlayers = -1;
+        for (int i = 0; i < players.length; i++) {
+            if (players[i] == player) {
+                positionInPlayers = i;
+                break;
+            }
+        }
+//        System.out.println("Current: "+player);
+//        System.out.println("Players: "+Arrays.toString(players));
+//        System.out.println("Active: "+Arrays.toString(activePlayers.toArray()));
+        for (int i = 1; i < players.length; i++) {
+            if (activePlayers.contains(players[(positionInPlayers + i) % players.length])) {
+                return players[(positionInPlayers + i) % players.length];
+            }
+        }
+        return null;
+    }
 	public String toString(){
 		StringBuilder sb = new StringBuilder();
 		for(Card card : table){
