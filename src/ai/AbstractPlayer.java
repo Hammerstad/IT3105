@@ -1,9 +1,12 @@
 package ai;
 
-import java.util.Arrays;
 import poker.Card;
 import poker.Game;
 
+/**
+ * The abstract player. Makes sure Phase I/II/III players have some similarities. This class remembers the amount of currently active bots,
+ * the name of bots, the hands of the bots, the money of the bots, their personalities, and an id, as well as some statistics for wins/folds.
+ */
 public abstract class AbstractPlayer {
 
     protected static int NO = 0; // Number of player
