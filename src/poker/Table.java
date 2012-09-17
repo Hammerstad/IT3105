@@ -6,7 +6,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import utilities.DataOutput;
-
 import ai.AbstractPlayer;
 
 /**
@@ -107,6 +106,7 @@ public class Table {
 
 	/**
 	 * Returns the index of all active players.
+	 * 
 	 * @return List of integers
 	 */
 	public List<Integer> getIndexOfActivePlayers() {
@@ -115,5 +115,26 @@ public class Table {
 			possiblePlayers.add(i);
 		}
 		return possiblePlayers;
+	}
+
+	/**
+	 * Method which should be called at the end of the round. Asks all the players if they want to call the current top-bet. No raising
+	 * allowed.
+	 */
+	public void checkRemainingPlayers(GameState state) {
+		List<AbstractPlayer> foldingPlayers = new ArrayList<AbstractPlayer>();
+		for (AbstractPlayer player : activePlayers) {
+			int playerId = player.getPlayerId();
+			if (remainingToMatchPot[playerId] != 0) {
+				double bet = player.bet(this, state);
+				if (bet < 0) {// This means a fold
+					foldingPlayers.add(player);
+				} else {// Player wants to raise or call, we won't allow raising so...
+					pot += remainingToMatchPot[playerId];
+					currentBetForPlayers[playerId] += remainingToMatchPot[playerId];
+					remainingToMatchPot[playerId] = 0;
+				}
+			}
+		}
 	}
 }

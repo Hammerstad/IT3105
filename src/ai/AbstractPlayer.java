@@ -13,7 +13,7 @@ public abstract class AbstractPlayer {
     protected static int NO = 0; // Number of player
     protected String name; // Name of the player
     protected Card[] hand; // The hand of the player
-    public double money; // How much money the player has
+    private double money; // How much money the player has
     public int wins; // Amount of times the player has won
     public int[] folds; // Information about folding
     protected PlayerPersonality personality; //Which personality the player has
@@ -82,6 +82,14 @@ public abstract class AbstractPlayer {
      */
     public void takeMoney(double money) {
         this.money -= money;
+    }
+    
+    /**
+     * Get function for money
+     * @return money - this player's money
+     */
+    public double getMoney(){
+    	return this.money;
     }
 
     /**

@@ -106,12 +106,10 @@ public class Game {
 			}
 			// Remove folding players from active players
 			for (AbstractPlayer foldingPlayer : foldingPlayers) {
-				out.writeLine("removing folding player" + foldingPlayer.getPlayerId());
 				table.activePlayers.remove(foldingPlayer);
 			}
 			// If only one player remains, go to showdown
 			if (table.activePlayers.size() == 1) {
-				out.writeLine("only one left");
 				setState(GameState.SHOWDOWN);
 				return;
 			}
@@ -121,6 +119,10 @@ public class Game {
 					continue;
 				setState(next);
 				return;
+			}
+			if (i == maxReRaises - 1) {
+				// This means that not all players have checked the final bet, do they want to?
+				table.checkRemainingPlayers(current);
 			}
 		}
 		// Time to go to the next phase of the game
@@ -172,11 +174,16 @@ public class Game {
 			bet(GameState.FINAL_BETTING, GameState.SHOWDOWN);
 			break;
 		case SHOWDOWN:
+			// Give winners their money
 			AbstractPlayer[] winners = getWinner();
 			double potShare = table.pot / winners.length;
 			for (AbstractPlayer winner : winners) {
 				winner.receiveMoney(potShare);
 				winner.wins++;
+			}
+			// Withdraw whatever the players played for
+			for(AbstractPlayer player : table.players){
+				player.takeMoney(table.currentBetForPlayers[player.getPlayerId()]);
 			}
 			history.pushToOpponentModeler();
 			break;
@@ -218,7 +225,7 @@ public class Game {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		int NOF_GAMES = 100;
+		int NOF_GAMES = 1000;
 		int NOF_PLAYERS = 6;
 		Game game = new Game(NOF_PLAYERS);
 		out.writeLine("Creating new game, players: " + NOF_PLAYERS + " Rounds: " + NOF_GAMES);
@@ -227,7 +234,7 @@ public class Game {
 		}
 		int i = 1;
 		for (AbstractPlayer pi : game.table.players) {
-			out.writeLine("Player " + (i++) + ": " + pi.money + " Wins: " + pi.wins + " Folds: " + Arrays.toString(pi.folds));
+			out.writeLine("Player " + (i++) + ": " + pi.getMoney() + " Wins: " + pi.wins + " Folds: " + Arrays.toString(pi.folds));
 		}
 		DataOutput.close();
 	}
