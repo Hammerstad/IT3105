@@ -65,77 +65,71 @@ public class Game {
 	/*
 	 * IMPORTANT GAME FUNCTIONS
 	 */
-	
+
 	/**
 	 * Checks who wins the game
 	 * 
 	 * @return AbstractPlayer[] - list of winners. Yes, more than one can win (that's a draw).
 	 */
 	public AbstractPlayer[] getWinner() {
+		if (table.activePlayers.size() == 1)
+			return new AbstractPlayer[] { table.activePlayers.get(0) };
 		int[][] allPlayersHands = classifyAllPlayersHands();
 		List<Integer> indexOfActivePlayers = table.getIndexOfActivePlayers();
 		List<Integer> indexOfWinners = GameUtils.decideTheIndexOfWinningPlayers(indexOfActivePlayers, allPlayersHands);
 		return table.returnPlayersOfIndex(indexOfWinners);
 	}
 
-	void bet(GameState current, GameState next) {
+	/**
+	 * Betting function of the game. Sends the game state to the next state after done.
+	 * @param current - current game state.
+	 * @param next - next game state.
+	 */
+	public void bet(GameState current, GameState next) {
 		out.writeLine("	Betting: " + current);
-		List<AbstractPlayer> foldingPlayers = new LinkedList<AbstractPlayer>();
-		table.amountOfRaisesThisRound = 0;
 		for (int i = 0; i < maxReRaises; i++) {
-			for (int pl = 0; pl < table.activePlayers.size(); pl++) {
-				AbstractPlayer pi = table.activePlayers.get(pl);
-				int plIndex = -1;
-				for (int j = 0; j < table.players.length; j++) {
-					if (pi == table.players[j]) {
-						plIndex = j;
-						break;
+			List<AbstractPlayer> foldingPlayers = new ArrayList<AbstractPlayer>();
+			// Iterate through the players and see what they decide to do
+			for (AbstractPlayer player : table.activePlayers) {
+				int id = player.getPlayerId();
+				double bet = player.bet(this, table.remainingToMatchPot[id]);
+				if (bet < 0) { // THIS MEANS FOLD
+					foldingPlayers.add(player);
+				} else { // RAISE AND CALLING
+					if (bet > table.remainingToMatchPot[id]) { // THIS IS ONLY FOR RAISE
+						table.raiseRemainingToMatchPot(bet - table.remainingToMatchPot[id]);
 					}
-				}
-				double d = pi.bet(this, table.remainingToMatchPot[plIndex]);
-				if (d < 0) {
-					history.addHistoryEntry(Context.createContext(plIndex, state, table.amountOfRaisesThisRound, table.activePlayers.size(),
-							table.currentBetForPlayers[plIndex] / (table.currentBetForPlayers[plIndex] + table.pot * 1.0), Context.Action.FOLD,
-							HandStrength.handstrength(pi.getHand(), table.table, table.activePlayers.size())));
-					foldingPlayers.add(table.players[plIndex]);
-				} else {
-					table.currentBetForPlayers[plIndex] += d;
-					if (d > table.remainingToMatchPot[plIndex]) {
-						history.addHistoryEntry(Context.createContext(plIndex, state, table.amountOfRaisesThisRound, table.activePlayers.size(),
-								table.currentBetForPlayers[plIndex] / (table.currentBetForPlayers[plIndex] + table.pot * 1.0), Context.Action.RAISE,
-								HandStrength.handstrength(pi.getHand(), table.table, table.activePlayers.size())));
-						table.raisePot(d - table.remainingToMatchPot[plIndex]);
-						table.amountOfRaisesThisRound++;
-					} else {
-						history.addHistoryEntry(Context.createContext(plIndex, state, table.amountOfRaisesThisRound, table.activePlayers.size(),
-								table.currentBetForPlayers[plIndex] / (table.currentBetForPlayers[plIndex] + table.pot * 1.0), Context.Action.CALL,
-								HandStrength.handstrength(pi.getHand(), table.table, table.activePlayers.size())));
-					}
-					table.remainingToMatchPot[plIndex] -= d;
+					table.pot += bet;
+					table.remainingToMatchPot[id] -= bet;
+					table.currentBetForPlayers[id] += bet;
 				}
 			}
-			for (AbstractPlayer pi : foldingPlayers) {
-				table.activePlayers.remove(pi);
+			// Remove folding players from active players
+			for (AbstractPlayer foldingPlayer : foldingPlayers) {
+				table.activePlayers.remove(foldingPlayer);
 			}
-			foldingPlayers = new LinkedList<AbstractPlayer>();
-			if (this.table.activePlayers.size() == 1) {
+			// If only one player remains, go to showdown
+			if (table.activePlayers.size() == 1) {
 				setState(GameState.SHOWDOWN);
 				return;
 			}
-			int sum = 0;
-			for (int pl = 0; pl < table.players.length; pl++) {
-				if (!table.activePlayers.contains(table.players[pl])) {
+			// Check if all players have called each other
+			for (double sum : table.remainingToMatchPot) {
+				if (sum != 0)
 					continue;
-				}
-				sum += table.remainingToMatchPot[pl];
-			}
-			if (sum == 0) {
-				break;
+				return;
 			}
 		}
+		// Time to go to the next phase of the game
 		setState(next);
 	}
 
+	/**
+	 * The main function of the game. Changes the state of the game and makes sure everything is played according to poker rules.
+	 * 
+	 * @param state
+	 *            - which state to change to.
+	 */
 	private void setState(GameState state) {
 		this.state = state;
 		switch (state) {
@@ -175,21 +169,13 @@ public class Game {
 			bet(GameState.FINAL_BETTING, GameState.SHOWDOWN);
 			break;
 		case SHOWDOWN:
-			AbstractPlayer[] pis;
-			if (table.activePlayers.size() != 1) {
-				pis = getWinner();
-			} else {
-				pis = new AbstractPlayer[] { table.activePlayers.get(0) };
+			AbstractPlayer[] winners = getWinner();
+			double potShare = table.pot / winners.length;
+			for (AbstractPlayer winner : winners) {
+				winner.receiveMoney(potShare);
+				winner.wins++;
 			}
-			double potShare = table.pot / pis.length;
-			for (AbstractPlayer pi : pis) {
-				pi.receiveMoney(potShare);
-				pi.wins++;
-			}
-			// out("Pot size: "+pot);
 			history.pushToOpponentModeler();
-			table.pot = 0;
-			table.dealingPlayer++;
 			break;
 		}
 	}
@@ -197,7 +183,7 @@ public class Game {
 	/*
 	 * AUXILIARY FUNCTIONS
 	 */
-	
+
 	/**
 	 * Classifies all the active players' hands.
 	 * 
@@ -220,9 +206,9 @@ public class Game {
 	}
 
 	/*
-	 * MAIN FUNCTION 
+	 * MAIN FUNCTION
 	 */
-	
+
 	/**
 	 * Main function, currently for testing that everything works.
 	 * 
