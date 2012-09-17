@@ -18,18 +18,17 @@ public class PlayerPhaseI extends AbstractPlayer {
     protected double willBetIfAbove; // Will bet if above this (lower value for higher number of players)
 
     public PlayerPhaseI(PlayerPersonality personality) {
-        this();
+        super();
         this.personality = personality;
+        this.name = "Phase I Player " + NO;
+        setRiskAversion();
     }
 
     /**
      * Default Phase 2 player. Gets a random personality.
      */
     public PlayerPhaseI() {
-        super();
-        this.personality = PlayerPersonality.getRandom();
-        this.name = "Phase I Player " + NO;
-        setRiskAversion();
+        this(PlayerPersonality.getRandom());
     }
 
     /**
