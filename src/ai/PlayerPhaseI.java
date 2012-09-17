@@ -1,8 +1,10 @@
 package ai;
 
 import java.util.Arrays;
+
 import poker.Game;
 import poker.GameState;
+import poker.Table;
 import utilities.HandStrength;
 
 /**
@@ -54,13 +56,13 @@ public class PlayerPhaseI extends AbstractPlayer {
      * @return -1 (FOLD) / 0 (CHECK) / double (RAISE)
      */
     @Override
-    public double bet(Game game, double toCall) {
-        noOpponents = game.table.activePlayers.size() - 1;
+    public double bet(Table table, GameState state) {
+        noOpponents = table.activePlayers.size() - 1;
         willBetIfAbove = Math.pow(0.15, noOpponents);
-        if (game.state == GameState.PRETURN_BETTING || game.state == GameState.PRERIVER_BETTING || game.state == GameState.FINAL_BETTING) {
-            return postFlopBetting(game, toCall);
-        } else if (game.state == GameState.PREFLOP_BETTING) {
-            return preFlopBetting(toCall);
+        if (state == GameState.PRETURN_BETTING || state == GameState.PRERIVER_BETTING || state == GameState.FINAL_BETTING) {
+            return postFlopBetting(table, state);
+        } else if (state == GameState.PREFLOP_BETTING) {
+            return preFlopBetting(table.remainingToMatchPot[this.playerId]);
         }
         return -1;
     }
@@ -91,17 +93,18 @@ public class PlayerPhaseI extends AbstractPlayer {
      * @param state - the current game state
      * @return -1 (FOLD) / 0 (CHECK) / double (RAISE)
      */
-    private double postFlopBetting(Game game, double toCall) {
-        double handStrength = HandStrength.handstrength(getHand(), game.table.table, noOpponents);
+    private double postFlopBetting(Table table, GameState state) {
+    	double toCall = table.remainingToMatchPot[this.playerId];
+        double handStrength = HandStrength.handstrength(getHand(), table.table, noOpponents);
         if (handStrength * riskAversion < willBetIfAbove && toCall > 0) {
             Game.out.writeLine("		" + name + " folds, " + Arrays.toString(getHand()) + " Handstrengt: " + handStrength);
             return foldAfterFlop();
         } else if (handStrength * riskAversion > (willBetIfAbove + 0.1 / riskAversion)) {
-            Game.out.writeLine("		" + name + " raises " + (toCall + game.table.blind * riskAversion) + ", " + Arrays.toString(getHand()) + " Handstrengt: " + handStrength);
-            return toCall + game.table.blind * riskAversion;
+            Game.out.writeLine("		" + name + " raises " + (toCall + table.blind * riskAversion) + ", " + Arrays.toString(getHand()) + " Handstrengt: " + handStrength);
+            return toCall + table.blind * riskAversion;
         } else if (handStrength * riskAversion > willBetIfAbove && toCall == 0) {
-            Game.out.writeLine("		" + name + " raises " + (2*game.table.blind) + ", " + Arrays.toString(getHand()) + " Handstrengt: " + handStrength);
-            return 2*game.table.blind;
+            Game.out.writeLine("		" + name + " raises " + (2*table.blind) + ", " + Arrays.toString(getHand()) + " Handstrengt: " + handStrength);
+            return 2*table.blind;
         } else {
             Game.out.writeLine("		" + name + " calls " + toCall + ", " + Arrays.toString(getHand()) + " Handstrengt: " + handStrength);
             return toCall;

@@ -2,14 +2,11 @@ package poker;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 
 import utilities.CardUtilities;
 import utilities.DataOutput;
-import utilities.HandStrength;
 import ai.AbstractPlayer;
-import ai.Context;
 import ai.ContextHolder;
 import ai.PlayerGenerator;
 
@@ -24,7 +21,7 @@ public class Game {
 	private Deck deck;
 	public Table table;
 	public GameState state;
-	public ContextHolder history;
+	public static ContextHolder history;
 
 	/*
 	 * CONSTRUCTORS
@@ -59,7 +56,7 @@ public class Game {
 	private Game() {
 		deck = new Deck();
 		newDeck = deck.newDeck();
-		this.history = new ContextHolder();
+		history = new ContextHolder();
 	}
 
 	/*
@@ -95,7 +92,7 @@ public class Game {
 			// Iterate through the players and see what they decide to do
 			for (AbstractPlayer player : table.activePlayers) {
 				int id = player.getPlayerId();
-				double bet = player.bet(this, table.remainingToMatchPot[id]);
+				double bet = player.bet(this.table, current);
 				if (bet < 0) { // THIS MEANS FOLD
 					foldingPlayers.add(player);
 				} else { // RAISE AND CALLING

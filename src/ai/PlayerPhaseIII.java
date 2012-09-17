@@ -4,11 +4,14 @@
  */
 package ai;
 
-import ai.Context.Action;
 import java.util.Arrays;
 import java.util.List;
+
 import poker.Game;
+import poker.GameState;
+import poker.Table;
 import utilities.HandStrength;
+import ai.Context.Action;
 
 /**
  * Phase III players. They use opponent modeling all the time, handstrength calculations for postflop, and preflop calculations before the
@@ -25,27 +28,29 @@ public class PlayerPhaseIII extends PlayerPhaseII {
         this.name = "Phase III Player " + NO;
     }
     @Override
-    public double bet(Game game, double toCall) {
-        switch (game.state) {
+    public double bet(Table table, GameState state) {
+    	double toCall = table.remainingToMatchPot[this.playerId];
+        switch (state) {
             case PREFLOP_BETTING:
-                return super.bet(game, toCall);
+                return super.bet(table, state);
             case PRERIVER_BETTING:
-                return postFlopBet(game, toCall);
+                return postFlopBet(table, state);
             case PRETURN_BETTING:
-                return postFlopBet(game, toCall);
+                return postFlopBet(table, state);
             case FINAL_BETTING:
-                return postFlopBet(game, toCall);
+                return postFlopBet(table, state);
             default:
                 return -1;
         }
     }
     
-    public double postFlopBet(Game game, double toCall) {
+    public double postFlopBet(Table table, GameState state) {
+    	double toCall = table.remainingToMatchPot[this.playerId];
         //Find last actions taken by all players
-        Action[] lastActions = new Action[game.table.players.length];
-        double[] lastPotOdd = new double[game.table.players.length];
+        Action[] lastActions = new Action[table.players.length];
+        double[] lastPotOdd = new double[table.players.length];
         int actionsFound = 0;
-        List<Context> last = game.history.getContexts();
+        List<Context> last = Game.history.getContexts();
         for (int i = last.size() - 1; i >= 0; i--) {
             Context c = last.get(i);
             if (lastActions[c.getPlayerId()] == null) {
@@ -57,11 +62,11 @@ public class PlayerPhaseIII extends PlayerPhaseII {
                 break;
             }
         }
-        if (actionsFound == 0)return super.bet(game, toCall);
+        if (actionsFound == 0)return super.bet(table, state);
 
         //Build context, and find previous data
-        double[][] estimatedHandstrength = new double[game.table.players.length][2];
-        for (AbstractPlayer ap : game.table.activePlayers) {
+        double[][] estimatedHandstrength = new double[table.players.length][2];
+        for (AbstractPlayer ap : table.activePlayers) {
             int apInd = ap.getPlayerId();
             if (apInd == this.playerId) {
                 continue;
@@ -79,11 +84,11 @@ public class PlayerPhaseIII extends PlayerPhaseII {
                     break;
             }
         }
-        double myHS = HandStrength.handstrength(hand, game.table.table, game.table.activePlayers.size());
+        double myHS = HandStrength.handstrength(hand, table.table, table.activePlayers.size());
         boolean biggerThenSome = false, biggerThenAvg = false, biggerThenAll = false;
         double[] avgEsti = new double[2];
         int[] counter = new int[2];
-        for (AbstractPlayer ap : game.table.activePlayers) {
+        for (AbstractPlayer ap : table.activePlayers) {
             if (ap.getPlayerId() == this.playerId) {
                 continue;
             }
@@ -111,7 +116,7 @@ public class PlayerPhaseIII extends PlayerPhaseII {
                 break;
             case NORMAL:
                 if (biggerThenAll) {
-                    return toCall + game.table.blind*riskAversion;
+                    return toCall + table.blind*riskAversion;
                 }
                 else if (biggerThenAvg) {
                     return toCall;
@@ -119,10 +124,10 @@ public class PlayerPhaseIII extends PlayerPhaseII {
                 break;
             case RISKFUL:
                 if (biggerThenAll) {
-                    return toCall + 2*game.table.blind*riskAversion;
+                    return toCall + 2*table.blind*riskAversion;
                 }
                 else if (biggerThenAvg) {
-                    return toCall + game.table.blind*riskAversion;
+                    return toCall + table.blind*riskAversion;
                 }
                 else if (biggerThenSome) {
                     return toCall;

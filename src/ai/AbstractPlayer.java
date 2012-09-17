@@ -1,7 +1,8 @@
 package ai;
 
 import poker.Card;
-import poker.Game;
+import poker.GameState;
+import poker.Table;
 
 /**
  * The abstract player. Makes sure Phase I/II/III players have some similarities. This class remembers the amount of currently active bots,
@@ -90,7 +91,7 @@ public abstract class AbstractPlayer {
      * @param toCall - how much you need to raise in order to match the pot
      * @return
      */
-    public abstract double bet(Game game, double toCall);
+    public abstract double bet(Table table, GameState state);
 
     /**
      * Tostring function for player, returns the name as String
