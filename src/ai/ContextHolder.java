@@ -38,15 +38,15 @@ public class ContextHolder {
     public double getAverageHandstrength() {
         double sum = 0;
         for (Context c : history){
-            sum += c.getHandstrength();
+            sum += c.getHandstrength()[0];
         }
         return sum/history.size();
     }
     public double getMaxHandstrength() {
         double max = 2;
         for (Context c : history) {
-            if (c.getHandstrength() > max){
-                max = c.getHandstrength();
+            if (c.getHandstrength()[0] > max){
+                max = c.getHandstrength()[0];
             }
         }
         return max;
@@ -54,8 +54,8 @@ public class ContextHolder {
     public double getMinHandstrength() {
         double min = 0;
         for (Context c : history) {
-            if (c.getHandstrength() < min && c.getHandstrength() > 0){
-                min = c.getHandstrength();
+            if (c.getHandstrength()[0] < min && c.getHandstrength()[0] > 0){
+                min = c.getHandstrength()[0];
             }
         }
         return min;

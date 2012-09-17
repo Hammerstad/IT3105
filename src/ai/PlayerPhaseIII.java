@@ -66,7 +66,7 @@ public class PlayerPhaseIII extends PlayerPhaseII {
             if (apInd == this.playerId) {
                 continue;
             }
-            Context c = Context.createContext(apInd, game.state, game.table.amountOfRaisesThisRound, game.table.activePlayers.size(), lastPotOdd[apInd], ((lastActions[apInd] != null) ? lastActions[apInd] : Action.CALL), -1);
+            Context c = Context.createContext(apInd, game.state, game.table.activePlayers.size(), lastPotOdd[apInd], ((lastActions[apInd] != null) ? lastActions[apInd] : Action.CALL), null);
             switch (personality) {
                 case RISK_AVERSE:
                     estimatedHandstrength[apInd] = OpponentModeling.getInstance().getMaxData(c);
