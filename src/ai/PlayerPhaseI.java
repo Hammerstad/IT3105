@@ -8,6 +8,8 @@ import utilities.HandStrength;
 public class PlayerPhaseI extends AbstractPlayer {
 
     private double riskAversion;
+    protected int noOpponents; // How many opponents left
+    protected double willBetIfAbove; // Will bet if above this (lower value for higher number of players)
 
     public PlayerPhaseI(PlayerPersonality personality) {
         this();
@@ -48,10 +50,12 @@ public class PlayerPhaseI extends AbstractPlayer {
      * @return -1 (FOLD) / 0 (CHECK) / double (RAISE)
      */
     @Override
-    public double bet(Game state, double toCall) {
-        if (state.state == GameState.PRETURN_BETTING || state.state == GameState.PRERIVER_BETTING || state.state == GameState.FINAL_BETTING) {
-            return postFlopBetting(state, toCall);
-        } else if (state.state == GameState.PREFLOP_BETTING) {
+    public double bet(Game game, double toCall) {
+        noOpponents = game.table.activePlayers.size() - 1;
+        willBetIfAbove = Math.pow(0.15, noOpponents);
+        if (game.state == GameState.PRETURN_BETTING || game.state == GameState.PRERIVER_BETTING || game.state == GameState.FINAL_BETTING) {
+            return postFlopBetting(game, toCall);
+        } else if (game.state == GameState.PREFLOP_BETTING) {
             return preFlopBetting(toCall);
         }
         return -1;
@@ -65,13 +69,13 @@ public class PlayerPhaseI extends AbstractPlayer {
      */
     private double preFlopBetting(double toCall) {
         if (toCall == 0) {
-            Game.out.writeLine("		"+name+" checks, "+Arrays.toString(getHand()));
+            Game.out.writeLine("		" + name + " checks, " + Arrays.toString(getHand()));
             return 0;
-        } else if (Math.random() > 0.3) {
-            Game.out.writeLine("		"+name+" calls "+toCall+", "+Arrays.toString(getHand()));
+        } else if (Math.random() * riskAversion > 0.3) {
+            Game.out.writeLine("		" + name + " calls " + toCall + ", " + Arrays.toString(getHand()));
             return toCall;
         } else {
-            Game.out.writeLine("		"+name + " folds (pre flop), " + Arrays.toString(getHand()));
+            Game.out.writeLine("		" + name + " folds (pre flop), " + Arrays.toString(getHand()));
             return foldBeforeFlop();
         }
     }
@@ -83,22 +87,17 @@ public class PlayerPhaseI extends AbstractPlayer {
      * @param state - the current game state
      * @return -1 (FOLD) / 0 (CHECK) / double (RAISE)
      */
-    private double postFlopBetting(Game state, double toCall) {
-        double hs = HandStrength.handstrength(hand, state.table.table, state.table.activePlayers.size()),d = hs * (state.table.activePlayers.size() - 1);
-        if (d >= this.riskAversion || (state.table.activePlayers.size()) == 1 || toCall == 0) {
-            if (d > 0.8 || (d > 0.5 && toCall == 0)) {
-                Game.out.writeLine("		"+name+" raises "+(toCall + 2 * state.table.blind)+", "+Arrays.toString(getHand())+" HandStrength: "+hs);
-                return toCall + 2 * state.table.blind;
-            } else if (toCall == 0) {
-                Game.out.writeLine("		"+name+" checks, "+Arrays.toString(getHand())+" HandStrength: "+hs);
-                return 0;
-            } else {
-                Game.out.writeLine("		"+name+" calls "+toCall+", "+Arrays.toString(getHand())+" HandStrength: "+hs);
-                return toCall;
-            }
-        } else {
-            Game.out.writeLine("	"+name + " folds (post flop), " + Arrays.toString(getHand())+" HandStrength: "+hs);
+    private double postFlopBetting(Game game, double toCall) {
+        double handStrength = HandStrength.handstrength(getHand(), game.table.table, noOpponents);
+        if (handStrength * riskAversion < willBetIfAbove) {
+            Game.out.writeLine("		" + name + " folds, " + Arrays.toString(getHand()) + " Handstrengt: " + handStrength);
             return foldAfterFlop();
+        } else if (handStrength * riskAversion > (willBetIfAbove + 0.1 / riskAversion)) {
+            Game.out.writeLine("		" + name + " raises " + (toCall + game.table.blind * riskAversion) + ", " + Arrays.toString(getHand()) + " Handstrengt: " + handStrength);
+            return toCall + game.table.blind * riskAversion;
+        } else {
+            Game.out.writeLine("		" + name + " calls " + toCall + ", " + Arrays.toString(getHand()) + " Handstrengt: " + handStrength);
+            return toCall;
         }
     }
 
