@@ -13,6 +13,7 @@ public abstract class AbstractPlayer {
     public int wins; // Amount of times the player has won
     public int[] folds; // Information about folding
     protected PlayerPersonality personality; //Which personality the player has
+    protected int playerId;
 
     /**
      * Constructor for an abstract player. Creates a hand, name, etc.
@@ -20,8 +21,7 @@ public abstract class AbstractPlayer {
     public AbstractPlayer() {
         this.hand = new Card[2];
         this.folds = new int[2];
-
-        NO++;
+        this.playerId = NO++;
     }
 
     /**
@@ -123,5 +123,8 @@ public abstract class AbstractPlayer {
      */
     public String getName() {
         return this.name;
+    }
+    public int getPlayerId() {
+        return this.playerId;
     }
 }

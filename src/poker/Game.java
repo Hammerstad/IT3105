@@ -1,17 +1,12 @@
 package poker;
 
-import ai.ContextHolder;
+import ai.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
 import utilities.CardUtilities;
-import ai.AbstractPlayer;
-import ai.Context;
-import ai.PlayerPersonality;
-import ai.PlayerPhaseI;
-import ai.PlayerPhaseII;
 import utilities.DataOutput;
 import utilities.HandStrength;
 
@@ -177,12 +172,15 @@ public class Game {
 
     AbstractPlayer[] generatePlayers(int n) {
         AbstractPlayer[] newPlayers = new AbstractPlayer[n];
-        for (int i = 0; i < n - 3; i++) {
-            newPlayers[i] = new PlayerPhaseI();
-        }
-        newPlayers[2] = new PlayerPhaseII(PlayerPersonality.NORMAL);
-        newPlayers[3] = new PlayerPhaseII(PlayerPersonality.RISK_AVERSE);
-        newPlayers[4] = new PlayerPhaseII(PlayerPersonality.RISKFUL);
+//        for (int i = 0; i < n - 3; i++) {
+//            newPlayers[i] = new PlayerPhaseI();
+//        }
+        newPlayers[0] = new PlayerPhaseII(PlayerPersonality.RISK_AVERSE);
+        newPlayers[1] = new PlayerPhaseII(PlayerPersonality.NORMAL);
+        newPlayers[2] = new PlayerPhaseII(PlayerPersonality.RISKFUL);
+        newPlayers[3] = new PlayerPhaseIII(PlayerPersonality.RISK_AVERSE);
+        newPlayers[4] = new PlayerPhaseIII(PlayerPersonality.NORMAL);
+        newPlayers[5] = new PlayerPhaseIII(PlayerPersonality.RISKFUL);
         return newPlayers;
     }
 
@@ -271,8 +269,8 @@ public class Game {
     }
 
     public static void main(String[] args) {
-        int NOF_GAMES = 1000;
-        int NOF_PLAYERS = 5;
+        int NOF_GAMES = 100;
+        int NOF_PLAYERS = 6;
         Game game = new Game(NOF_PLAYERS);
         out.writeLine("Creating new game, players: " + NOF_PLAYERS + " Rounds: " + NOF_GAMES);
         for (int i = 0; i < NOF_GAMES; i++) {

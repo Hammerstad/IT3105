@@ -59,7 +59,7 @@ public class OpponentModeling {
     }
     public double[] getAvgData(Context c){
         ContextHolder ch = contextTree[c.getPlayerId()][c.getGameState().getBucket()][Discretising.getBucket(c.getPlayers(), 10).bucketNo][Discretising.getBucket(c.getRaises(), 10).bucketNo][Discretising.getBucket(c.getPotOdds()).bucketNo][c.getAction().getBucket()];
-        if (ch == null)return new double[]{0, 0};
+        if (ch == null)return new double[]{-1, 0};
         double hsAvg = 0, hsCount = 0;
         hsCount = ch.size();
         for (Context cc : ch.getContexts()){
@@ -68,12 +68,23 @@ public class OpponentModeling {
         hsAvg /= hsCount;
         return new double[]{hsAvg, hsCount};
     }
-    public double[] getBestDate(Context c) {
+    public double[] getMaxData(Context c) {
         ContextHolder ch = contextTree[c.getPlayerId()][c.getGameState().getBucket()][Discretising.getBucket(c.getPlayers(), 10).bucketNo][Discretising.getBucket(c.getRaises(), 10).bucketNo][Discretising.getBucket(c.getPotOdds()).bucketNo][c.getAction().getBucket()];
-        if (ch == null)return new double[]{0, 0};
+        if (ch == null)return new double[]{-1, 0};
         double hsMax = -1;
         for (Context cc : ch.getContexts()){
             if (cc.getHandstrengthAvg() > hsMax){
+                hsMax = cc.getHandstrengthAvg();
+            }
+        }
+        return new double[]{hsMax, 1};
+    }
+    public double[] getMinData(Context c) {
+        ContextHolder ch = contextTree[c.getPlayerId()][c.getGameState().getBucket()][Discretising.getBucket(c.getPlayers(), 10).bucketNo][Discretising.getBucket(c.getRaises(), 10).bucketNo][Discretising.getBucket(c.getPotOdds()).bucketNo][c.getAction().getBucket()];
+        if (ch == null)return new double[]{-1, 0};
+        double hsMax = Integer.MAX_VALUE;
+        for (Context cc : ch.getContexts()){
+            if (cc.getHandstrengthAvg() < hsMax && cc.getHandstrengthAvg() > 0){
                 hsMax = cc.getHandstrengthAvg();
             }
         }
