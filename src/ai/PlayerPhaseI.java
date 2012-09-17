@@ -99,16 +99,18 @@ public class PlayerPhaseI extends AbstractPlayer {
         } else if (handStrength * riskAversion > (willBetIfAbove + 0.1 / riskAversion)) {
             Game.out.writeLine("		" + name + " raises " + (toCall + game.table.blind * riskAversion) + ", " + Arrays.toString(getHand()) + " Handstrengt: " + handStrength);
             return toCall + game.table.blind * riskAversion;
+        } else if (handStrength * riskAversion > willBetIfAbove && toCall == 0) {
+            Game.out.writeLine("		" + name + " raises " + (2*game.table.blind) + ", " + Arrays.toString(getHand()) + " Handstrengt: " + handStrength);
+            return 2*game.table.blind;
         } else {
             Game.out.writeLine("		" + name + " calls " + toCall + ", " + Arrays.toString(getHand()) + " Handstrengt: " + handStrength);
             return toCall;
         }
     }
 
-   /**
-             * Overwritten toString method for Phase I players.
-             */
-
+    /**
+     * Overwritten toString method for Phase I players.
+     */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
