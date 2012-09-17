@@ -11,8 +11,7 @@ import poker.Card;
 import poker.Suit;
 
 /**
- * 
- * @author Nicklas
+ * This file handles hand strength calculation.
  */
 public class HandStrength {
 

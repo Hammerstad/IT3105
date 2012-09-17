@@ -6,6 +6,9 @@ import java.io.InputStreamReader;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 
+/**
+ * This class reads the preflop table from disk into memory.
+ */
 public class PreflopReader {
 	double[][][][] table;
 	DecimalFormat df;

@@ -8,6 +8,9 @@ import poker.Card;
 import poker.Game;
 import poker.Suit;
 
+/**
+ * This class handles calculation of the preflop table.
+ */
 public class PreflopCalculator {
 
 	public static int NOFGAMES = 100000;
@@ -60,7 +63,6 @@ public class PreflopCalculator {
 		new PreflopWriter(table, true);
 	}
 
-	
 	/**
 	 * Used for creating a preflop table. Gets written to disk.
 	 * 
@@ -73,9 +75,13 @@ public class PreflopCalculator {
 
 	/**
 	 * Internal function to make sure we are independent of what happens in the game class.
-	 * @param players - how many players.
-	 * @param pocketCards - which cards are we playing with.
-	 * @param rounds - how many rounds will we play? Typically 1000-100000
+	 * 
+	 * @param players
+	 *            - how many players.
+	 * @param pocketCards
+	 *            - which cards are we playing with.
+	 * @param rounds
+	 *            - how many rounds will we play? Typically 1000-100000
 	 * @return how many times player 1 won
 	 */
 	private static int preflop(int players, Card[] pocketCards, int rounds) {
