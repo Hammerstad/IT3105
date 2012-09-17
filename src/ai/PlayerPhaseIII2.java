@@ -153,6 +153,8 @@ public class PlayerPhaseIII2 extends AbstractPlayer {
 		for (int i = 0; i < game.table.players.length; i++) {
 			search[i] = Context.createContext(i, game.state, game.table.activePlayers.size(), lastPotodds[i],
 					lastAction[i], null);
+			//search[i] = Context.createContext(i, game.state, game.table.amountOfRaisesThisRound, game.table.activePlayers.size(), lastPotodds[i],
+					//lastAction[i], 0);
 		}
 		ContextHolder[] results = new ContextHolder[game.table.players.length];
 		OpponentModeling om = OpponentModeling.getInstance();

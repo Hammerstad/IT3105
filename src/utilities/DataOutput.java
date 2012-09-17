@@ -23,7 +23,7 @@ public class DataOutput {
 		this.filename = filename;
 	}
 
-	public static DataOutput getInstance(Class cls) {
+	public static DataOutput getInstance(@SuppressWarnings("rawtypes") Class cls) {
 		String name = cls.getName();
 		if (!multiton.containsKey(name)) {
 			multiton.put(name, new DataOutput(name));

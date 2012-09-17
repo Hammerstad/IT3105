@@ -28,7 +28,6 @@ public class Table {
 	public int dealingPlayer;
 	public double[] remainingToMatchPot;
 	public double[] currentBetForPlayers;
-	public int amountOfRaisesThisRound;
 
 	/**
 	 * Default constructor for a table. It:</br> - Creates a new empty table.</br> - Sets players to be equal the input.</br> - Sets active
@@ -51,6 +50,8 @@ public class Table {
 	 * much each player needs to bet to match the pot.</br> - Resets current bets.</br> - Takes big blind and small blind.
 	 */
 	public void newRound() {
+		pot = 0;
+		dealingPlayer++;
 		activePlayers = new ArrayList<AbstractPlayer>(Arrays.asList(players));
 		for (AbstractPlayer player : activePlayers) {
 			player.resetHand();
@@ -83,7 +84,7 @@ public class Table {
 	 * @param raise
 	 *            - how much to increase the pot with
 	 */
-	public void raisePot(double raise) {
+	public void raiseRemainingToMatchPot(double raise) {
 		for (int i = 0; i < remainingToMatchPot.length; i++) {
 			remainingToMatchPot[i] += raise;
 		}
