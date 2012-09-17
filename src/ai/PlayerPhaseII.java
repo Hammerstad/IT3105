@@ -12,9 +12,9 @@ import utilities.PreflopReader;
 public class PlayerPhaseII extends AbstractPlayer {
 
     static final double[][][][] preflopTable = new PreflopReader().read(""); // The preflop table
-    private int noOpponents; // How many opponents left
-    private double willBetIfAbove; // Will bet if above this (lower value for higher number of players)
-    private double riskAversion = 1.000; // How greedy/risky is the player
+    protected int noOpponents; // How many opponents left
+    protected double willBetIfAbove; // Will bet if above this (lower value for higher number of players)
+    protected double riskAversion = 1.000; // How greedy/risky is the player
 
     /**
      * Default Phase 2 player.
@@ -22,18 +22,17 @@ public class PlayerPhaseII extends AbstractPlayer {
      * @param personality
      */
     public PlayerPhaseII(PlayerPersonality personality) {
-        this();
+        super();
         this.personality = personality;
+        setRiskAversion();
+        this.name = "Phase II Player " + NO;
     }
 
     /**
      * Default Phase 2 player. Gets a random personality.
      */
     public PlayerPhaseII() {
-        super();
-        this.name = "Phase II Player " + NO;
-        this.personality = PlayerPersonality.getRandom();
-        setRiskAversion();
+        this(PlayerPersonality.getRandom());
     }
 
     /**

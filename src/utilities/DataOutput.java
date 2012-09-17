@@ -25,26 +25,31 @@ public class DataOutput {
     private DataOutput(String filename) {
         this.filename = filename;
     }
-    public static DataOutput getInstance(Class cls){
+
+    public static DataOutput getInstance(Class cls) {
         String name = cls.getName();
-        if (!multiton.containsKey(name)){
+        if (!multiton.containsKey(name)) {
             multiton.put(name, new DataOutput(name));
         }
         return multiton.get(name);
     }
+
     public static void close() {
-        for (DataOutput o : multiton.values()){
+        for (DataOutput o : multiton.values()) {
             try {
-                o.writer.flush();
-                o.writer.close();
+                if (o != null && o.writer != null) {
+                    o.writer.flush();
+                    o.writer.close();
+                }
             } catch (IOException ex) {
             }
         }
     }
+
     private boolean init() {
         if (writer == null) {
             try {
-                writer = new FileWriter("logging"+File.separator+filename + ".txt");
+                writer = new FileWriter("logging" + File.separator + filename + ".txt");
                 return true;
             } catch (IOException ex) {
                 return false;
@@ -54,7 +59,7 @@ public class DataOutput {
     }
 
     public int writeLine(String data) {
-        return write(data+"\n");
+        return write(data + "\n");
     }
 
     public int write(String data) {
@@ -64,7 +69,7 @@ public class DataOutput {
         try {
             writer.append(data);
             return data.length();
-        }catch(Exception e){
+        } catch (Exception e) {
             System.out.println("Exception");
             e.printStackTrace();
             return -1;

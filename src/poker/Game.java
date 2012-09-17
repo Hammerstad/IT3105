@@ -1,5 +1,6 @@
 package poker;
 
+import ai.ContextHolder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -7,10 +8,12 @@ import java.util.List;
 
 import utilities.CardUtilities;
 import ai.AbstractPlayer;
+import ai.Context;
 import ai.PlayerPersonality;
 import ai.PlayerPhaseI;
 import ai.PlayerPhaseII;
 import utilities.DataOutput;
+import utilities.HandStrength;
 
 public class Game {
 
@@ -28,11 +31,13 @@ public class Game {
     public List<AbstractPlayer> activePlayers;
     // public List<AbstractPlayer> foldingPlayers;
     public GameState state;
+    public ContextHolder history;
     // End of round
     public double pot;
     public double blinds;
     public int dealingPlayer;
     public double[] toCall;
+    public double[] roundBet;
     public int raises;
 
     public Game(int players) {
@@ -41,6 +46,8 @@ public class Game {
         this.blinds = 10;
         // this.foldingPlayers = new LinkedList<AbstractPlayer>();
         this.toCall = new double[players];
+        this.roundBet = new double[players];
+        this.history = new ContextHolder();
     }
 
     void bet(GameState current, GameState next) {
@@ -59,10 +66,15 @@ public class Game {
                 }
                 double d = pi.bet(this, toCall[plIndex]);
                 if (d < 0) {
+                    history.addHistoryEntry(Context.createContext(plIndex, state, raises, activePlayers.size(), roundBet[plIndex]/(roundBet[plIndex]+pot*1.0), Context.Action.FOLD, HandStrength.handstrength(pi.getHand(), table, activePlayers.size())));
                     foldingPlayers.add(players[plIndex]);
                 } else {
+                    roundBet[plIndex]+=d;
                     if (d > toCall[plIndex]) {
+                        history.addHistoryEntry(Context.createContext(plIndex, state, raises, activePlayers.size(), roundBet[plIndex]/(roundBet[plIndex]+pot*1.0), Context.Action.RAISE, HandStrength.handstrength(pi.getHand(), table, activePlayers.size())));
                         raises++;
+                    }else {
+                        history.addHistoryEntry(Context.createContext(plIndex, state, raises, activePlayers.size(), roundBet[plIndex]/(roundBet[plIndex]+pot*1.0), Context.Action.CALL, HandStrength.handstrength(pi.getHand(), table, activePlayers.size())));
                     }
                     toCall[plIndex] -= d;
                 }
@@ -101,6 +113,8 @@ public class Game {
                 }
                 out.writeLine("New round");
                 Arrays.fill(toCall, 2 * blinds);
+                Arrays.fill(roundBet, 0);
+                history.clearHistory();
                 shuffleCards();
                 takeBlinds();
                 dealHands();
@@ -145,6 +159,7 @@ public class Game {
                     pi.wins++;
                 }
                 // out("Pot size: "+pot);
+                history.pushToOpponentModeler();
                 pot = 0;
                 dealingPlayer++;
                 break;
@@ -256,7 +271,7 @@ public class Game {
     }
 
     public static void main(String[] args) {
-        int NOF_GAMES = 100;
+        int NOF_GAMES = 1000;
         int NOF_PLAYERS = 5;
         Game game = new Game(NOF_PLAYERS);
         out.writeLine("Creating new game, players: " + NOF_PLAYERS + " Rounds: " + NOF_GAMES);
