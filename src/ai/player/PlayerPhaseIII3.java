@@ -4,10 +4,6 @@
  */
 package ai.player;
 
-import ai.opponentmodeling.Context;
-import ai.opponentmodeling.Context;
-import ai.player.PlayerPhaseII;
-import ai.player.PlayerPersonality;
 import java.util.Arrays;
 import java.util.List;
 
@@ -15,8 +11,8 @@ import poker.Game;
 import poker.GameState;
 import poker.Table;
 import utilities.HandStrength;
+import ai.opponentmodeling.Context;
 import ai.opponentmodeling.Context.Action;
-import ai.opponentmodeling.OpponentModeling;
 import ai.opponentmodeling.OpponentModeling;
 
 /**
