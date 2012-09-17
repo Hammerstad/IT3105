@@ -132,6 +132,7 @@ public class Table {
                 if (bet < 0) {// This means a fold
                     foldingPlayers.add(player);
                     Game.history.addHistoryEntry(Context.createContext(player.getPlayerId(), state, activePlayers.size(), remainingToMatchPot[playerId]/(remainingToMatchPot[playerId]+pot*1.0), Context.Action.FOLD, CardUtilities.classification(player.getHand(), table)));
+                    remainingToMatchPot[player.getPlayerId()] = 0;
                 } else {// Player wants to raise or call, we won't allow raising so...
                     pot += remainingToMatchPot[playerId];
                     currentBetForPlayers[playerId] += remainingToMatchPot[playerId];

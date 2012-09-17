@@ -202,9 +202,9 @@ public class PlayerGenerator {
      */
     public AbstractPlayer[] checkList5() {
         AbstractPlayer[] newPlayers = new AbstractPlayer[6];
-        newPlayers[0] = new PlayerPhaseI(PlayerPersonality.RISKFUL);
-        newPlayers[1] = new PlayerPhaseI(PlayerPersonality.NORMAL);
-        newPlayers[2] = new PlayerPhaseII(PlayerPersonality.RISKFUL);
+        newPlayers[0] = new PlayerPhaseII(PlayerPersonality.RISKFUL);
+        newPlayers[1] = new PlayerPhaseII(PlayerPersonality.RISKFUL);
+        newPlayers[2] = new PlayerPhaseII(PlayerPersonality.NORMAL);
         newPlayers[3] = new PlayerPhaseII(PlayerPersonality.NORMAL);
         newPlayers[4] = new PlayerPhaseII(PlayerPersonality.RISK_AVERSE);
         newPlayers[5] = new PlayerPhaseII(PlayerPersonality.RISK_AVERSE);
@@ -219,12 +219,12 @@ public class PlayerGenerator {
      */
     public AbstractPlayer[] checkList7() {
         AbstractPlayer[] newPlayers = new AbstractPlayer[6];
-        newPlayers[0] = new PlayerPhaseIII(PlayerPersonality.RISKFUL);
-        newPlayers[1] = new PlayerPhaseIII(PlayerPersonality.NORMAL);
-        newPlayers[2] = new PlayerPhaseIII(PlayerPersonality.RISK_AVERSE);
-        newPlayers[3] = new PlayerPhaseI(PlayerPersonality.RISKFUL);
-        newPlayers[4] = new PlayerPhaseII(PlayerPersonality.NORMAL);
-        newPlayers[5] = new PlayerPhaseII(PlayerPersonality.RISK_AVERSE);
+        newPlayers[0] = new PlayerPhaseI(PlayerPersonality.RISKFUL);
+        newPlayers[1] = new PlayerPhaseII(PlayerPersonality.NORMAL);
+        newPlayers[2] = new PlayerPhaseII(PlayerPersonality.RISK_AVERSE);
+        newPlayers[3] = new PlayerPhaseIII(PlayerPersonality.RISKFUL);
+        newPlayers[4] = new PlayerPhaseIII(PlayerPersonality.NORMAL);
+        newPlayers[5] = new PlayerPhaseIII(PlayerPersonality.RISK_AVERSE);
         return newPlayers;
     }
 

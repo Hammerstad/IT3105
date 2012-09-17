@@ -139,7 +139,13 @@ public class Game {
             for (double r : table.remainingToMatchPot) {
                 sum += r;
             }
-        } while (sum != 0 || playersPlayed < table.activePlayers.size());
+            if(playersPlayed > 50){
+                table.checkRemainingPlayers(state);
+                setState(next);
+                return;
+            }
+            //System.out.println("SPIN"+sum+" "+playersPlayed+" "+table.activePlayers.size() + " " + Arrays.toString(table.remainingToMatchPot));
+        } while (sum != 0 || playersPlayed < table.activePlayers.size());	
         setState(next);
     }
     /**
@@ -239,15 +245,16 @@ public class Game {
      * @param args
      */
     public static void main(String[] args) {
-        int NOF_GAMES = 100;
+        int NOF_GAMES = 1000;
 
         int NOF_PLAYERS = 6;
         PlayerGenerator pg = new PlayerGenerator();
-        Game game = new Game(pg.checkList2());
+        Game game = new Game(pg.checkList7());
         out.writeLine("Creating new game, players: " + NOF_PLAYERS + " Rounds: " + NOF_GAMES);
 
         for (int i = 0; i < NOF_GAMES; i++) {
             game.setState(GameState.START);
+            if(i%10==0)System.out.println(i);
         }
         for (AbstractPlayer pi : game.table.players) {
             out.writeLine(pi.getName() + ": " + pi.getMoney() + " Wins: " + pi.wins + " Folds: " + Arrays.toString(pi.folds));

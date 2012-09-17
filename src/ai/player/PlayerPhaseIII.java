@@ -30,7 +30,7 @@ public class PlayerPhaseIII extends AbstractPlayer {
 		super();
 		this.personality = personality;
 		setRiskAversion();
-		this.name = "Phase III2 Player " + NO;
+		this.name = "Phase III Player " + NO;
 	}
 
 	public PlayerPhaseIII() {
