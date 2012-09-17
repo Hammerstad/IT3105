@@ -48,7 +48,7 @@ public class PlayerPhaseIII2 extends AbstractPlayer {
 
     @Override
     public double bet(Game game, double toCall) {
-        noOpponents = game.activePlayers.size() - 1;
+        noOpponents = game.table.activePlayers.size() - 1;
         willBetIfAbove = Math.pow(0.15, noOpponents);
         switch (game.state) {
             case PREFLOP_BETTING:
@@ -73,8 +73,8 @@ public class PlayerPhaseIII2 extends AbstractPlayer {
             Game.out.writeLine("		" + name + " folds, " + Arrays.toString(getHand()) + " Preflop: "+preflopCalculation+" Average estemate: " + avg + " Estimate: " + Arrays.toString(calculation));
             return foldBeforeFlop();
         } else if (avg > (willBetIfAbove + (1 / 10. * riskAversion))) {
-            Game.out.writeLine("		" + name + " raises " + (toCall + game.blinds * riskAversion) + ", " + Arrays.toString(getHand()) + " Preflop: "+preflopCalculation+" Average estemate: " + avg + " Estimate: " + Arrays.toString(calculation));
-            return toCall + game.blinds * riskAversion;
+            Game.out.writeLine("		" + name + " raises " + (toCall + game.table.blind * riskAversion) + ", " + Arrays.toString(getHand()) + " Preflop: "+preflopCalculation+" Average estemate: " + avg + " Estimate: " + Arrays.toString(calculation));
+            return toCall + game.table.blind * riskAversion;
         } else {
             Game.out.writeLine("		" + name + " calls " + toCall + ", " + Arrays.toString(getHand()) + " Preflop: "+preflopCalculation+" Average estemate: " + avg + " Estimate: " + Arrays.toString(calculation));
             return toCall;
@@ -82,7 +82,7 @@ public class PlayerPhaseIII2 extends AbstractPlayer {
     }
 
     private double postFlopBet(Game game, double toCall) {
-        double handStrength = HandStrength.handstrength(getHand(), game.table, noOpponents);
+        double handStrength = HandStrength.handstrength(getHand(), game.table.table, noOpponents);
         double[] calculation = getAverageAdjustedEstimate(game, handStrength);
         double avg = calculation[calculation.length - 1];
 //        System.out.println("Needed to raise: "+(willBetIfAbove + 1 / 10. * riskAversion)+ "Needed to call: "+willBetIfAbove+" Value: "+avg);
@@ -90,8 +90,8 @@ public class PlayerPhaseIII2 extends AbstractPlayer {
             Game.out.writeLine("		" + name + " folds, " + Arrays.toString(getHand()) + " Handstrength: "+handStrength+" Average estemate: " + avg + " Estimate: " + Arrays.toString(calculation));
             return foldAfterFlop();
         } else if (avg > (willBetIfAbove + 1 / 10. * riskAversion)) {
-            Game.out.writeLine("		" + name + " raises " + (toCall + game.blinds * riskAversion) + ", " + Arrays.toString(getHand()) + " Handstrength: "+handStrength+" Average estemate: " + avg + " Estimate: " + Arrays.toString(calculation));
-            return toCall + game.blinds * riskAversion;
+            Game.out.writeLine("		" + name + " raises " + (toCall + game.table.blind * riskAversion) + ", " + Arrays.toString(getHand()) + " Handstrength: "+handStrength+" Average estemate: " + avg + " Estimate: " + Arrays.toString(calculation));
+            return toCall + game.table.blind * riskAversion;
         } else {
             Game.out.writeLine("		" + name + " calls " + toCall + ", " + Arrays.toString(getHand()) + " Handstrength: "+handStrength+" Average estemate: " + avg + " Estimate: " + Arrays.toString(calculation));
             return toCall;
@@ -101,9 +101,9 @@ public class PlayerPhaseIII2 extends AbstractPlayer {
     private double[] getAverageAdjustedEstimate(Game game, double myStrength) {
         double[] estimate = getEstimatedHands(game);
 
-        double[] calculation = new double[game.players.length + 1];
-        for (int i = 0; i < game.activePlayers.size(); i++) {
-            AbstractPlayer ap = game.activePlayers.get(i);
+        double[] calculation = new double[game.table.players.length + 1];
+        for (int i = 0; i < game.table.activePlayers.size(); i++) {
+            AbstractPlayer ap = game.table.activePlayers.get(i);
             calculation[ap.getPlayerId()] = (estimate[ap.getPlayerId()] < 0) ? -1 : Math.sqrt(estimate[ap.getPlayerId()] * myStrength) * riskAversion;
         }
         double sum = 0;
@@ -121,15 +121,15 @@ public class PlayerPhaseIII2 extends AbstractPlayer {
     }
 
     private double[] getEstimatedHands(Game game) {
-        double[] estimate = new double[game.players.length];
+        double[] estimate = new double[game.table.players.length];
         //Fill with -1 to indicate not found
         Arrays.fill(estimate, -1.0);
 
         //Get last action every player did
-        Action[] lastAction = new Action[game.players.length];
+        Action[] lastAction = new Action[game.table.players.length];
         //Assume Call if not previous actions is found
         Arrays.fill(lastAction, Action.CALL);
-        double[] lastPotodds = new double[game.players.length];
+        double[] lastPotodds = new double[game.table.players.length];
         Arrays.fill(lastPotodds, 0.0);
         List<Context> history = game.history.getContexts();
         for (int i = history.size() - 1; i >= 0; i--) {
@@ -140,18 +140,18 @@ public class PlayerPhaseIII2 extends AbstractPlayer {
             }
         }
         //Build searchcontexts for every player
-        Context[] search = new Context[game.players.length];
-        for (int i = 0; i < game.players.length; i++) {
-            search[i] = Context.createContext(i, game.state, game.raises, game.activePlayers.size(), lastPotodds[i], lastAction[i], 0);
+        Context[] search = new Context[game.table.players.length];
+        for (int i = 0; i < game.table.players.length; i++) {
+            search[i] = Context.createContext(i, game.state, game.table.amountOfRaisesThisRound, game.table.activePlayers.size(), lastPotodds[i], lastAction[i], 0);
         }
-        ContextHolder[] results = new ContextHolder[game.players.length];
+        ContextHolder[] results = new ContextHolder[game.table.players.length];
         OpponentModeling om = OpponentModeling.getInstance();
-        for (int i = 0; i < game.players.length; i++) {
+        for (int i = 0; i < game.table.players.length; i++) {
             results[i] = om.getData(search[i]);
         }
 
         //Handle data based on personality
-        for (int i = 0; i < game.players.length; i++) {
+        for (int i = 0; i < game.table.players.length; i++) {
             if (results[i] == null) {
                 continue;
             }

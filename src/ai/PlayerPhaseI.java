@@ -84,11 +84,11 @@ public class PlayerPhaseI extends AbstractPlayer {
      * @return -1 (FOLD) / 0 (CHECK) / double (RAISE)
      */
     private double postFlopBetting(Game state, double toCall) {
-        double hs = HandStrength.handstrength(hand, state.table, state.activePlayers.size()),d = hs * (state.activePlayers.size() - 1);
-        if (d >= this.riskAversion || (state.activePlayers.size()) == 1 || toCall == 0) {
+        double hs = HandStrength.handstrength(hand, state.table.table, state.table.activePlayers.size()),d = hs * (state.table.activePlayers.size() - 1);
+        if (d >= this.riskAversion || (state.table.activePlayers.size()) == 1 || toCall == 0) {
             if (d > 0.8 || (d > 0.5 && toCall == 0)) {
-                Game.out.writeLine("		"+name+" raises "+(toCall + 2 * state.blinds)+", "+Arrays.toString(getHand())+" HandStrength: "+hs);
-                return toCall + 2 * state.blinds;
+                Game.out.writeLine("		"+name+" raises "+(toCall + 2 * state.table.blind)+", "+Arrays.toString(getHand())+" HandStrength: "+hs);
+                return toCall + 2 * state.table.blind;
             } else if (toCall == 0) {
                 Game.out.writeLine("		"+name+" checks, "+Arrays.toString(getHand())+" HandStrength: "+hs);
                 return 0;

@@ -4,7 +4,6 @@
  */
 package ai;
 
-import poker.GameState;
 import utilities.DataOutput;
 
 /**

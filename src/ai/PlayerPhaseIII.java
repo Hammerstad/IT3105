@@ -42,8 +42,8 @@ public class PlayerPhaseIII extends PlayerPhaseII {
     
     public double postFlopBet(Game game, double toCall) {
         //Find last actions taken by all players
-        Action[] lastActions = new Action[game.players.length];
-        double[] lastPotOdd = new double[game.players.length];
+        Action[] lastActions = new Action[game.table.players.length];
+        double[] lastPotOdd = new double[game.table.players.length];
         int actionsFound = 0;
         List<Context> last = game.history.getContexts();
         for (int i = last.size() - 1; i >= 0; i--) {
@@ -60,13 +60,13 @@ public class PlayerPhaseIII extends PlayerPhaseII {
         if (actionsFound == 0)return super.bet(game, toCall);
 
         //Build context, and find previous data
-        double[][] estimatedHandstrength = new double[game.players.length][2];
-        for (AbstractPlayer ap : game.activePlayers) {
+        double[][] estimatedHandstrength = new double[game.table.players.length][2];
+        for (AbstractPlayer ap : game.table.activePlayers) {
             int apInd = ap.getPlayerId();
             if (apInd == this.playerId) {
                 continue;
             }
-            Context c = Context.createContext(apInd, game.state, game.raises, game.activePlayers.size(), lastPotOdd[apInd], ((lastActions[apInd] != null) ? lastActions[apInd] : Action.CALL), -1);
+            Context c = Context.createContext(apInd, game.state, game.table.amountOfRaisesThisRound, game.table.activePlayers.size(), lastPotOdd[apInd], ((lastActions[apInd] != null) ? lastActions[apInd] : Action.CALL), -1);
             switch (personality) {
                 case RISK_AVERSE:
                     estimatedHandstrength[apInd] = OpponentModeling.getInstance().getMaxData(c);
@@ -79,11 +79,11 @@ public class PlayerPhaseIII extends PlayerPhaseII {
                     break;
             }
         }
-        double myHS = HandStrength.handstrength(hand, game.table, game.activePlayers.size());
+        double myHS = HandStrength.handstrength(hand, game.table.table, game.table.activePlayers.size());
         boolean biggerThenSome = false, biggerThenAvg = false, biggerThenAll = false;
         double[] avgEsti = new double[2];
         int[] counter = new int[2];
-        for (AbstractPlayer ap : game.activePlayers) {
+        for (AbstractPlayer ap : game.table.activePlayers) {
             if (ap.getPlayerId() == this.playerId) {
                 continue;
             }
@@ -111,7 +111,7 @@ public class PlayerPhaseIII extends PlayerPhaseII {
                 break;
             case NORMAL:
                 if (biggerThenAll) {
-                    return toCall + game.blinds*riskAversion;
+                    return toCall + game.table.blind*riskAversion;
                 }
                 else if (biggerThenAvg) {
                     return toCall;
@@ -119,10 +119,10 @@ public class PlayerPhaseIII extends PlayerPhaseII {
                 break;
             case RISKFUL:
                 if (biggerThenAll) {
-                    return toCall + 2*game.blinds*riskAversion;
+                    return toCall + 2*game.table.blind*riskAversion;
                 }
                 else if (biggerThenAvg) {
-                    return toCall + game.blinds*riskAversion;
+                    return toCall + game.table.blind*riskAversion;
                 }
                 else if (biggerThenSome) {
                     return toCall;
