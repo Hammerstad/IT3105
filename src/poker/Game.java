@@ -9,6 +9,7 @@ import utilities.DataOutput;
 import ai.player.AbstractPlayer;
 import ai.opponentmodeling.ContextHolder;
 import ai.player.PlayerGenerator;
+import com.sun.accessibility.internal.resources.accessibility;
 
 public class Game {
 
@@ -90,7 +91,9 @@ public class Game {
 		for (int i = 0; i < maxReRaises; i++) {
 			List<AbstractPlayer> foldingPlayers = new ArrayList<AbstractPlayer>();
 			// Iterate through the players and see what they decide to do
-			for (AbstractPlayer player : table.activePlayers) {
+//			for (AbstractPlayer player : table.activePlayers) {
+                        for (int pi = 0;pi < table.activePlayers.size();pi++) {
+                                AbstractPlayer player = table.activePlayers.get((table.dealingPlayer + 3 + pi)%table.activePlayers.size());
 				int id = player.getPlayerId();
 				double bet = player.bet(this.table, current);
 				if (bet < 0) { // THIS MEANS FOLD
@@ -243,7 +246,7 @@ public class Game {
 		}
 		int i = 1;
 		for (AbstractPlayer pi : game.table.players) {
-			out.writeLine("Player " + (i++) + ": " + pi.getMoney() + " Wins: " + pi.wins + " Folds: " + Arrays.toString(pi.folds));
+			out.writeLine("Player " + (i) + ": " + pi.getMoney() + " Wins: " + pi.wins + " Folds: " + Arrays.toString(pi.folds));
                         System.out.println("Player " + (i++) + ": " + pi.getMoney() + " Wins: " + pi.wins + " Folds: " + Arrays.toString(pi.folds));
 		}
 		DataOutput.close();
