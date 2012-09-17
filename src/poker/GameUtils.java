@@ -30,7 +30,7 @@ public class GameUtils {
 				}
 			}
 			// Remove all players that have less then maximum
-			for (int i = 0; i < possiblePlayers.size(); i++) {
+			for (int i = possiblePlayers.size()-1; i >= 0 ; i--) {
 				int score = allPlayersHands[i][currentIndexBeingCompared];
 				if (score != highestClassificationValueFound) {
 					possiblePlayers.remove(i);
