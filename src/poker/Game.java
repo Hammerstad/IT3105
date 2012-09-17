@@ -26,7 +26,8 @@ public class Game {
 	public Game(int players) {
 		deck = new Deck();
 		newDeck = deck.newDeck();
-		table = new Table(generatePlayers(players));
+		AbstractPlayer[] playerTable = new PlayerGenerator().generateRandomPhasePlayers(players);
+		table = new Table(playerTable);
 		this.history = new ContextHolder();
 	}
 
@@ -145,17 +146,6 @@ public class Game {
                 break;
         }
     }
-
-	AbstractPlayer[] generatePlayers(int n) {
-		AbstractPlayer[] newPlayers = new AbstractPlayer[n];
-		newPlayers[0] = new PlayerPhaseII(PlayerPersonality.RISK_AVERSE);
-		newPlayers[1] = new PlayerPhaseII(PlayerPersonality.NORMAL);
-		newPlayers[2] = new PlayerPhaseII(PlayerPersonality.RISKFUL);
-		newPlayers[3] = new PlayerPhaseIII2(PlayerPersonality.RISK_AVERSE);
-		newPlayers[4] = new PlayerPhaseIII2(PlayerPersonality.NORMAL);
-		newPlayers[5] = new PlayerPhaseIII2(PlayerPersonality.RISKFUL);
-		return newPlayers;
-	}
 
 	public AbstractPlayer[] getWinner() {
 		int[][] scores = new int[table.activePlayers.size()][6];
