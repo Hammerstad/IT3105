@@ -226,9 +226,9 @@ public class Game {
 	 */
 	public static void main(String[] args) {
 		int NOF_GAMES = 1000;
-		int NOF_PLAYERS = 6;
-		Game game = new Game(NOF_PLAYERS);
-		out.writeLine("Creating new game, players: " + NOF_PLAYERS + " Rounds: " + NOF_GAMES);
+		AbstractPlayer[] players = new PlayerGenerator().checkList2();
+		Game game = new Game(players);
+		out.writeLine("Creating new game, players: " + players.length + " Rounds: " + NOF_GAMES);
 		for (int i = 0; i < NOF_GAMES; i++) {
 			game.setState(GameState.START);
 		}
