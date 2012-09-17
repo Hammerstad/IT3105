@@ -132,8 +132,11 @@ public class PlayerGenerator {
 
 	/**
 	 * Generates n phase III players with a specific personality
-	 * @param n - amount of players
-	 * @param personality - set personality for the players
+	 * 
+	 * @param n
+	 *            - amount of players
+	 * @param personality
+	 *            - set personality for the players
 	 * @return AbstractPlayer[] - array of phase III players
 	 */
 	public AbstractPlayer[] generatePhaseIIIPlayers(int n, PlayerPersonality personality) {
@@ -163,7 +166,9 @@ public class PlayerGenerator {
 
 	/**
 	 * Generates a list of random phase players with random personalities
-	 * @param n - amount of players
+	 * 
+	 * @param n
+	 *            - amount of players
 	 * @return AbstractPlayer[] - n random phase players with random personalities
 	 */
 	public AbstractPlayer[] generateRandomPhasePlayers(int n) {
@@ -182,6 +187,55 @@ public class PlayerGenerator {
 				break;
 			}
 		}
+		return newPlayers;
+	}
+
+	/*
+	 * PREDEFINED FOR HANDIN
+	 */
+
+	/**
+	 * Generate the players for the 2nd todo in the checklist
+	 * @return 6 phase 1 players
+	 */
+	public AbstractPlayer[] checkList2() {
+		AbstractPlayer[] newPlayers = new AbstractPlayer[6];
+		newPlayers[0] = new PlayerPhaseI(PlayerPersonality.RISKFUL);
+		newPlayers[1] = new PlayerPhaseI(PlayerPersonality.RISKFUL);
+		newPlayers[2] = new PlayerPhaseI(PlayerPersonality.NORMAL);
+		newPlayers[3] = new PlayerPhaseI(PlayerPersonality.NORMAL);
+		newPlayers[4] = new PlayerPhaseI(PlayerPersonality.RISK_AVERSE);
+		newPlayers[5] = new PlayerPhaseI(PlayerPersonality.RISK_AVERSE);
+		return newPlayers;
+	}
+	
+	/**
+	 * Generate the players for the 5th todo in the checklist
+	 * @return 6 phase 2 players
+	 */
+	public AbstractPlayer[] checkList5() {
+		AbstractPlayer[] newPlayers = new AbstractPlayer[6];
+		newPlayers[0] = new PlayerPhaseII(PlayerPersonality.RISKFUL);
+		newPlayers[1] = new PlayerPhaseII(PlayerPersonality.RISKFUL);
+		newPlayers[2] = new PlayerPhaseII(PlayerPersonality.NORMAL);
+		newPlayers[3] = new PlayerPhaseII(PlayerPersonality.NORMAL);
+		newPlayers[4] = new PlayerPhaseII(PlayerPersonality.RISK_AVERSE);
+		newPlayers[5] = new PlayerPhaseII(PlayerPersonality.RISK_AVERSE);
+		return newPlayers;
+	}
+
+	/**
+	 * Generate the players for the 7th todo in the checklist
+	 * @return 3 phase 3 players, one with each personality, and 1 riskful phase 1, as well as 2 normal/averse phase 2
+	 */
+	public AbstractPlayer[] checkList7() {
+		AbstractPlayer[] newPlayers = new AbstractPlayer[6];
+		newPlayers[0] = new PlayerPhaseIII(PlayerPersonality.RISKFUL);
+		newPlayers[1] = new PlayerPhaseIII(PlayerPersonality.NORMAL);
+		newPlayers[2] = new PlayerPhaseIII(PlayerPersonality.RISK_AVERSE);
+		newPlayers[3] = new PlayerPhaseI(PlayerPersonality.RISKFUL);
+		newPlayers[4] = new PlayerPhaseII(PlayerPersonality.NORMAL);
+		newPlayers[5] = new PlayerPhaseII(PlayerPersonality.RISK_AVERSE);
 		return newPlayers;
 	}
 
