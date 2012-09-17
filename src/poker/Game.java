@@ -291,7 +291,7 @@ public class Game {
 
         int NOF_PLAYERS = 6;
         PlayerGenerator pg = new PlayerGenerator();
-        Game game = new Game(pg.myOwnChecklist());
+        Game game = new Game(pg.checkList2());
         out.writeLine("Creating new game, players: " + NOF_PLAYERS + " Rounds: " + NOF_GAMES);
 
         for (int i = 0; i < NOF_GAMES; i++) {
