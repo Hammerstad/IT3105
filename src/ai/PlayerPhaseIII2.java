@@ -71,7 +71,7 @@ public class PlayerPhaseIII2 extends AbstractPlayer {
 		double preflopCalculation = PlayerPhaseII.preflopTable[suitedCards][noOpponents][hand[0].value - 2][hand[1].value - 2]; // Get
 																																// preflop
 		double toCall = table.remainingToMatchPot[this.playerId];																														// chances
-		double[] calculation = getAverageAdjustedEstimate(table, preflopCalculation);
+		double[] calculation = getAverageAdjustedEstimate(table, preflopCalculation, state);
 		double avg = calculation[calculation.length - 1];
 		if (avg < willBetIfAbove) {
 			Game.out.writeLine("		" + name + " folds, " + Arrays.toString(getHand()) + " Preflop: " + preflopCalculation + " Average estemate: "
@@ -91,7 +91,7 @@ public class PlayerPhaseIII2 extends AbstractPlayer {
 	private double postFlopBet(Table table, GameState state) {
 		double toCall = table.remainingToMatchPot[this.playerId];
 		double handStrength = HandStrength.handstrength(getHand(), table.table, noOpponents);
-		double[] calculation = getAverageAdjustedEstimate(table, handStrength);
+		double[] calculation = getAverageAdjustedEstimate(table, handStrength, state);
 		double avg = calculation[calculation.length - 1];
 		// System.out.println("Needed to raise: "+(willBetIfAbove + 1 / 10. * riskAversion)+
 		// "Needed to call: "+willBetIfAbove+" Value: "+avg);
@@ -110,8 +110,8 @@ public class PlayerPhaseIII2 extends AbstractPlayer {
 		}
 	}
 
-	private double[] getAverageAdjustedEstimate(Table table, double myStrength) {
-		double[] estimate = getEstimatedHands(table);
+	private double[] getAverageAdjustedEstimate(Table table, double myStrength, GameState state) {
+		double[] estimate = getEstimatedHands(table, state);
 
 		double[] calculation = new double[table.players.length + 1];
 		for (int i = 0; i < table.activePlayers.size(); i++) {
@@ -132,7 +132,7 @@ public class PlayerPhaseIII2 extends AbstractPlayer {
 		return calculation;
 	}
 
-	private double[] getEstimatedHands(Table table) {
+	private double[] getEstimatedHands(Table table, GameState state) {
 		double[] estimate = new double[table.players.length];
 		// Fill with -1 to indicate not found
 		Arrays.fill(estimate, -1.0);
@@ -154,8 +154,8 @@ public class PlayerPhaseIII2 extends AbstractPlayer {
 		// Build searchcontexts for every player
 		Context[] search = new Context[table.players.length];
 		for (int i = 0; i < table.players.length; i++) {
-			//search[i] = Context.createContext(i, game.state, game.table.amountOfRaisesThisRound, game.table.activePlayers.size(), lastPotodds[i],
-					//lastAction[i], 0);
+			search[i] = Context.createContext(i, state, table.activePlayers.size(), lastPotodds[i],
+					lastAction[i], null);
 		}
 		ContextHolder[] results = new ContextHolder[table.players.length];
 		OpponentModeling om = OpponentModeling.getInstance();

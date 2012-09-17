@@ -71,6 +71,7 @@ public class PlayerPhaseIII extends PlayerPhaseII {
             if (apInd == this.playerId) {
                 continue;
             }
+            Context c = Context.createContext(apInd, state, table.activePlayers.size(), lastPotOdd[apInd], ((lastActions[apInd] != null) ? lastActions[apInd] : Action.CALL), null);
             //Context c = Context.createContext(apInd, game.state, game.table.amountOfRaisesThisRound, game.table.activePlayers.size(), lastPotOdd[apInd], ((lastActions[apInd] != null) ? lastActions[apInd] : Action.CALL), -1);
             switch (personality) {
                 case RISK_AVERSE:

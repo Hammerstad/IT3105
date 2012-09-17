@@ -27,21 +27,19 @@ public class Context {
     }
     private int playerId;
     private GameState gameState;
-    private int raises;
     private int players;
     private double potOdds;
     private Action action;
-    private double handstrength = 0;
+    private int[] powerrating = null;
 
-    public static Context createContext(int playerId, GameState gameState, int raises, int players, double potOdds, Action action, double handStrength) {
+    public static Context createContext(int playerId, GameState gameState, int players, double potOdds, Action action, int[] powerrating) {
         Context c = new Context();
         c.playerId = playerId;
         c.gameState = gameState;
-        c.raises = raises;
         c.players = players;
         c.potOdds = potOdds;
         c.action = action;
-        c.handstrength = handStrength;
+        c.powerrating = powerrating;
         return c;
     }
 
@@ -49,7 +47,6 @@ public class Context {
     public int hashCode() {
         int hash = 5;
         hash = 37 * hash + (this.gameState != null ? this.gameState.hashCode() : 0);
-        hash = 37 * hash + this.raises;
         hash = 37 * hash + this.players;
         hash = 37 * hash + (int) (Double.doubleToLongBits(this.potOdds) ^ (Double.doubleToLongBits(this.potOdds) >>> 32));
         hash = 37 * hash + (this.action != null ? this.action.hashCode() : 0);
@@ -66,9 +63,6 @@ public class Context {
         }
         final Context other = (Context) obj;
         if (this.gameState != other.gameState) {
-            return false;
-        }
-        if (this.raises != other.raises) {
             return false;
         }
         if (this.players != other.players) {
@@ -90,11 +84,6 @@ public class Context {
     public GameState getGameState() {
         return gameState;
     }
-
-    public int getRaises() {
-        return raises;
-    }
-
     public int getPlayers() {
         return players;
     }
@@ -107,7 +96,7 @@ public class Context {
         return action;
     }
 
-    public double getHandstrength() {
-        return handstrength;
+    public int[] getHandstrength() {
+        return powerrating;
     }
 }

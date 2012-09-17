@@ -6,7 +6,7 @@ package poker;
  */
 public enum GameState {
 
-    START(0), PREFLOP_BETTING(1), FLOP(2), PRETURN_BETTING(3), TURN(4), PRERIVER_BETTING(5), RIVER(6), FINAL_BETTING(7), SHOWDOWN(9);
+    START(-1), PREFLOP_BETTING(0), FLOP(-1), PRETURN_BETTING(1), TURN(-1), PRERIVER_BETTING(2), RIVER(-1), FINAL_BETTING(3), SHOWDOWN(-1);
     int i;
     private GameState(int i){
         this.i = i;
