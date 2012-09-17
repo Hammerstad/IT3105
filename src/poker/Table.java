@@ -99,7 +99,7 @@ public class Table {
 	public AbstractPlayer[] returnPlayersOfIndex(List<Integer> possiblePlayers) {
 		AbstractPlayer[] players = new AbstractPlayer[possiblePlayers.size()];
 		for (int i = 0; i < possiblePlayers.size(); i++) {
-			players[i] = activePlayers.get(possiblePlayers.get(i));
+			players[i] = this.players[possiblePlayers.get(i)];
 		}
 		return players;
 	}
@@ -112,7 +112,7 @@ public class Table {
 	public List<Integer> getIndexOfActivePlayers() {
 		List<Integer> possiblePlayers = new LinkedList<Integer>();
 		for (int i = 0; i < activePlayers.size(); i++) {
-			possiblePlayers.add(i);
+			possiblePlayers.add(activePlayers.get(i).getPlayerId());
 		}
 		return possiblePlayers;
 	}
@@ -136,5 +136,14 @@ public class Table {
 				}
 			}
 		}
+	}
+	public String toString(){
+		StringBuilder sb = new StringBuilder();
+		for(Card card : table){
+			sb.append(" [");
+			sb.append(card);
+			sb.append("], ");
+		}
+		return sb.toString();
 	}
 }

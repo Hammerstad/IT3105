@@ -242,4 +242,20 @@ public class PlayerGenerator {
 		return newPlayers;
 	}
 
+	/**
+	 * Generate the players for the 5th todo in the checklist
+	 * 
+	 * @return 6 phase 2 players
+	 */
+	public AbstractPlayer[] myOwnChecklist() {
+		AbstractPlayer[] newPlayers = new AbstractPlayer[6];
+		newPlayers[0] = new PlayerPhaseI(PlayerPersonality.RISKFUL);
+		newPlayers[1] = new PlayerPhaseI(PlayerPersonality.RISKFUL);
+		newPlayers[2] = new PlayerPhaseI(PlayerPersonality.NORMAL);
+		newPlayers[3] = new PlayerPhaseII(PlayerPersonality.NORMAL);
+		newPlayers[4] = new PlayerPhaseII(PlayerPersonality.RISK_AVERSE);
+		newPlayers[5] = new PlayerPhaseII(PlayerPersonality.RISK_AVERSE);
+		return newPlayers;
+	}
+
 }

@@ -9,7 +9,6 @@ import utilities.DataOutput;
 import ai.player.AbstractPlayer;
 import ai.opponentmodeling.ContextHolder;
 import ai.player.PlayerGenerator;
-import com.sun.accessibility.internal.resources.accessibility;
 
 public class Game {
 
@@ -91,9 +90,9 @@ public class Game {
 		for (int i = 0; i < maxReRaises; i++) {
 			List<AbstractPlayer> foldingPlayers = new ArrayList<AbstractPlayer>();
 			// Iterate through the players and see what they decide to do
-//			for (AbstractPlayer player : table.activePlayers) {
-                        for (int pi = 0;pi < table.activePlayers.size();pi++) {
-                                AbstractPlayer player = table.activePlayers.get((table.dealingPlayer + 3 + pi)%table.activePlayers.size());
+			// for (AbstractPlayer player : table.activePlayers) {
+			for (int playerIndex = 0; playerIndex < table.activePlayers.size(); playerIndex++) {
+				AbstractPlayer player = table.activePlayers.get((table.dealingPlayer + 3 + playerIndex) % table.activePlayers.size());
 				int id = player.getPlayerId();
 				double bet = player.bet(this.table, current);
 				if (bet < 0) { // THIS MEANS FOLD
@@ -119,16 +118,16 @@ public class Game {
 			// Check if all players have called each other
 			boolean allPlayersHaveCalled = true;
 			for (AbstractPlayer player : table.activePlayers) {
-				if (table.remainingToMatchPot[player.getPlayerId()] != 0){
+				if (table.remainingToMatchPot[player.getPlayerId()] != 0) {
 					allPlayersHaveCalled = false;
 					break;
 				}
 			}
-			if(allPlayersHaveCalled){
+			if (allPlayersHaveCalled) {
 				setState(next);
 				return;
 			}
-			
+
 			if (i == maxReRaises - 1) {
 				// This means that not all players have checked the final bet, do they want to?
 				table.checkRemainingPlayers(current);
@@ -189,10 +188,13 @@ public class Game {
 			for (AbstractPlayer winner : winners) {
 				winner.receiveMoney(potShare);
 				winner.wins++;
+				out.writeLine("Table: "+table.toString());
+				out.writeLine("Winner: "+winner.getName() + " Pot: "+potShare);
 			}
 			// Withdraw whatever the players played for
-			for(AbstractPlayer player : table.players){
+			for (AbstractPlayer player : table.players) {
 				player.takeMoney(table.currentBetForPlayers[player.getPlayerId()]);
+				out.writeLine(player.getName()+" lost: "+table.currentBetForPlayers[player.getPlayerId()]);
 			}
 			history.pushToOpponentModeler();
 			break;
@@ -234,20 +236,19 @@ public class Game {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		int NOF_GAMES = 1000;
+		int NOF_GAMES = 100;
 
 		int NOF_PLAYERS = 6;
-                PlayerGenerator pg = new PlayerGenerator();
-		Game game = new Game(pg.checkList2());
+		PlayerGenerator pg = new PlayerGenerator();
+		Game game = new Game(pg.myOwnChecklist());
 		out.writeLine("Creating new game, players: " + NOF_PLAYERS + " Rounds: " + NOF_GAMES);
 
 		for (int i = 0; i < NOF_GAMES; i++) {
 			game.setState(GameState.START);
 		}
-		int i = 1;
 		for (AbstractPlayer pi : game.table.players) {
-			out.writeLine("Player " + (i) + ": " + pi.getMoney() + " Wins: " + pi.wins + " Folds: " + Arrays.toString(pi.folds));
-                        System.out.println("Player " + (i++) + ": " + pi.getMoney() + " Wins: " + pi.wins + " Folds: " + Arrays.toString(pi.folds));
+			out.writeLine(pi.getName() + ": " + pi.getMoney() + " Wins: " + pi.wins + " Folds: " + Arrays.toString(pi.folds));
+			System.out.println(pi.getName() + ": " + pi.getMoney() + " Wins: " + pi.wins + " Folds: " + Arrays.toString(pi.folds));
 		}
 		DataOutput.close();
 	}
