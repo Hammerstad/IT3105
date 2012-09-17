@@ -270,7 +270,7 @@ public class Game {
     }
 
     public static void main(String[] args) {
-        int NOF_GAMES = 100;
+        int NOF_GAMES = 10;
         int NOF_PLAYERS = 6;
         Game game = new Game(NOF_PLAYERS);
         out.writeLine("Creating new game, players: " + NOF_PLAYERS + " Rounds: " + NOF_GAMES);
