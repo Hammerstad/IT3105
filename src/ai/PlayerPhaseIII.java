@@ -11,8 +11,8 @@ import poker.Game;
 import utilities.HandStrength;
 
 /**
- *
- * @author Nicklas
+ * Phase III players. They use opponent modeling all the time, handstrength calculations for postflop, and preflop calculations before the
+ * flop. Beware!
  */
 public class PlayerPhaseIII extends PlayerPhaseII {
 

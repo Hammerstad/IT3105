@@ -122,6 +122,9 @@ public class PlayerPhaseII extends AbstractPlayer {
         }
     }
 
+    /**
+     * Overwritten toString method for phase II players.
+     */
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(super.toString()).append(" ");

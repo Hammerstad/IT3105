@@ -5,6 +5,10 @@ import poker.Game;
 import poker.GameState;
 import utilities.HandStrength;
 
+/**
+ * Phase I players. They are quite random at preflop betting, but uses
+ * handstrength calculations for postflop.
+ */
 public class PlayerPhaseI extends AbstractPlayer {
 
     private double riskAversion;
@@ -100,6 +104,10 @@ public class PlayerPhaseI extends AbstractPlayer {
             return toCall;
         }
     }
+
+   /**
+             * Overwritten toString method for Phase I players.
+             */
 
     @Override
     public String toString() {
