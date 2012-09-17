@@ -114,12 +114,18 @@ public class Game {
 				return;
 			}
 			// Check if all players have called each other
+			boolean allPlayersHaveCalled = true;
 			for (AbstractPlayer player : table.activePlayers) {
-				if (table.remainingToMatchPot[player.getPlayerId()] != 0)
-					continue;
+				if (table.remainingToMatchPot[player.getPlayerId()] != 0){
+					allPlayersHaveCalled = false;
+					break;
+				}
+			}
+			if(allPlayersHaveCalled){
 				setState(next);
 				return;
 			}
+			
 			if (i == maxReRaises - 1) {
 				// This means that not all players have checked the final bet, do they want to?
 				table.checkRemainingPlayers(current);
