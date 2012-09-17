@@ -155,20 +155,6 @@ public class PlayerPhaseIII2 extends AbstractPlayer {
             if (results[i] == null) {
                 continue;
             }
-//            switch (personality) {
-//                case RISK_AVERSE:
-//                    //Find maximum previous handstrength for this state
-//                    estimate[i] = results[i].getMaxHandstrength();
-//                    break;
-//                case NORMAL:
-//                    //Find average handstrength for this state
-//                    estimate[i] = results[i].getAverageHandstrength();
-//                    break;
-//                case RISKFUL:
-//                    //Find minimum previous handstrength for this state
-//                    estimate[i] = results[i].getMinHandstrength();
-//                    break;
-//            }
             estimate[i] = results[i].getAverageHandstrength();
         }
         return estimate;
