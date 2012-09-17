@@ -6,118 +6,117 @@ import poker.GameState;
 import utilities.HandStrength;
 
 /**
- * Phase I players. They are quite random at preflop betting, but uses handstrength calculations for postflop.
+ * Phase I players. They are quite random at preflop betting, but uses
+ * handstrength calculations for postflop.
  */
 public class PlayerPhaseI extends AbstractPlayer {
 
-	private double riskAversion;
+    private double riskAversion;
+    protected int noOpponents; // How many opponents left
+    protected double willBetIfAbove; // Will bet if above this (lower value for higher number of players)
 
-	public PlayerPhaseI(PlayerPersonality personality) {
-		this();
-		this.personality = personality;
-	}
+    public PlayerPhaseI(PlayerPersonality personality) {
+        this();
+        this.personality = personality;
+    }
 
-	/**
-	 * Default Phase 2 player. Gets a random personality.
-	 */
-	public PlayerPhaseI() {
-		super();
-		this.personality = PlayerPersonality.getRandom();
-		this.name = "Phase I Player " + NO;
-		setRiskAversion();
-	}
+    /**
+     * Default Phase 2 player. Gets a random personality.
+     */
+    public PlayerPhaseI() {
+        super();
+        this.personality = PlayerPersonality.getRandom();
+        this.name = "Phase I Player " + NO;
+        setRiskAversion();
+    }
 
-	/**
-	 * Sets the risk aversion of a player. Greedy players are risk averse.
-	 */
-	private void setRiskAversion() {
-		switch (personality) {
-		case RISK_AVERSE:
-			riskAversion = 0.900;
-			break;
-		case NORMAL:
-			riskAversion = 1.000;
-			break;
-		case RISKFUL:
-			riskAversion = 1.100;
-			break;
-		}
-	}
+    /**
+     * Sets the risk aversion of a player. Greedy players are risk averse.
+     */
+    private void setRiskAversion() {
+        switch (personality) {
+            case RISK_AVERSE:
+                riskAversion = 0.900;
+                break;
+            case NORMAL:
+                riskAversion = 1.000;
+                break;
+            case RISKFUL:
+                riskAversion = 1.100;
+                break;
+        }
+    }
 
-	/**
-	 * Bet function for phase 1 player. Preflop is handled quite randomly and postflop is handstrength based.
-	 * 
-	 * @return -1 (FOLD) / 0 (CHECK) / double (RAISE)
-	 */
-	@Override
-	public double bet(Game state, double toCall) {
-		if (state.state == GameState.PRETURN_BETTING || state.state == GameState.PRERIVER_BETTING || state.state == GameState.FINAL_BETTING) {
-			return postFlopBetting(state, toCall);
-		} else if (state.state == GameState.PREFLOP_BETTING) {
-			return preFlopBetting(toCall);
-		}
-		return -1;
-	}
+    /**
+     * Bet function for phase 1 player. Preflop is handled quite randomly and
+     * postflop is handstrength based.
+     *
+     * @return -1 (FOLD) / 0 (CHECK) / double (RAISE)
+     */
+    @Override
+    public double bet(Game game, double toCall) {
+        noOpponents = game.table.activePlayers.size() - 1;
+        willBetIfAbove = Math.pow(0.15, noOpponents);
+        if (game.state == GameState.PRETURN_BETTING || game.state == GameState.PRERIVER_BETTING || game.state == GameState.FINAL_BETTING) {
+            return postFlopBetting(game, toCall);
+        } else if (game.state == GameState.PREFLOP_BETTING) {
+            return preFlopBetting(toCall);
+        }
+        return -1;
+    }
 
-	/**
-	 * Private function for preflop betting. Everything is random!
-	 * 
-	 * @param toCall
-	 *            - how much you need to raise to match the pot
-	 * @return -1 (FOLD) / 0 (CHECK) / double (RAISE)
-	 */
-	private double preFlopBetting(double toCall) {
-		if (toCall == 0) {
-			Game.out.writeLine("		" + name + " checks, " + Arrays.toString(getHand()));
-			return 0;
-		} else if (Math.random() > 0.3) {
-			Game.out.writeLine("		" + name + " calls " + toCall + ", " + Arrays.toString(getHand()));
-			return toCall;
-		} else {
-			Game.out.writeLine("		" + name + " folds (pre flop), " + Arrays.toString(getHand()));
-			return foldBeforeFlop();
-		}
-	}
+    /**
+     * Private function for preflop betting. Everything is random!
+     *
+     * @param toCall - how much you need to raise to match the pot
+     * @return -1 (FOLD) / 0 (CHECK) / double (RAISE)
+     */
+    private double preFlopBetting(double toCall) {
+        if (toCall == 0) {
+            Game.out.writeLine("		" + name + " checks, " + Arrays.toString(getHand()));
+            return 0;
+        } else if (Math.random() * riskAversion > 0.3) {
+            Game.out.writeLine("		" + name + " calls " + toCall + ", " + Arrays.toString(getHand()));
+            return toCall;
+        } else {
+            Game.out.writeLine("		" + name + " folds (pre flop), " + Arrays.toString(getHand()));
+            return foldBeforeFlop();
+        }
+    }
 
-	/**
-	 * Private function for preflop betting. Everything is random!
-	 * 
-	 * @param toCall
-	 *            - how much you need to raise to match the pot
-	 * @param state
-	 *            - the current game state
-	 * @return -1 (FOLD) / 0 (CHECK) / double (RAISE)
-	 */
-	private double postFlopBetting(Game state, double toCall) {
-		double hs = HandStrength.handstrength(hand, state.table.table, state.table.activePlayers.size()), d = hs
-				* (state.table.activePlayers.size() - 1);
-		if (d >= this.riskAversion || (state.table.activePlayers.size()) == 1 || toCall == 0) {
-			if (d > 0.8 || (d > 0.5 && toCall == 0)) {
-				Game.out.writeLine("		" + name + " raises " + (toCall + 2 * state.table.blind) + ", " + Arrays.toString(getHand())
-						+ " HandStrength: " + hs);
-				return toCall + 2 * state.table.blind;
-			} else if (toCall == 0) {
-				Game.out.writeLine("		" + name + " checks, " + Arrays.toString(getHand()) + " HandStrength: " + hs);
-				return 0;
-			} else {
-				Game.out.writeLine("		" + name + " calls " + toCall + ", " + Arrays.toString(getHand()) + " HandStrength: " + hs);
-				return toCall;
-			}
-		} else {
-			Game.out.writeLine("	" + name + " folds (post flop), " + Arrays.toString(getHand()) + " HandStrength: " + hs);
-			return foldAfterFlop();
-		}
-	}
+    /**
+     * Private function for preflop betting. Everything is random!
+     *
+     * @param toCall - how much you need to raise to match the pot
+     * @param state - the current game state
+     * @return -1 (FOLD) / 0 (CHECK) / double (RAISE)
+     */
+    private double postFlopBetting(Game game, double toCall) {
+        double handStrength = HandStrength.handstrength(getHand(), game.table.table, noOpponents);
+        if (handStrength * riskAversion < willBetIfAbove && toCall > 0) {
+            Game.out.writeLine("		" + name + " folds, " + Arrays.toString(getHand()) + " Handstrengt: " + handStrength);
+            return foldAfterFlop();
+        } else if (handStrength * riskAversion > (willBetIfAbove + 0.1 / riskAversion)) {
+            Game.out.writeLine("		" + name + " raises " + (toCall + game.table.blind * riskAversion) + ", " + Arrays.toString(getHand()) + " Handstrengt: " + handStrength);
+            return toCall + game.table.blind * riskAversion;
+        } else if (handStrength * riskAversion > willBetIfAbove && toCall == 0) {
+            Game.out.writeLine("		" + name + " raises " + (2*game.table.blind) + ", " + Arrays.toString(getHand()) + " Handstrengt: " + handStrength);
+            return 2*game.table.blind;
+        } else {
+            Game.out.writeLine("		" + name + " calls " + toCall + ", " + Arrays.toString(getHand()) + " Handstrengt: " + handStrength);
+            return toCall;
+        }
+    }
 
-	/**
-	 * Overwritten toString method for Phase I players.
-	 */
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append(super.toString()).append(" ");
-		sb.append("RiskAversion: ").append(riskAversion).append(" ");
-		sb.append("Cards: ").append(Arrays.toString(getHand()));
-		return sb.toString();
-	}
+    /**
+     * Overwritten toString method for Phase I players.
+     */
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(super.toString()).append(" ");
+        sb.append("RiskAversion: ").append(riskAversion).append(" ");
+        sb.append("Cards: ").append(Arrays.toString(getHand()));
+        return sb.toString();
+    }
 }
