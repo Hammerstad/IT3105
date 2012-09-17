@@ -236,6 +236,7 @@ public class Game {
 		int i = 1;
 		for (AbstractPlayer pi : game.table.players) {
 			out.writeLine("Player " + (i++) + ": " + pi.getMoney() + " Wins: " + pi.wins + " Folds: " + Arrays.toString(pi.folds));
+                        System.out.println("Player " + (i++) + ": " + pi.getMoney() + " Wins: " + pi.wins + " Folds: " + Arrays.toString(pi.folds));
 		}
 		DataOutput.close();
 	}
