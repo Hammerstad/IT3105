@@ -1,4 +1,4 @@
-package ai;
+package ai.player;
 
 import poker.Card;
 import poker.GameState;

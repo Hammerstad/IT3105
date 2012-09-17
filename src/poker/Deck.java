@@ -5,7 +5,7 @@ import java.util.List;
 
 import utilities.DataOutput;
 
-import ai.AbstractPlayer;
+import ai.player.AbstractPlayer;
 
 /**
  * Class to represent the deck. Has a logger, a new deck for reference and the current deck.

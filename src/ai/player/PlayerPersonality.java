@@ -1,4 +1,4 @@
-package ai;
+package ai.player;
 
 /**
  * A Player's personality. May be either: RISK_AVERSE, NORMAL, RISKFUL
