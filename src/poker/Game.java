@@ -82,8 +82,11 @@ public class Game {
 
 	/**
 	 * Betting function of the game. Sends the game state to the next state after done.
-	 * @param current - current game state.
-	 * @param next - next game state.
+	 * 
+	 * @param current
+	 *            - current game state.
+	 * @param next
+	 *            - next game state.
 	 */
 	public void bet(GameState current, GameState next) {
 		out.writeLine("	Betting: " + current);
@@ -106,7 +109,7 @@ public class Game {
 			}
 			// Remove folding players from active players
 			for (AbstractPlayer foldingPlayer : foldingPlayers) {
-				out.writeLine("removing folding player"+foldingPlayer.getPlayerId());
+				out.writeLine("removing folding player" + foldingPlayer.getPlayerId());
 				table.activePlayers.remove(foldingPlayer);
 			}
 			// If only one player remains, go to showdown
@@ -116,8 +119,8 @@ public class Game {
 				return;
 			}
 			// Check if all players have called each other
-			for(AbstractPlayer player : table.activePlayers){
-				if(table.remainingToMatchPot[player.getPlayerId()] != 0)
+			for (AbstractPlayer player : table.activePlayers) {
+				if (table.remainingToMatchPot[player.getPlayerId()] != 0)
 					continue;
 				setState(next);
 				return;
