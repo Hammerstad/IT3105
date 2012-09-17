@@ -6,9 +6,9 @@ import java.util.List;
 
 import utilities.CardUtilities;
 import utilities.DataOutput;
-import ai.AbstractPlayer;
-import ai.ContextHolder;
-import ai.PlayerGenerator;
+import ai.player.AbstractPlayer;
+import ai.opponentmodeling.ContextHolder;
+import ai.player.PlayerGenerator;
 
 public class Game {
 

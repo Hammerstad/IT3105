@@ -2,8 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package ai;
+package ai.player;
 
+import ai.opponentmodeling.Context;
 import java.util.Arrays;
 import java.util.List;
 
@@ -11,26 +12,28 @@ import poker.Game;
 import poker.GameState;
 import poker.Table;
 import utilities.HandStrength;
-import ai.Context.Action;
+import ai.opponentmodeling.Context.Action;
+import ai.opponentmodeling.ContextHolder;
+import ai.opponentmodeling.OpponentModeling;
 
 /**
  * Phase III players. They use opponent modeling all the time, handstrength calculations for postflop, and preflop calculations before the
  * flop. Beware!
  */
-public class PlayerPhaseIII2 extends AbstractPlayer {
+public class PlayerPhaseIII extends AbstractPlayer {
 
 	protected int noOpponents;
 	protected double willBetIfAbove;
 	protected double riskAversion = 1.000;
 
-	public PlayerPhaseIII2(PlayerPersonality personality) {
+	public PlayerPhaseIII(PlayerPersonality personality) {
 		super();
 		this.personality = personality;
 		setRiskAversion();
 		this.name = "Phase III2 Player " + NO;
 	}
 
-	public PlayerPhaseIII2() {
+	public PlayerPhaseIII() {
 		this(PlayerPersonality.getRandom());
 	}
 

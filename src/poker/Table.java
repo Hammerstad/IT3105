@@ -6,7 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import utilities.DataOutput;
-import ai.AbstractPlayer;
+import ai.player.AbstractPlayer;
 
 /**
  * Class to represent the table. Has a logger. Handles the players, both currently in the game and the ones who have folded. Also handles
