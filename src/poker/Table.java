@@ -8,6 +8,11 @@ import utilities.DataOutput;
 
 import ai.AbstractPlayer;
 
+/**
+ * Class to represent the table. Has a logger. Handles the players, both currently in the game and the ones who have folded. Also handles
+ * the cards at the table, the pot, the blinds, who is the dealer, how much players need to bet to match the pot, the current bet for all
+ * players and the amount of raises so far this round.
+ */
 public class Table {
 
 	// Before round

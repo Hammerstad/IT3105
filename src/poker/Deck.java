@@ -7,6 +7,9 @@ import utilities.DataOutput;
 
 import ai.AbstractPlayer;
 
+/**
+ * Class to represent the deck. Has a logger, a new deck for reference and the current deck.
+ */
 public class Deck {
 
 	// Data before game

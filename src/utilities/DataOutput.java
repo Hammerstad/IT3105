@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * This class is our own little logger. Writes to file, the directory is </br>/logging/poker.(NAME_OF_CLASS).txt
+ * This class is our own little logger. Writes to file, the directory is </br>/logging/(package).(NAME_OF_CLASS).txt
  */
 public class DataOutput {
 
