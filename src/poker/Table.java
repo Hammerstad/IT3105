@@ -1,5 +1,6 @@
 package poker;
 
+import ai.opponentmodeling.Context;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -7,6 +8,7 @@ import java.util.List;
 
 import utilities.DataOutput;
 import ai.player.AbstractPlayer;
+import utilities.CardUtilities;
 
 /**
  * Class to represent the table. Has a logger. Handles the players, both currently in the game and the ones who have folded. Also handles
@@ -129,10 +131,12 @@ public class Table {
                 double bet = player.bet(this, state);
                 if (bet < 0) {// This means a fold
                     foldingPlayers.add(player);
+                    Game.history.addHistoryEntry(Context.createContext(player.getPlayerId(), state, activePlayers.size(), remainingToMatchPot[playerId]/(remainingToMatchPot[playerId]+pot*1.0), Context.Action.FOLD, CardUtilities.classification(player.getHand(), table)));
                 } else {// Player wants to raise or call, we won't allow raising so...
                     pot += remainingToMatchPot[playerId];
                     currentBetForPlayers[playerId] += remainingToMatchPot[playerId];
                     remainingToMatchPot[playerId] = 0;
+                    Game.history.addHistoryEntry(Context.createContext(player.getPlayerId(), state, activePlayers.size(), remainingToMatchPot[playerId]/(remainingToMatchPot[playerId]+pot*1.0), Context.Action.CALL, CardUtilities.classification(player.getHand(), table)));
                 }
             }
         }

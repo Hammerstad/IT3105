@@ -1,5 +1,6 @@
 package poker;
 
+import ai.opponentmodeling.Context;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -111,11 +112,15 @@ public class Game {
             }
             if (bet < 0) {
                 foldingPlayers.add(player);
+                history.addHistoryEntry(Context.createContext(id, state, table.activePlayers.size(), table.remainingToMatchPot[id]/(table.remainingToMatchPot[id]+table.pot*1.0), Context.Action.FOLD, CardUtilities.classification(player.getHand(), table.table)));
                 table.remainingToMatchPot[id] = 0;
             } else {
                 if (bet > table.remainingToMatchPot[id]) {
                     table.raiseRemainingToMatchPot(bet - table.remainingToMatchPot[id]);
                     raises++;
+                    history.addHistoryEntry(Context.createContext(id, state, table.activePlayers.size(), table.remainingToMatchPot[id]/(table.remainingToMatchPot[id]+table.pot*1.0), Context.Action.RAISE, CardUtilities.classification(player.getHand(), table.table)));
+                }else {
+                    history.addHistoryEntry(Context.createContext(id, state, table.activePlayers.size(), table.remainingToMatchPot[id]/(table.remainingToMatchPot[id]+table.pot*1.0), Context.Action.CALL, CardUtilities.classification(player.getHand(), table.table)));
                 }
                 table.pot += bet;
                 table.remainingToMatchPot[id] -= bet;
@@ -137,59 +142,6 @@ public class Game {
         } while (sum != 0 || playersPlayed < table.activePlayers.size());
         setState(next);
     }
-
-    public void bet2(GameState current, GameState next) {
-        out.writeLine("	Betting: " + current);
-        for (int i = 0; i < maxReRaises; i++) {
-            List<AbstractPlayer> foldingPlayers = new ArrayList<AbstractPlayer>();
-            // Iterate through the players and see what they decide to do
-            // for (AbstractPlayer player : table.activePlayers) {
-            for (int playerIndex = 0; playerIndex < table.activePlayers.size(); playerIndex++) {
-                AbstractPlayer player = table.activePlayers.get((table.dealingPlayer + 3 + playerIndex) % table.activePlayers.size());
-                int id = player.getPlayerId();
-                double bet = player.bet(this.table, current);
-                if (bet < 0) { // THIS MEANS FOLD
-                    foldingPlayers.add(player);
-                } else { // RAISE AND CALLING
-                    if (bet > table.remainingToMatchPot[id]) { // THIS IS ONLY FOR RAISE
-                        table.raiseRemainingToMatchPot(bet - table.remainingToMatchPot[id]);
-                    }
-                    table.pot += bet;
-                    table.remainingToMatchPot[id] -= bet;
-                    table.currentBetForPlayers[id] += bet;
-                }
-            }
-            // Remove folding players from active players
-            for (AbstractPlayer foldingPlayer : foldingPlayers) {
-                table.activePlayers.remove(foldingPlayer);
-            }
-            // If only one player remains, go to showdown
-            if (table.activePlayers.size() == 1) {
-                setState(GameState.SHOWDOWN);
-                return;
-            }
-            // Check if all players have called each other
-            boolean allPlayersHaveCalled = true;
-            for (AbstractPlayer player : table.activePlayers) {
-                if (table.remainingToMatchPot[player.getPlayerId()] != 0) {
-                    allPlayersHaveCalled = false;
-                    break;
-                }
-            }
-            if (allPlayersHaveCalled) {
-                setState(next);
-                return;
-            }
-
-            if (i == maxReRaises - 1) {
-                // This means that not all players have checked the final bet, do they want to?
-                table.checkRemainingPlayers(current);
-            }
-        }
-        // Time to go to the next phase of the game
-        setState(next);
-    }
-
     /**
      * The main function of the game. Changes the state of the game and makes
      * sure everything is played according to poker rules.
@@ -236,6 +188,7 @@ public class Game {
                 break;
             case SHOWDOWN:
                 // Give winners their money
+                history.pushToOpponentModeler(table.activePlayers);
                 AbstractPlayer[] winners = getWinner();
                 double potShare = table.pot / winners.length;
                 for (AbstractPlayer winner : winners) {
@@ -249,7 +202,6 @@ public class Game {
                     player.takeMoney(table.currentBetForPlayers[player.getPlayerId()]);
                     out.writeLine(player.getName() + " lost: " + table.currentBetForPlayers[player.getPlayerId()]);
                 }
-                history.pushToOpponentModeler();
                 break;
         }
     }
