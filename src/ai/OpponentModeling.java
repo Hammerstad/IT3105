@@ -33,7 +33,7 @@ public class OpponentModeling {
         double hsCount = soFar.size();
         double hsAvg = 0;
         for (Context cc : soFar.getContexts()){
-            hsAvg+=cc.getHandstrengthAvg();
+            hsAvg+=cc.getHandstrength();
         }
         hsAvg /= hsCount;
         
@@ -48,7 +48,7 @@ public class OpponentModeling {
         written += output.writeLine("	Raises:		"+c.getRaises());
         written += output.writeLine("	PotOdds:		"+c.getPotOdds());
         written += output.writeLine("	Action:		"+c.getAction());
-        written += output.writeLine("	HS_new:		"+c.getHandstrengthAvg());
+        written += output.writeLine("	HS_new:		"+c.getHandstrength());
         written += output.writeLine("	HS_avg:		"+hsAvg);
         written += output.writeLine("	HS_count:	"+hsCount);
         written += output.writeLine("");
@@ -63,7 +63,7 @@ public class OpponentModeling {
         double hsAvg = 0, hsCount = 0;
         hsCount = ch.size();
         for (Context cc : ch.getContexts()){
-            hsAvg += cc.getHandstrengthAvg();
+            hsAvg += cc.getHandstrength();
         }
         hsAvg /= hsCount;
         return new double[]{hsAvg, hsCount};
@@ -73,8 +73,8 @@ public class OpponentModeling {
         if (ch == null)return new double[]{-1, 0};
         double hsMax = -1;
         for (Context cc : ch.getContexts()){
-            if (cc.getHandstrengthAvg() > hsMax){
-                hsMax = cc.getHandstrengthAvg();
+            if (cc.getHandstrength() > hsMax){
+                hsMax = cc.getHandstrength();
             }
         }
         return new double[]{hsMax, 1};
@@ -84,8 +84,8 @@ public class OpponentModeling {
         if (ch == null)return new double[]{-1, 0};
         double hsMax = Integer.MAX_VALUE;
         for (Context cc : ch.getContexts()){
-            if (cc.getHandstrengthAvg() < hsMax && cc.getHandstrengthAvg() > 0){
-                hsMax = cc.getHandstrengthAvg();
+            if (cc.getHandstrength() < hsMax && cc.getHandstrength() > 0){
+                hsMax = cc.getHandstrength();
             }
         }
         return new double[]{hsMax, 1};

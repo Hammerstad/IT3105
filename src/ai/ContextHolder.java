@@ -35,4 +35,29 @@ public class ContextHolder {
     public List<Context> getContexts() {
         return this.history;
     }
+    public double getAverageHandstrength() {
+        double sum = 0;
+        for (Context c : history){
+            sum += c.getHandstrength();
+        }
+        return sum/history.size();
+    }
+    public double getMaxHandstrength() {
+        double max = 2;
+        for (Context c : history) {
+            if (c.getHandstrength() > max){
+                max = c.getHandstrength();
+            }
+        }
+        return max;
+    }
+    public double getMinHandstrength() {
+        double min = 0;
+        for (Context c : history) {
+            if (c.getHandstrength() < min && c.getHandstrength() > 0){
+                min = c.getHandstrength();
+            }
+        }
+        return min;
+    }
 }

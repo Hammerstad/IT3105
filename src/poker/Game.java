@@ -67,6 +67,7 @@ public class Game {
                     roundBet[plIndex]+=d;
                     if (d > toCall[plIndex]) {
                         history.addHistoryEntry(Context.createContext(plIndex, state, raises, activePlayers.size(), roundBet[plIndex]/(roundBet[plIndex]+pot*1.0), Context.Action.RAISE, HandStrength.handstrength(pi.getHand(), table, activePlayers.size())));
+                        addToCall(d-toCall[plIndex]);
                         raises++;
                     }else {
                         history.addHistoryEntry(Context.createContext(plIndex, state, raises, activePlayers.size(), roundBet[plIndex]/(roundBet[plIndex]+pot*1.0), Context.Action.CALL, HandStrength.handstrength(pi.getHand(), table, activePlayers.size())));
@@ -178,9 +179,9 @@ public class Game {
         newPlayers[0] = new PlayerPhaseII(PlayerPersonality.RISK_AVERSE);
         newPlayers[1] = new PlayerPhaseII(PlayerPersonality.NORMAL);
         newPlayers[2] = new PlayerPhaseII(PlayerPersonality.RISKFUL);
-        newPlayers[3] = new PlayerPhaseIII(PlayerPersonality.RISK_AVERSE);
-        newPlayers[4] = new PlayerPhaseIII(PlayerPersonality.NORMAL);
-        newPlayers[5] = new PlayerPhaseIII(PlayerPersonality.RISKFUL);
+        newPlayers[3] = new PlayerPhaseIII2(PlayerPersonality.RISK_AVERSE);
+        newPlayers[4] = new PlayerPhaseIII2(PlayerPersonality.NORMAL);
+        newPlayers[5] = new PlayerPhaseIII2(PlayerPersonality.RISKFUL);
         return newPlayers;
     }
 

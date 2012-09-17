@@ -31,7 +31,7 @@ public class Context {
     private int players;
     private double potOdds;
     private Action action;
-    private double handstrengthAvg = 0;
+    private double handstrength = 0;
 
     public static Context createContext(int playerId, GameState gameState, int raises, int players, double potOdds, Action action, double handStrength) {
         Context c = new Context();
@@ -41,7 +41,7 @@ public class Context {
         c.players = players;
         c.potOdds = potOdds;
         c.action = action;
-        c.handstrengthAvg = handStrength;
+        c.handstrength = handStrength;
         return c;
     }
 
@@ -107,7 +107,7 @@ public class Context {
         return action;
     }
 
-    public double getHandstrengthAvg() {
-        return handstrengthAvg;
+    public double getHandstrength() {
+        return handstrength;
     }
 }
