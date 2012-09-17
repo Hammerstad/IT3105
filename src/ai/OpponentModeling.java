@@ -17,7 +17,7 @@ public class OpponentModeling {
     private ContextHolder[][][][][][] contextTree;
 
     private OpponentModeling() {
-        contextTree = new ContextHolder[10][9][3][3][3][3];
+        contextTree = new ContextHolder[10][4][3][3][3][3];
     }
 
     public static OpponentModeling getInstance() {
