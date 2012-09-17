@@ -13,7 +13,7 @@ import utilities.DataOutput;
 public class OpponentModeling {
 
     public static OpponentModeling instance;
-    //contextTree[PlayerId][GAMESTATE][NOF_PLAYERS][RAISES][potOdd][action][0:avg/1:count]
+    //contextTree[PlayerId][GAMESTATE][NOF_PLAYERS][potOdd][action][0:avg/1:count]
     private ContextHolder[][][][][] contextTree;
 
     private OpponentModeling() {
