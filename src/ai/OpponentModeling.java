@@ -15,18 +15,29 @@ public class OpponentModeling {
 
     public static OpponentModeling instance;
     //contextTree[PlayerId][GAMESTATE][NOF_PLAYERS][RAISES][potOdd][action][0:avg/1:count]
-    private double[][][][][][][] contextTree;
+    private ContextHolder[][][][][][] contextTree;
 
     private OpponentModeling() {
-        contextTree = new double[10][9][4][4][4][3][2];
+        contextTree = new ContextHolder[10][9][4][4][4][3];
     }
     public static OpponentModeling getInstance() {
         if (instance == null)instance = new OpponentModeling();
         return instance;
     }
     public void addContext(Context c) {
-        double[] soFar = contextTree[c.getPlayerId()][c.getGameState().getBucket()][Discretising.getBucket(c.getPlayers(), 10).bucketNo][Discretising.getBucket(c.getRaises(), 10).bucketNo][Discretising.getBucket(c.getPotOdds()).bucketNo][c.getAction().getBucket()];
-        double[] newArr = new double[]{(soFar[0] * soFar[1] + c.getHandstrengthAvg()) / (soFar[1] + 1), soFar[1] + 1};
+        ContextHolder soFar = contextTree[c.getPlayerId()][c.getGameState().getBucket()][Discretising.getBucket(c.getPlayers(), 10).bucketNo][Discretising.getBucket(c.getRaises(), 10).bucketNo][Discretising.getBucket(c.getPotOdds()).bucketNo][c.getAction().getBucket()];
+        if (soFar == null) {
+            soFar = new ContextHolder();
+        }   contextTree[c.getPlayerId()][c.getGameState().getBucket()][Discretising.getBucket(c.getPlayers(), 10).bucketNo][Discretising.getBucket(c.getRaises(), 10).bucketNo][Discretising.getBucket(c.getPotOdds()).bucketNo][c.getAction().getBucket()] = soFar;
+        soFar.addHistoryEntry(c);
+        double hsCount = soFar.size();
+        double hsAvg = 0;
+        for (Context cc : soFar.getContexts()){
+            hsAvg+=cc.getHandstrengthAvg();
+        }
+        hsAvg /= hsCount;
+        
+//        double[] newArr = new double[]{(soFar[0] * soFar[1] + c.getHandstrengthAvg()) / (soFar[1] + 1), soFar[1] + 1};
         
         int written = 0;
         DataOutput output = DataOutput.getInstance(this.getClass());
@@ -38,13 +49,35 @@ public class OpponentModeling {
         written += output.writeLine("	PotOdds:		"+c.getPotOdds());
         written += output.writeLine("	Action:		"+c.getAction());
         written += output.writeLine("	HS_new:		"+c.getHandstrengthAvg());
-        written += output.writeLine("	HS_avg:		"+newArr[0]);
-        written += output.writeLine("	HS_count:	"+newArr[1]);
+        written += output.writeLine("	HS_avg:		"+hsAvg);
+        written += output.writeLine("	HS_count:	"+hsCount);
         written += output.writeLine("");
-        contextTree[c.getPlayerId()][c.getGameState().getBucket()][Discretising.getBucket(c.getPlayers(), 10).bucketNo][Discretising.getBucket(c.getRaises(), 10).bucketNo][Discretising.getBucket(c.getPotOdds()).bucketNo][c.getAction().getBucket()] = newArr;
+//        contextTree[c.getPlayerId()][c.getGameState().getBucket()][Discretising.getBucket(c.getPlayers(), 10).bucketNo][Discretising.getBucket(c.getRaises(), 10).bucketNo][Discretising.getBucket(c.getPotOdds()).bucketNo][c.getAction().getBucket()] = newArr;
     }
-    public double[] getData(Context c){
+    public ContextHolder getData(Context c){
         return contextTree[c.getPlayerId()][c.getGameState().getBucket()][Discretising.getBucket(c.getPlayers(), 10).bucketNo][Discretising.getBucket(c.getRaises(), 10).bucketNo][Discretising.getBucket(c.getPotOdds()).bucketNo][c.getAction().getBucket()];
+    }
+    public double[] getAvgData(Context c){
+        ContextHolder ch = contextTree[c.getPlayerId()][c.getGameState().getBucket()][Discretising.getBucket(c.getPlayers(), 10).bucketNo][Discretising.getBucket(c.getRaises(), 10).bucketNo][Discretising.getBucket(c.getPotOdds()).bucketNo][c.getAction().getBucket()];
+        if (ch == null)return new double[]{0, 0};
+        double hsAvg = 0, hsCount = 0;
+        hsCount = ch.size();
+        for (Context cc : ch.getContexts()){
+            hsAvg += cc.getHandstrengthAvg();
+        }
+        hsAvg /= hsCount;
+        return new double[]{hsAvg, hsCount};
+    }
+    public double[] getBestDate(Context c) {
+        ContextHolder ch = contextTree[c.getPlayerId()][c.getGameState().getBucket()][Discretising.getBucket(c.getPlayers(), 10).bucketNo][Discretising.getBucket(c.getRaises(), 10).bucketNo][Discretising.getBucket(c.getPotOdds()).bucketNo][c.getAction().getBucket()];
+        if (ch == null)return new double[]{0, 0};
+        double hsMax = -1;
+        for (Context cc : ch.getContexts()){
+            if (cc.getHandstrengthAvg() > hsMax){
+                hsMax = cc.getHandstrengthAvg();
+            }
+        }
+        return new double[]{hsMax, 1};
     }
 }
 
