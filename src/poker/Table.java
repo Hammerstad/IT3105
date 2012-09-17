@@ -2,6 +2,7 @@ package poker;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 import utilities.DataOutput;
@@ -86,5 +87,32 @@ public class Table {
 		for (int i = 0; i < remainingToMatchPot.length; i++) {
 			remainingToMatchPot[i] += raise;
 		}
+	}
+
+	/**
+	 * Returns a subset of activePlayers specified from a list of integers
+	 * 
+	 * @param possiblePlayers
+	 *            - which players you want returned
+	 * @return AbstractPlayer[] - a list of players
+	 */
+	public AbstractPlayer[] returnPlayersOfIndex(List<Integer> possiblePlayers) {
+		AbstractPlayer[] players = new AbstractPlayer[possiblePlayers.size()];
+		for (int i = 0; i < possiblePlayers.size(); i++) {
+			players[i] = activePlayers.get(possiblePlayers.get(i));
+		}
+		return players;
+	}
+
+	/**
+	 * Returns the index of all active players.
+	 * @return List of integers
+	 */
+	public List<Integer> getIndexOfActivePlayers() {
+		List<Integer> possiblePlayers = new LinkedList<Integer>();
+		for (int i = 0; i < activePlayers.size(); i++) {
+			possiblePlayers.add(i);
+		}
+		return possiblePlayers;
 	}
 }
