@@ -106,17 +106,20 @@ public class Game {
 			}
 			// Remove folding players from active players
 			for (AbstractPlayer foldingPlayer : foldingPlayers) {
+				out.writeLine("removing folding player"+foldingPlayer.getPlayerId());
 				table.activePlayers.remove(foldingPlayer);
 			}
 			// If only one player remains, go to showdown
 			if (table.activePlayers.size() == 1) {
+				out.writeLine("only one left");
 				setState(GameState.SHOWDOWN);
 				return;
 			}
 			// Check if all players have called each other
-			for (double sum : table.remainingToMatchPot) {
-				if (sum != 0)
+			for(AbstractPlayer player : table.activePlayers){
+				if(table.remainingToMatchPot[player.getPlayerId()] != 0)
 					continue;
+				setState(next);
 				return;
 			}
 		}
@@ -215,7 +218,7 @@ public class Game {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		int NOF_GAMES = 10;
+		int NOF_GAMES = 100;
 		int NOF_PLAYERS = 6;
 		Game game = new Game(NOF_PLAYERS);
 		out.writeLine("Creating new game, players: " + NOF_PLAYERS + " Rounds: " + NOF_GAMES);
