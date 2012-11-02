@@ -15,12 +15,12 @@ public class CalculationUtility {
 	 */
 	public static double ProbabilityOfAttributeGivenClass(DataSet set, double category, double attributeSize, int attributePosition) {
 		int amountOfClass = 0;
-		int amountOfAttributeGivenClass = 0;
+		double amountOfAttributeGivenClass = 0;
 		for(Instance instance : set.getInstances()){
 			if(instance.getCategory() == category){
 				amountOfClass++;
 				if(instance.getAttributes()[attributePosition] == attributeSize){
-					amountOfAttributeGivenClass++;
+					amountOfAttributeGivenClass+=instance.getWeight();
 				}
 			}
 		}

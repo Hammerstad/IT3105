@@ -9,5 +9,5 @@ package classifier;
  * @author Nicklas
  */
 public interface IClassifier {
-    
+    public int guessClass(Instance instance);
 }
