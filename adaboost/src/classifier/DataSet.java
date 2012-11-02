@@ -13,7 +13,7 @@ public class DataSet {
 		}
 	}
 	
-	private DataSet(Instance[] instances){
+	public DataSet(Instance[] instances){
 		this.instances = instances;
 	}
 	
