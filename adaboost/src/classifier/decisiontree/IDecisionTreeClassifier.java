@@ -1,14 +1,15 @@
-package booster;
-
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+package classifier.decisiontree;
+
+import classifier.IClassifier;
 
 /**
  *
  * @author Nicklas
  */
-public class AdaBooster {
+public interface IDecisionTreeClassifier extends IClassifier {
     
 }
