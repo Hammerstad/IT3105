@@ -7,6 +7,9 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 
+import classifier.DataSet;
+import classifier.Instance;
+
 public class DatasetReader {
 	DecimalFormat df;
 	DecimalFormatSymbols symbols;
@@ -22,9 +25,9 @@ public class DatasetReader {
 	public ArrayList<double[]> read(String filename) {
 		ArrayList<double[]> table = new ArrayList<>();
 		if (filename.isEmpty()) {
-			filename = "yeast.txt";
+			filename = "yeast";
 		}
-		try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream("./resources/" + filename)))) {
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream("./resources/" + filename + ".txt")))) {
 			// Read file
 			String temp = br.readLine();
 			String[] tempToArray;
@@ -46,9 +49,16 @@ public class DatasetReader {
 		return table;
 	}
 	
-	public static void main (String[] args){
-		DatasetReader dr = new DatasetReader();
-		ArrayList<double[]> list = dr.read("");
-		SexyPrinter.print(list);
-	}
+//	public static void main (String[] args){
+//		DatasetReader dr = new DatasetReader();
+//		ArrayList<double[]> list = dr.read("");
+//		for(double[] element:list){
+//			Instance i = new Instance(element);
+//			System.out.println(i);
+//		}
+//		DataSet ds = new DataSet(list);
+//		System.out.println(ds);
+//		DataSet subset = ds.subset(0, 40);
+//		//SexyPrinter.print(list);
+//	}
 }
