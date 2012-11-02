@@ -35,5 +35,10 @@ public class TextUI implements IUserInterface {
         System.out.println(question);
         return in.nextDouble();
     }
+    @Override
+    public boolean requestBoolean(String question) {
+        System.out.println(question);
+        return in.nextBoolean();
+    }
     
 }

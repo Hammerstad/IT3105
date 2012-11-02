@@ -19,7 +19,6 @@ public class AdaBooster implements IBooster {
     private double[][] testingData;
     private int NOF_NBC;
     private int NOF_DTC;
-    private double trainingTestSplit;
     private ClassifierEnsemble ensemble;
     
     public AdaBooster(IUserInterface ui) {
@@ -29,14 +28,30 @@ public class AdaBooster implements IBooster {
     public void setup() {
         NOF_NBC = ui.requestInt("How many Naive Bayesian classifiers?");
         NOF_DTC = ui.requestInt("How many Decision Tree classifiers?");
-        trainingTestSplit = ui.requestDouble("Percantage used for training?");
+        double trainingTestSplit = ui.requestDouble("Percantage used for training?");
         String dataFile = ui.requestString("Data set: ");
         
         //Read dataset to data
         
         //Split into trainingData and testData
+        int trainingSize = (int)(data.length*trainingTestSplit);
+        int attrLen = data[0].length;
+        double startWeight = 1.0/attrLen;
+        trainingData = new double[trainingSize][attrLen+1];
+        testingData = new double[data.length-trainingSize][attrLen];
+        
+        //copy data to training
+        for (int i = 0; i < trainingData.length; i++){
+            System.arraycopy(data[i], 0, trainingData[i], 0, attrLen);
+            trainingData[i][attrLen] = startWeight;
+        }
+        //copy data to testing
+        for (int i = 0; i < testingData.length; i++){
+            System.arraycopy(data[i+trainingSize], 0, testingData[i], 0, attrLen);
+        }
+        buildClassifiers(trainingData);
     }
-    public void buildClassifiers() {
+    public void buildClassifiers(double[][] trainginData) {
         for (int i = 0;i < NOF_NBC; i++){
             //Build bayesian classifiers
         }
@@ -50,7 +65,6 @@ public class AdaBooster implements IBooster {
     public static void main(String[] args) {
         AdaBooster b = new AdaBooster(null);
         b.setup();
-        b.buildClassifiers();
         b.classifyTestSet();
     }
 }
