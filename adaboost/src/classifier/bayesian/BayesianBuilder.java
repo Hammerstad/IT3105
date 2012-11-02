@@ -4,8 +4,10 @@
  */
 package classifier.bayesian;
 
+import classifier.DataSet;
 import classifier.IBuilder;
 import classifier.IClassifier;
+import util.Pair;
 
 /**
  *

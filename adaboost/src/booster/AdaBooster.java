@@ -4,11 +4,13 @@
  */
 package booster;
 
+import classifier.DataSet;
 import classifier.IBuilder;
 import classifier.IClassifier;
 import java.util.LinkedList;
 import java.util.List;
 import ui.IUserInterface;
+import util.DatasetReader;
 import util.Pair;
 
 /**
@@ -43,13 +45,14 @@ public class AdaBooster implements IBooster {
         }
 
         //Read dataset to data
-        DataSetReader dsr = new DataSetReader();
-        data = dsr.read(dateFile);
+        DatasetReader dsr = new DatasetReader();
+        data = new DataSet(dsr.read(dataFile));
+        
+        
         //Split into trainingData and testData
-        int trainingSize = (int) (data.length * trainingTestSplit);
-        int attrLen = data[0].length;
+        int trainingSize = (int) (data.length() * trainingTestSplit);
         trainingData = data.subset(0, trainingSize);
-        testingData = data.subset(trainingSize, data.size());
+        testingData = data.subset(trainingSize, data.length());
         
         buildClassifiers(builders, trainingData);
     }

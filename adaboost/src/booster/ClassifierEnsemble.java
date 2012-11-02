@@ -4,6 +4,7 @@
  */
 package booster;
 
+import classifier.DataSet;
 import classifier.IClassifier;
 import java.util.LinkedList;
 import java.util.List;
@@ -23,7 +24,7 @@ public class ClassifierEnsemble {
             this.classifiers.add(classifier);
         }
     }
-    public void test(double[][] testData) {
+    public void test(DataSet testData) {
         
     }
 }

@@ -4,6 +4,8 @@
  */
 package classifier;
 
+import util.Pair;
+
 /**
  *
  * @author Nicklas
