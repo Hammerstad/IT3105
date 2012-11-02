@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import player.AbstractPlayer;
-import player.MiniMaxDPlayer;
+import player.MinimaxDPlayer;
 
 import player.NovicePlayer;
 
@@ -58,7 +58,7 @@ public class StatisticsUI extends UserInterface {
             i++;
             return new NovicePlayer();
         }else {
-            return new MiniMaxDPlayer();
+            return new MinimaxDPlayer();
         }
     }
 

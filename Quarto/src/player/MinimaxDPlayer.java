@@ -9,7 +9,7 @@ import game.Piece;
 /**
  * @author Nicklas Utgaard & Eirik M Hammerstad
  */
-public class MiniMaxDPlayer extends AbstractPlayer {
+public class MinimaxDPlayer extends AbstractPlayer {
 
 	public int depth = 3;
 
