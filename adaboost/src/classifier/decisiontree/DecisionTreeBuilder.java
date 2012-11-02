@@ -5,11 +5,17 @@
 package classifier.decisiontree;
 
 import classifier.IBuilder;
+import classifier.IClassifier;
 
 /**
  *
  * @author Nicklas
  */
 public class DecisionTreeBuilder implements IBuilder {
+
+    @Override
+    public IClassifier build(double[][] data) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
     
 }
