@@ -44,16 +44,32 @@ public class TextUI implements IUserInterface {
 
     @Override
     public int requestChoice(String title, Object[] o) {
+        return requestChoice(title, o, new Object[]{});
+    }
+
+    @Override
+    public int requestChoice(String title, Object[] o, Object[] skip) {
         System.out.println(title);
         int i = 1;
         int choice = Integer.MIN_VALUE;
         do {
             for (Object obj : o) {
-                System.out.println(i + ") " + obj.toString());
+                boolean sskip = false;
+                for (Object sobj : skip) {
+                    if (obj.equals(sobj)){
+                        sskip=true;
+                    }
+                }
+                if (sskip) {
+                    continue;
+                }
+                System.out.println((i++) + ") " + obj.toString());
             }
             System.out.println("Please select one of the above...");
             choice = in.nextInt();
-            if (choice == -1)break;
+            if (choice == -1) {
+                break;
+            }
         } while (choice < 1 || choice > o.length);
         return choice;
     }
