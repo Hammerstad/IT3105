@@ -7,9 +7,6 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 
-import classifier.DataSet;
-import classifier.Instance;
-
 public class DataSetReader {
 	DecimalFormat df;
 	DecimalFormatSymbols symbols;
@@ -45,20 +42,7 @@ public class DataSetReader {
 			// Catch exception if any
 			System.err.println("Error: " + e.getMessage());
 			e.printStackTrace();
-		} 
+		}
 		return table;
 	}
-	
-//	public static void main (String[] args){
-//		DataSetReader dr = new DataSetReader();
-//		ArrayList<double[]> list = dr.read("");
-//		for(double[] element:list){
-//			Instance i = new Instance(element);
-//			System.out.println(i);
-//		}
-//		DataSet ds = new DataSet(list);
-//		System.out.println(ds);
-//		DataSet subset = ds.subset(0, 40);
-//		//SexyPrinter.print(list);
-//	}
 }

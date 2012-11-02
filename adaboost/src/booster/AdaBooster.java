@@ -4,14 +4,15 @@
  */
 package booster;
 
-import classifier.DataSet;
-import classifier.IBuilder;
-import classifier.IClassifier;
 import java.util.LinkedList;
 import java.util.List;
+
 import ui.IUserInterface;
 import util.DataSetReader;
 import util.Pair;
+import classifier.DataSet;
+import classifier.IBuilder;
+import classifier.IClassifier;
 
 /**
  *
