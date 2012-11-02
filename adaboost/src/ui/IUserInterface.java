@@ -9,5 +9,7 @@ package ui;
  * @author Nicklas
  */
 public interface IUserInterface {
-    
+    public String requestString(String question);
+    public int requestInt(String question);
+    public double requestDouble(String question);
 }
