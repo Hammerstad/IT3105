@@ -4,64 +4,71 @@
  */
 package booster;
 
+import classifier.IBuilder;
 import classifier.IClassifier;
-import sun.security.provider.certpath.BuildStep;
+import java.util.LinkedList;
+import java.util.List;
 import ui.IUserInterface;
+import util.Pair;
 
 /**
  *
  * @author Nicklas
  */
 public class AdaBooster implements IBooster {
+
+    public static IBuilder[] availableClassifiers = new IBuilder[]{};
     private final IUserInterface ui;
-    private double[][] data;
-    private double[][] trainingData;
-    private double[][] testingData;
-    private int NOF_NBC;
-    private int NOF_DTC;
+    private DataSet data;
+    private DataSet trainingData;
+    private DataSet testingData;
     private ClassifierEnsemble ensemble;
-    
+
     public AdaBooster(IUserInterface ui) {
         this.ui = ui;
         this.ensemble = new ClassifierEnsemble();
     }
+
     public void setup() {
-        NOF_NBC = ui.requestInt("How many Naive Bayesian classifiers?");
-        NOF_DTC = ui.requestInt("How many Decision Tree classifiers?");
-        double trainingTestSplit = ui.requestDouble("Percantage used for training?");
         String dataFile = ui.requestString("Data set: ");
-        
+        double trainingTestSplit = ui.requestDouble("Percantage used for training?");
+
+        int classifierIndex;
+        List<Pair<IBuilder, Integer>> builders = new LinkedList<>();
+
+        while ((classifierIndex = ui.requestChoice("Select classifier, end with -1", availableClassifiers)) != -1) {
+            IBuilder ib = availableClassifiers[classifierIndex];
+            int nof = ui.requestInt("How many would you like?");
+            builders.add(new Pair<>(ib, nof));
+        }
+
         //Read dataset to data
-        
+        DataSetReader dsr = new DataSetReader();
+        data = dsr.read(dateFile);
         //Split into trainingData and testData
-        int trainingSize = (int)(data.length*trainingTestSplit);
+        int trainingSize = (int) (data.length * trainingTestSplit);
         int attrLen = data[0].length;
-        double startWeight = 1.0/attrLen;
-        trainingData = new double[trainingSize][attrLen+1];
-        testingData = new double[data.length-trainingSize][attrLen];
+        trainingData = data.subset(0, trainingSize);
+        testingData = data.subset(trainingSize, data.size());
         
-        //copy data to training
-        for (int i = 0; i < trainingData.length; i++){
-            System.arraycopy(data[i], 0, trainingData[i], 0, attrLen);
-            trainingData[i][attrLen] = startWeight;
-        }
-        //copy data to testing
-        for (int i = 0; i < testingData.length; i++){
-            System.arraycopy(data[i+trainingSize], 0, testingData[i], 0, attrLen);
-        }
-        buildClassifiers(trainingData);
+        buildClassifiers(builders, trainingData);
     }
-    public void buildClassifiers(double[][] trainginData) {
-        for (int i = 0;i < NOF_NBC; i++){
-            //Build bayesian classifiers
-        }
-        for (int i = 0;i < NOF_DTC; i++){
-            //Build decisiton classifiers
+
+    public void buildClassifiers(List<Pair<IBuilder, Integer>> builders, DataSet dataSet) {
+        this.ensemble = new ClassifierEnsemble();
+        for (Pair<IBuilder, Integer> ib : builders) {
+            for (int i = 0; i < ib.second; i++) {
+                Pair<IClassifier, DataSet> r = ib.first.build(dataSet);
+                ensemble.addClassifier(r.first);
+                dataSet = r.second;
+            }
         }
     }
+
     public void classifyTestSet() {
         ensemble.test(testingData);
     }
+
     public static void main(String[] args) {
         AdaBooster b = new AdaBooster(null);
         b.setup();

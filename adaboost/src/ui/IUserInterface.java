@@ -13,4 +13,5 @@ public interface IUserInterface {
     public int requestInt(String question);
     public double requestDouble(String question);
     public boolean requestBoolean(String question);
+    public int requestChoice(String title, Object[] choice);
 }

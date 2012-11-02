@@ -9,5 +9,5 @@ package classifier;
  * @author Nicklas
  */
 public interface IBuilder {
-    public IClassifier build(double[][] data);
+    public Pair<IClassifier,DataSet>  build(DataSet ds);
 }

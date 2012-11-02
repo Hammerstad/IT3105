@@ -14,7 +14,7 @@ import classifier.IClassifier;
 public class DecisionTreeBuilder implements IBuilder {
 
     @Override
-    public IClassifier build(double[][] data) {
+    public Pair<IClassifier,DataSet> build(DataSet data) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
     

@@ -14,8 +14,9 @@ import classifier.IClassifier;
 public class BayesianBuilder implements IBuilder {
 
     @Override
-    public IClassifier build(double[][] data) {
+    public Pair<IClassifier,DataSet> build(DataSet ds) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+
     
 }
