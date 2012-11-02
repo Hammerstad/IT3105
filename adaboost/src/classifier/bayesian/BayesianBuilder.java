@@ -4,9 +4,9 @@
  */
 package classifier.bayesian;
 
-import classifier.DataSet;
 import classifier.IBuilder;
 import classifier.IClassifier;
+import classifier.dataset.DataSet;
 import util.Pair;
 
 /**
@@ -17,7 +17,7 @@ public class BayesianBuilder implements IBuilder {
 
     @Override
     public Pair<IClassifier,DataSet> build(DataSet ds) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return null;
     }
 
     

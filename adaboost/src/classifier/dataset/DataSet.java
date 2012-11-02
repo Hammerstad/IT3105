@@ -1,5 +1,6 @@
-package classifier;
+package classifier.dataset;
 
+import classifier.dataset.Instance;
 import java.util.ArrayList;
 
 public class DataSet {

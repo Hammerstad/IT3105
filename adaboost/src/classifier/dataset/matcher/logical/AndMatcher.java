@@ -2,10 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package classifier.matcher.logical;
+package classifier.dataset.matcher.logical;
 
-import classifier.Instance;
-import classifier.matcher.Matcher;
+import classifier.dataset.Instance;
+import classifier.dataset.matcher.Matcher;
 
 /**
  *

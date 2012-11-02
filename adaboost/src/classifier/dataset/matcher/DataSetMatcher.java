@@ -2,10 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package classifier.matcher;
+package classifier.dataset.matcher;
 
-import classifier.DataSet;
-import classifier.Instance;
+import classifier.dataset.DataSet;
+import classifier.dataset.Instance;
 import java.util.ArrayList;
 
 /**
@@ -14,7 +14,7 @@ import java.util.ArrayList;
  */
 public class DataSetMatcher {
 
-    public static DataSet match(DataSet ds, Matcher m) {
+    public static DataSet filter(DataSet ds, Matcher m) {
         ArrayList<Instance> l = new ArrayList<>();
         for (Instance i : ds.getInstances()) {
             if (m.match(i)) {
