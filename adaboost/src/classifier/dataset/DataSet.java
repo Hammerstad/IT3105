@@ -46,6 +46,17 @@ public class DataSet {
     }
 
     /**
+     * Returns a list of the weights of all the instances.
+     * @return weight of all the instances
+     */
+    public double[] getInstanceWeights(){
+    	double[] list = new double[instances.length];
+    	for(int i = 0; i < instances.length; i++){
+    		list[i] = instances[i].getWeight();
+    	}
+    	return list;
+    }
+    /**
      * The weight of the entire DataSet
      *
      * @return the weight, [ 0.0 , 1.0 ]

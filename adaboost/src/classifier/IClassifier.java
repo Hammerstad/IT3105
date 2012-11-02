@@ -4,10 +4,12 @@
  */
 package classifier;
 
+import classifier.dataset.Instance;
+
 /**
  *
  * @author Nicklas
  */
 public interface IClassifier {
-    
+    public int guessClass(Instance instance);
 }
