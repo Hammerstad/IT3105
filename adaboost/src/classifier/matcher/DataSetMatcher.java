@@ -16,7 +16,7 @@ public class DataSetMatcher {
 
     public static DataSet match(DataSet ds, Matcher m) {
         ArrayList<Instance> l = new ArrayList<>();
-        for (Instance i : ds.instances()) {
+        for (Instance i : ds.getInstances()) {
             if (m.match(i)) {
                 l.add(i);
             }
