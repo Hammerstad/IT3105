@@ -10,11 +10,11 @@ import java.util.ArrayList;
 import classifier.DataSet;
 import classifier.Instance;
 
-public class DatasetReader {
+public class DataSetReader {
 	DecimalFormat df;
 	DecimalFormatSymbols symbols;
 
-	public DatasetReader() {
+	public DataSetReader() {
 		df = new DecimalFormat();
 		symbols = new DecimalFormatSymbols();
 		symbols.setDecimalSeparator('.');
@@ -50,7 +50,7 @@ public class DatasetReader {
 	}
 	
 //	public static void main (String[] args){
-//		DatasetReader dr = new DatasetReader();
+//		DataSetReader dr = new DataSetReader();
 //		ArrayList<double[]> list = dr.read("");
 //		for(double[] element:list){
 //			Instance i = new Instance(element);
