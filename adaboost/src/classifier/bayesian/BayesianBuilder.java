@@ -2,10 +2,11 @@ package classifier.bayesian;
 
 import util.MathHelper;
 import util.Pair;
-import classifier.DataSet;
 import classifier.IBuilder;
 import classifier.IClassifier;
-import classifier.Instance;
+import classifier.dataset.DataSet;
+import classifier.dataset.Instance;
+
 
 /**
  * 
@@ -44,4 +45,5 @@ public class BayesianBuilder implements IBuilder {
 		dataSet.setWeight(Math.log((1 - error) / error));
 		return dataSet;
 	}
+
 }

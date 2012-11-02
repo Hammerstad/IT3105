@@ -10,7 +10,7 @@ import java.util.List;
 import ui.IUserInterface;
 import util.DataSetReader;
 import util.Pair;
-import classifier.DataSet;
+import classifier.dataset.DataSet;
 import classifier.IBuilder;
 import classifier.IClassifier;
 

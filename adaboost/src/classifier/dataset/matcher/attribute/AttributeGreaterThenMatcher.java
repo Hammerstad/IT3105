@@ -2,21 +2,21 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package classifier.matcher.attribute;
+package classifier.dataset.matcher.attribute;
 
-import classifier.Instance;
-import classifier.matcher.Matcher;
+import classifier.dataset.Instance;
+import classifier.dataset.matcher.Matcher;
 
 /**
  *
  * @author Nicklas
  */
-public class AttributeLessThenMatcher implements Matcher {
+public class AttributeGreaterThenMatcher implements Matcher {
     
     private int attributeNumber;
     private double attributeValue;
 
-    public AttributeLessThenMatcher(int attributeNumber, double attributeValue) {
+    public AttributeGreaterThenMatcher(int attributeNumber, double attributeValue) {
         this.attributeNumber = attributeNumber;
         this.attributeValue = attributeValue;
     }
@@ -25,7 +25,7 @@ public class AttributeLessThenMatcher implements Matcher {
 
     @Override
     public boolean match(Instance i) {
-        return i.getAttributes()[attributeNumber]<attributeValue;
+        return i.getAttributes()[attributeNumber]>attributeValue;
     }
     
 }

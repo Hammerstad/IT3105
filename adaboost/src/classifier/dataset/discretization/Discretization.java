@@ -2,15 +2,16 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package classifier;
+package classifier.dataset.discretization;
 
 import classifier.dataset.DataSet;
-import util.Pair;
 
 /**
  *
  * @author Nicklas
  */
-public interface IBuilder {
-    public Pair<IClassifier,DataSet> build(DataSet ds);
+public class Discretization {
+    public static DataSet discretization(DataSet ds) {
+        return ds;
+    }
 }

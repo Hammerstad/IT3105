@@ -1,4 +1,4 @@
-package classifier;
+package classifier.dataset;
 
 import java.util.Arrays;
 

@@ -4,7 +4,7 @@
  */
 package booster;
 
-import classifier.DataSet;
+import classifier.dataset.DataSet;
 import classifier.IClassifier;
 import java.util.LinkedList;
 import java.util.List;

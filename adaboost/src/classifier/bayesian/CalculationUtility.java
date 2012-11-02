@@ -1,7 +1,7 @@
 package classifier.bayesian;
 
-import classifier.DataSet;
-import classifier.Instance;
+import classifier.dataset.DataSet;
+import classifier.dataset.Instance;
 
 public class CalculationUtility {
 

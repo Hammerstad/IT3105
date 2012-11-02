@@ -4,6 +4,8 @@
  */
 package classifier;
 
+import classifier.dataset.Instance;
+
 /**
  *
  * @author Nicklas
