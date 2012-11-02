@@ -4,14 +4,15 @@
  */
 package booster;
 
+import java.util.LinkedList;
+import java.util.List;
+
+import ui.IUserInterface;
+import util.DataSetReader;
+import util.Pair;
 import classifier.DataSet;
 import classifier.IBuilder;
 import classifier.IClassifier;
-import java.util.LinkedList;
-import java.util.List;
-import ui.IUserInterface;
-import util.DatasetReader;
-import util.Pair;
 
 /**
  *
@@ -45,7 +46,7 @@ public class AdaBooster implements IBooster {
         }
 
         //Read dataset to data
-        DatasetReader dsr = new DatasetReader();
+        DataSetReader dsr = new DataSetReader();
         data = new DataSet(dsr.read(dataFile));
         
         
