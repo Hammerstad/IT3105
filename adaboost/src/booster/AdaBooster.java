@@ -31,7 +31,7 @@ public class AdaBooster implements IBooster {
         this.ensemble = new ClassifierEnsemble();
     }
 
-    public void setup() {
+    public void start() {
         String dataFile = ui.requestString("Data set: ");
         double trainingTestSplit = ui.requestDouble("Percantage used for training?");
 
@@ -56,9 +56,9 @@ public class AdaBooster implements IBooster {
         
         buildClassifiers(builders, trainingData);
     }
-
-    public void buildClassifiers(List<Pair<IBuilder, Integer>> builders, DataSet dataSet) {
+    public void buildClassifiers(List<Pair<IBuilder, Integer>> builders, DataSet baseDataSet) {
         this.ensemble = new ClassifierEnsemble();
+        DataSet dataSet = baseDataSet.subset(0, baseDataSet.length());
         for (Pair<IBuilder, Integer> ib : builders) {
             for (int i = 0; i < ib.second; i++) {
                 Pair<IClassifier, DataSet> r = ib.first.build(dataSet);
@@ -66,6 +66,7 @@ public class AdaBooster implements IBooster {
                 dataSet = r.second;
             }
         }
+        classifyTestSet();
     }
 
     public void classifyTestSet() {
@@ -74,7 +75,6 @@ public class AdaBooster implements IBooster {
 
     public static void main(String[] args) {
         AdaBooster b = new AdaBooster(null);
-        b.setup();
-        b.classifyTestSet();
+        b.start();
     }
 }
