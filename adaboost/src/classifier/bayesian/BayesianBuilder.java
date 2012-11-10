@@ -16,7 +16,6 @@ public class BayesianBuilder implements IBuilder {
 
 	@Override
 	public Pair<IClassifier, DataSet> build(DataSet ds) {
-		double[] weights = ds.getInstanceWeights();
 		IClassifier classifier = generateHypothesis(ds);
 		DataSet modifiedDataSet = update(classifier, ds);
 		return new Pair<IClassifier, DataSet>(classifier, modifiedDataSet);
