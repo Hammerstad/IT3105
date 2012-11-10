@@ -1,9 +1,15 @@
 package classifier.dataset;
 
-import classifier.dataset.Instance;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class DataSet {
+    
+    /**
+     * The number of different classes contained in this dataset
+     */
+    private int[] numberOfClasses;
 
     /**
      * All of the instances in this DataSet
@@ -125,5 +131,23 @@ public class DataSet {
             sb.append(element).append('\n');
         }
         return sb.toString();
+    }
+    /**
+     * Return the different classes contained in this dataset
+     * @return int 
+     */
+    public int[] getNumberOfClasses() {
+        if (this.numberOfClasses == null) {
+            Set<Integer> found = new HashSet<>();
+            for (Instance i : instances) {
+                found.add(i.getCategory());
+            }
+            this.numberOfClasses = new int[found.size()];
+            int index = 0;
+            for (Integer i : found) {
+                numberOfClasses[index++] = i;
+            }
+        }
+        return this.numberOfClasses;
     }
 }
