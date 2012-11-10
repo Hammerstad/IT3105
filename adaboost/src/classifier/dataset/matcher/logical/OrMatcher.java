@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package classifier.dataset.matcher.matcher.logical;
+package classifier.dataset.matcher.logical;
 
 import classifier.dataset.Instance;
 import classifier.dataset.matcher.Matcher;
