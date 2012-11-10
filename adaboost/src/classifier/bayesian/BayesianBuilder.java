@@ -1,11 +1,8 @@
 package classifier.bayesian;
 
-import util.MathHelper;
-import util.Pair;
 import classifier.IBuilder;
 import classifier.IClassifier;
 import classifier.dataset.DataSet;
-import classifier.dataset.Instance;
 
 /**
  *

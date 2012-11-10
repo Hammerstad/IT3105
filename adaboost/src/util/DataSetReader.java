@@ -6,11 +6,6 @@ import java.io.InputStreamReader;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-
-import classifier.bayesian.BayesianClassifier;
-import classifier.dataset.DataSet;
 
 public class DataSetReader {
 	DecimalFormat df;
@@ -49,16 +44,5 @@ public class DataSetReader {
 			e.printStackTrace();
 		}
 		return table;
-	}
-	
-	public static void main(String[] args){
-		DataSetReader dsr = new DataSetReader();
-		ArrayList<double[]> table = dsr.read("");
-        Collections.shuffle(table);
-		DataSet ds = new DataSet(table);
-		//SexyPrinter.print(table);
-		BayesianClassifier bc = new BayesianClassifier(ds);
-		System.out.println(Arrays.toString(bc.probabilityOfClass));
-		SexyPrinter.bigPrint(bc.probabilityOfAttributeGivenClass);
 	}
 }

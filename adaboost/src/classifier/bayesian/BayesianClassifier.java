@@ -3,7 +3,6 @@ package classifier.bayesian;
 import static classifier.bayesian.CalculationUtility.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import classifier.IClassifier;

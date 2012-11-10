@@ -4,7 +4,6 @@
  */
 package booster;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -13,6 +12,7 @@ import java.util.List;
 import ui.IUserInterface;
 import ui.TextUI;
 import util.DataSetReader;
+import util.DirectoryBrowser;
 import util.Pair;
 import classifier.IBuilder;
 import classifier.IClassifier;
@@ -43,8 +43,7 @@ public class AdaBooster implements IBooster {
     }
 
     public void start() throws Exception {
-        File[] filesAvailable = new File("./resources/").listFiles();
-        String dataFile = ui.requestString("Data set: " + filesAvailable.length);
+        String dataFile = ui.requestString("Pick a data set:\n" + DirectoryBrowser.resources());
         double trainingTestSplit = ui.requestDouble("Percantage used for training? [ 0 , 100 ]");
         
         
