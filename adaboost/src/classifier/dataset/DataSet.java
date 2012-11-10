@@ -1,16 +1,22 @@
 package classifier.dataset;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class DataSet {
     
     /**
-     * The number of different classes contained in this dataset
+     * The different classes contained in this dataset
      */
-    private int[] numberOfClasses;
-
+    private int[] classes;
+    
+    /**
+     * The different attribute values contained in this dataset
+     */
+    private Map<Integer, double[]> attributeValues;
     /**
      * All of the instances in this DataSet
      */
@@ -39,6 +45,7 @@ public class DataSet {
         for (int i = 0; i < list.size(); i++) {
             instances[i] = new Instance(list.get(i), 1.0 / list.size());
         }
+        this.attributeValues = new HashMap<>();
     }
 
     /**
@@ -49,6 +56,7 @@ public class DataSet {
     public DataSet(Instance[] instances) {
         this();
         this.instances = instances;
+        this.attributeValues = new HashMap<>();
     }
 
     /**
@@ -136,18 +144,33 @@ public class DataSet {
      * Return the different classes contained in this dataset
      * @return int 
      */
-    public int[] getNumberOfClasses() {
-        if (this.numberOfClasses == null) {
+    public int[] getClasses() {
+        if (this.classes == null) {
             Set<Integer> found = new HashSet<>();
             for (Instance i : instances) {
                 found.add(i.getCategory());
             }
-            this.numberOfClasses = new int[found.size()];
+            this.classes = new int[found.size()];
             int index = 0;
             for (Integer i : found) {
-                numberOfClasses[index++] = i;
+                classes[index++] = i;
             }
         }
-        return this.numberOfClasses;
+        return this.classes;
+    }
+    public double[] getAttributeValues(int attribute) {
+        if (!this.attributeValues.containsKey(attribute)) {
+            Set<Double> found = new HashSet<>();
+            for (Instance i : instances) {
+                found.add(i.getAttributes()[attribute]);
+            }
+            double[] attributes = new double[found.size()];
+            int index = 0;
+            for (Double d : found) {
+                attributes[index++] = d;
+            }
+            this.attributeValues.put(attribute, attributes);
+        }
+        return this.attributeValues.get(attribute);
     }
 }
