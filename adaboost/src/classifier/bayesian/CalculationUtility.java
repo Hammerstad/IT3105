@@ -60,9 +60,9 @@ public class CalculationUtility {
 		List<Instance> attributeGivenClass = new ArrayList<>();
 		for(Instance instance : set.getInstances()){
 			if(instance.getCategory() == category){
-				ofClass.add(instance);
+				ofClass.add(new Instance(instance));
 				if(instance.getAttributes()[attributePosition] == attributeSize){
-					attributeGivenClass.add(instance);
+					attributeGivenClass.add(new Instance(instance));
 				}
 			}
 		}
@@ -79,7 +79,7 @@ public class CalculationUtility {
 		List<Instance> instances = new ArrayList<>();
 		for(Instance instance : set.getInstances()){
 			if(instance.getCategory() == category){
-				instances.add(instance);
+				instances.add(new Instance(instance));
 			}
 		}
 		return instances;

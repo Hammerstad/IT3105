@@ -19,7 +19,14 @@ public class Instance {
         this.weight = weight;
     }
 
-    public double getWeight() {
+    public Instance(Instance instance) {
+    	// No need to shallow-copy the attributes, we never change the attributes =)
+		this.attributes = instance.attributes;
+		this.category = instance.category;
+		this.weight = instance.weight;
+	}
+
+	public double getWeight() {
         return weight;
     }
 
