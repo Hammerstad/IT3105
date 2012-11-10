@@ -13,11 +13,10 @@ import util.Pair;
  *
  * @author Nicklas
  */
-public class DecisionTreeBuilder implements IBuilder {
+public class DecisionTreeBuilder extends IBuilder {
 
     @Override
-    public Pair<IClassifier,DataSet> build(DataSet data) {
+    protected IClassifier generateHypothesis(DataSet ds) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-    
 }
