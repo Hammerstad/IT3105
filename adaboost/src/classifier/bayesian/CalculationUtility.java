@@ -28,6 +28,7 @@ public class CalculationUtility {
 				}
 			}
 		}
+		System.out.println(amountOfAttributeGivenClass + "\t" + amountOfClass);
 		return amountOfAttributeGivenClass/amountOfClass;
 	}
 
@@ -37,14 +38,14 @@ public class CalculationUtility {
 	 * @param category - the class
 	 * @return probability of class [ 0.0 , 1.0 ]
 	 */
-	public static double probabilityOfClass(DataSet set, double category) {
+	public static double probabilityOfClass(DataSet set, int category) {
 		int amountOfClass = 0;
 		for(Instance instance : set.getInstances()){
 			if(instance.getCategory() == category){
 				amountOfClass++;
 			}
 		}
-		return amountOfClass/set.length();
+		return amountOfClass/(set.length()*1.0);
 	}
 
 	/**
@@ -66,7 +67,7 @@ public class CalculationUtility {
 				}
 			}
 		}
-		return new Pair<List<Instance>, List<Instance>>(ofClass, attributeGivenClass);
+		return new Pair<>(ofClass, attributeGivenClass);
 	}
 
 	/**

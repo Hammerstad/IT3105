@@ -4,19 +4,23 @@
  */
 package booster;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
 import ui.IUserInterface;
+import ui.TextUI;
 import util.DataSetReader;
 import util.Pair;
-import classifier.dataset.DataSet;
 import classifier.IBuilder;
 import classifier.IClassifier;
+import classifier.bayesian.BayesianBuilder;
+import classifier.dataset.DataSet;
 import classifier.dataset.discretization.Discretization;
 import classifier.dataset.discretization.IDataSetPreProcess;
-import java.util.ArrayList;
-import java.util.Collections;
+import classifier.dataset.discretization.TenFoldSplitting;
 
 /**
  *
@@ -24,8 +28,8 @@ import java.util.Collections;
  */
 public class AdaBooster implements IBooster {
 
-    public static Class[] availableClassifiers = new Class[]{};
-    public static Class[] availablePreProcesses = new Class[]{};
+    public static Class[] availableClassifiers = new Class[]{BayesianBuilder.class};
+    public static Class[] availablePreProcesses = new Class[]{TenFoldSplitting.class};
     private final IUserInterface ui;
     private DataSet data;
     private DataSet trainingData;
@@ -39,9 +43,10 @@ public class AdaBooster implements IBooster {
     }
 
     public void start() throws Exception {
-        String dataFile = ui.requestString("Data set: ");
-        double trainingTestSplit = ui.requestDouble("Percantage used for training?");
-
+        File[] filesAvailable = new File("./resources/").listFiles();
+        String dataFile = ui.requestString("Data set: " + filesAvailable.length);
+        double trainingTestSplit = ui.requestDouble("Percantage used for training? [ 0 , 100 ]");
+        
         
         int discIndex;
         List<IDataSetPreProcess> preprocesses = new LinkedList<>();
@@ -68,9 +73,8 @@ public class AdaBooster implements IBooster {
         rawMatrix = rawData.toArray(rawMatrix);
         data = discretization.process(rawMatrix);
         
-        
         //Split into trainingData and testData
-        int trainingSize = (int) (data.length() * trainingTestSplit);
+        int trainingSize = (int) (data.length() * trainingTestSplit / 100);
         trainingData = data.subset(0, trainingSize);
         testingData = data.subset(trainingSize, data.length());
         
@@ -94,7 +98,7 @@ public class AdaBooster implements IBooster {
     }
 
     public static void main(String[] args) throws Exception{
-        AdaBooster b = new AdaBooster(null);
+        AdaBooster b = new AdaBooster(new TextUI());
         b.start();
     }
 }
