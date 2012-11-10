@@ -13,6 +13,10 @@ import util.Pair;
 import classifier.dataset.DataSet;
 import classifier.IBuilder;
 import classifier.IClassifier;
+import classifier.dataset.discretization.Discretization;
+import classifier.dataset.discretization.IDataSetPreProcess;
+import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  *
@@ -20,34 +24,49 @@ import classifier.IClassifier;
  */
 public class AdaBooster implements IBooster {
 
-    public static IBuilder[] availableClassifiers = new IBuilder[]{};
+    public static Class[] availableClassifiers = new Class[]{};
+    public static Class[] availablePreProcesses = new Class[]{};
     private final IUserInterface ui;
     private DataSet data;
     private DataSet trainingData;
     private DataSet testingData;
     private ClassifierEnsemble ensemble;
+    private Discretization discretization;
 
     public AdaBooster(IUserInterface ui) {
         this.ui = ui;
         this.ensemble = new ClassifierEnsemble();
     }
 
-    public void start() {
+    public void start() throws Exception {
         String dataFile = ui.requestString("Data set: ");
         double trainingTestSplit = ui.requestDouble("Percantage used for training?");
 
+        
+        int discIndex;
+        List<IDataSetPreProcess> preprocesses = new LinkedList<>();
+        while ((discIndex = ui.requestChoice("Select discretization strategy, end with -1", availablePreProcesses)) != -1) {
+            preprocesses.add(((IDataSetPreProcess)availablePreProcesses[discIndex].newInstance()));
+        }
+        IDataSetPreProcess[] processes = new IDataSetPreProcess[preprocesses.size()];
+        processes = preprocesses.toArray(processes);
+        this.discretization = new Discretization(processes);
+        
         int classifierIndex;
         List<Pair<IBuilder, Integer>> builders = new LinkedList<>();
-
         while ((classifierIndex = ui.requestChoice("Select classifier, end with -1", availableClassifiers)) != -1) {
-            IBuilder ib = availableClassifiers[classifierIndex];
+            IBuilder ib = (IBuilder)availableClassifiers[classifierIndex].newInstance();
             int nof = ui.requestInt("How many would you like?");
             builders.add(new Pair<>(ib, nof));
         }
 
         //Read dataset to data
         DataSetReader dsr = new DataSetReader();
-        data = new DataSet(dsr.read(dataFile));
+        ArrayList<double[]> rawData = dsr.read(dataFile);
+        Collections.shuffle(rawData);
+        double[][] rawMatrix = new double[rawData.size()][rawData.get(0).length];
+        rawMatrix = rawData.toArray(rawMatrix);
+        data = discretization.process(rawMatrix);
         
         
         //Split into trainingData and testData
@@ -74,7 +93,7 @@ public class AdaBooster implements IBooster {
         ensemble.test(testingData);
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception{
         AdaBooster b = new AdaBooster(null);
         b.start();
     }

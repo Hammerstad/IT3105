@@ -14,7 +14,7 @@ import java.util.Map;
  *
  * @author Nicklas
  */
-public class HistogramEqualization implements IDataSetPreProcess {
+public class HistogramEqualization extends IDataSetPreProcess {
 
     @Override
     public double[][] process(double[][] data) {
@@ -25,16 +25,6 @@ public class HistogramEqualization implements IDataSetPreProcess {
         }
         double[][] untransposed = transpose(transposed);
         return untransposed;
-    }
-    private static double[][] transpose(double[][] m) {       
-        
-        double[][] n = new double[m[0].length][m.length];
-        for (int i = 0, s = m.length; i < s; i++) {
-            for (int j = 0, t = m[0].length; j < t; j++) {
-                n[j][i] = m[i][j];
-            }
-        }
-        return n;
     }
 
     private static double[] discretization(double[] arr) {
@@ -54,11 +44,6 @@ public class HistogramEqualization implements IDataSetPreProcess {
                 max = d;
             }
         }
-        System.out.println("Min: "+min+" Max: "+max);
-//        //Normalize
-//        for (Entry<Double, Double> e : map.entrySet()){
-//            e.setValue(e.getValue()/arr.length);
-//        }
         List<Double> keys = new ArrayList<Double>(map.keySet());
         Collections.sort(keys);
         double cummulative = 0;
