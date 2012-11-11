@@ -1,7 +1,6 @@
-package classifier.decisiontree.AI2;
+package classifier.decisiontree;
 
 
-import classifier.decisiontree.*;
 import java.util.LinkedList;
 import java.util.List;
 

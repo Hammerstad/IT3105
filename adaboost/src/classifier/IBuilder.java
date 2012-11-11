@@ -18,7 +18,7 @@ public abstract class IBuilder {
     public Pair<IClassifier, DataSet> build(DataSet ds) {
         IClassifier classifier = generateHypothesis(ds);
         DataSet modifiedDataSet = update(classifier, ds);
-        return new Pair<IClassifier, DataSet>(classifier, modifiedDataSet);
+        return new Pair<>(classifier, modifiedDataSet);
     }
 
     protected abstract IClassifier generateHypothesis(DataSet ds);

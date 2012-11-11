@@ -1,6 +1,5 @@
 package classifier.decisiontree.AI2;
 
-
 import java.io.*;
 import java.util.*;
 
@@ -36,10 +35,10 @@ public class Main {
         Node root = mr.buildTree(training, attrList, method);
 
         printGraph(root);
-        
+
         double d = mr.classification(root, test);
-        System.out.println("Classification: "+d);
-        
+        System.out.println("Classification: " + d);
+
         if (gotGraphviz) {
             Graphviz gv = new Graphviz();
             gv.createGraph(root, d);
@@ -107,16 +106,18 @@ public class Main {
                 for (int value = 1; value < 3; value++) {
                     double p = 0;
                     double n = 0;
-                    for (int row = 0; row < matrix.length; row++) {
-                        if (matrix[row][attrList.get(index)] == value && matrix[row][matrix[row].length - 1] == 1) {
-                            p++;
-                        } else if (matrix[row][attrList.get(index)] == value && matrix[row][matrix[row].length - 1] == 2) {
-                            n++;
+                    for (int cls = 1; cls < 3; cls++) {
+                        for (int row = 0; row < matrix.length; row++) {
+                            if (matrix[row][attrList.get(index)] == value && matrix[row][matrix[row].length - 1] == cls) {
+                                p++;
+                            } else if (matrix[row][attrList.get(index)] == value && matrix[row][matrix[row].length - 1] != cls) {
+                                n++;
+                            }
                         }
+                        p += eps;
+                        n += eps;
+                        entropy[index] = entropy[index] + (p + n) / matrix.length * (-p / (p + n) * log2(p / (p + n)) - n / (p + n) * log2(n / (p + n)));
                     }
-                    p += eps;
-                    n += eps;
-                    entropy[index] = entropy[index] + (p + n) / matrix.length * (-p / (p + n) * log2(p / (p + n)) - n / (p + n) * log2(n / (p + n)));
                 }
             }
             double m = Double.MAX_VALUE;
