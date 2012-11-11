@@ -51,7 +51,7 @@ public class Discretization {
             for (int i = 0; i < d.size(); i++){
                 draw[i] = d.get(i);
             }
-            Discretization disc = new Discretization(new IDataSetPreProcess[]{});
+            Discretization disc = new Discretization(new IDataSetPreProcess[]{new TenFoldSplitting()});
             DataSet ds = disc.process(draw);
             fos = new FileOutputStream(new File("glassDisc.txt"));
             StringBuilder sb = new StringBuilder();
@@ -70,6 +70,7 @@ public class Discretization {
         } catch (IOException ex) {
             Logger.getLogger(Discretization.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
+            System.out.println("Ending");
         }
     }
 }

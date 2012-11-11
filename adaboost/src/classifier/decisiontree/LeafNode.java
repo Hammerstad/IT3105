@@ -37,6 +37,6 @@ public class LeafNode extends Node{
     }
     public String getName() {
         //return "C"+cls;
-        return (cls == 1) ? "True" : "False";
+        return "Cls: "+cls;
     }
 }

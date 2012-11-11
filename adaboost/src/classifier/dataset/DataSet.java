@@ -21,16 +21,13 @@ public class DataSet {
      * All of the instances in this DataSet
      */
     private Instance[] instances;
-    /**
-     * The weight of this DataSet
-     */
-    private double weight;
+
 
     /**
      * Default constructor
      */
     private DataSet() {
-        weight = 1.0;
+        
     }
 
     /**
@@ -70,23 +67,7 @@ public class DataSet {
     	}
     	return list;
     }
-    /**
-     * The weight of the entire DataSet
-     *
-     * @return the weight, [ 0.0 , 1.0 ]
-     */
-    public double getWeight() {
-        return weight;
-    }
-
-    /**
-     * Sets the weight of the entire DataSet
-     *
-     * @param weight - double [ 0.0 , 1.0 ] are you kind.
-     */
-    public void setWeight(double weight) {
-        this.weight = weight;
-    }
+    
 
     /**
      * How many Instances there are in our DataSet.

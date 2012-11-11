@@ -30,7 +30,7 @@ public class HistogramEqualization extends IDataSetPreProcess {
     private static double[] discretization(double[] arr) {
         //Count the number of elements
         Map<Double, Double> map = new LinkedHashMap<>();
-        double min = Double.MAX_VALUE, max = Double.MIN_VALUE;
+        double min = Double.MAX_VALUE, max = -Double.MAX_VALUE;
         for (double d : arr) {
             if (map.containsKey(d)) {
                 map.put(d, map.get(d) + 1);

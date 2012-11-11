@@ -12,7 +12,7 @@ import classifier.IClassifier;
 import classifier.dataset.DataSet;
 import classifier.dataset.Instance;
 
-public class BayesianClassifier implements IClassifier {
+public class BayesianClassifier extends IClassifier {
 
 	private List<List<double[]>> probabilityOfAttributeGivenClass; //List.get(class).get(attribute) = probabilities for attribute values
 	private Map<Integer, Double> probabilityOfClass;

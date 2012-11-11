@@ -7,9 +7,11 @@ package classifier.decisiontree;
 import classifier.dataset.DataSet;
 import classifier.IBuilder;
 import classifier.IClassifier;
+import classifier.dataset.Instance;
 import classifier.dataset.matcher.DataSetMatcher;
 import classifier.dataset.matcher.attribute.AttributeEqualsMatcher;
 import classifier.dataset.matcher.matcher.CategoryMatcher;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -19,6 +21,7 @@ import java.util.List;
  */
 public class DecisionTreeBuilder extends IBuilder {
 
+    public static int depth = -1;
     double eps = 0.000000000001;
 
     @Override
@@ -28,13 +31,14 @@ public class DecisionTreeBuilder extends IBuilder {
         for (int i = 0; i < numberOfAttributes; i++) {
             selectableAttributes.add(i);
         }
-        return null;
+        Node n = buildTree(ds, selectableAttributes, depth);
+//        printGraph(n);
+        return new DecisionTreeClassifier(n);
     }
+
     private Node buildTree(DataSet ds, List<Integer> selectableAttributes, int depth) {
         int chooseAttribute = chooseSplittingAttribute(ds, selectableAttributes);
-        if (chooseAttribute == -1) {
-            throw new RuntimeException("Found no splitting attribute");
-        }else if (depth == 0){
+        if (chooseAttribute == -1 || depth == 0) {
             int[] classes = ds.getClasses();
             int[] found = new int[classes.length];
             int foundInd = 0;
@@ -43,23 +47,23 @@ public class DecisionTreeBuilder extends IBuilder {
             }
             int maxInd = 0;
             boolean unique = true;
-            for (int i = 1; i < classes.length; i++){
-                if (found[maxInd] < found[i]){
+            for (int i = 1; i < classes.length; i++) {
+                if (found[maxInd] < found[i]) {
                     maxInd = i;
                     unique = true;
-                }else if (found[maxInd] == found[i]) {
+                } else if (found[maxInd] == found[i]) {
                     unique = false;
                 }
             }
             if (unique) {
                 return new LeafNode(classes[maxInd]);
-            }else {
+            } else {
                 return new LeafNode(-1);
             }
         }
-        if (isMapped(ds)){
+        if (isMapped(ds)) {
             return new LeafNode(ds.get(0).getCategory());
-        }else {
+        } else {
             Node n = new AttributeNode(chooseAttribute);
             double[] attributeValues = ds.getAttributeValues(chooseAttribute);
             DataSet[] dss = new DataSet[attributeValues.length];
@@ -68,43 +72,77 @@ public class DecisionTreeBuilder extends IBuilder {
                 dss[dssInd] = DataSetMatcher.filter(ds, new AttributeEqualsMatcher(chooseAttribute, attrValue));
                 if (isMapped(dss[dssInd])) {
                     n.addChild(new LeafNode(dss[dssInd].getClasses()[0]), attrValue);
-                }else {
-                    n.addChild(buildTree(dss[dssInd], new LinkedList<>(selectableAttributes), depth-1), attrValue);
+                } else {
+                    n.addChild(buildTree(dss[dssInd], new LinkedList<>(selectableAttributes), depth - 1), attrValue);
                 }
                 dssInd++;
             }
+            return n;
         }
-        return null;
     }
+
     private boolean isMapped(DataSet ds) {
-        return ds.getClasses().length==1;
+        return ds.getClasses().length == 1;
     }
+
     private int chooseSplittingAttribute(DataSet ds, List<Integer> selectableAttributes) {
-        if (ds.length() == 0 || selectableAttributes.isEmpty()){
+        if (ds.length() == 0 || selectableAttributes.isEmpty()) {
             return -1;
         }
         double[] entropy = new double[selectableAttributes.size()];
+        double allWeights = 0;
+        for (Instance i : ds.getInstances()){
+            allWeights+=i.getWeight();
+        }
+//        System.out.println("AllWeights: "+allWeights);
         for (int attributeIndex = 0; attributeIndex < selectableAttributes.size(); attributeIndex++) {
             int attributeIndexD = selectableAttributes.get(attributeIndex);
             double[] distinctValuesForAttribute = ds.getAttributeValues(attributeIndexD);
             for (int a = 0, aL = distinctValuesForAttribute.length; a < aL; a++) {
                 double attributeValue = distinctValuesForAttribute[a];
-                double PVk = DataSetMatcher.filter(ds, new AttributeEqualsMatcher(attributeIndexD, attributeValue)).length() / (ds.length() * 1.0);
+                DataSet DPVk = DataSetMatcher.filter(ds, new AttributeEqualsMatcher(attributeIndexD, attributeValue));
+                double branchWeight = 0;
+                for (Instance bi : DPVk.getInstances()){
+                    branchWeight+=bi.getWeight();
+                }
+                branchWeight+=Double.MIN_VALUE;
+//                double PVk = DataSetMatcher.filter(ds, new AttributeEqualsMatcher(attributeIndexD, attributeValue)).length() / (ds.length() * 1.0);
+                double PVk = branchWeight/allWeights;
+                
                 entropy[attributeIndex] += PVk * log2(PVk);
             }
         }
-        double max = Double.MIN_VALUE;
+        double max = -Double.MAX_VALUE;
         int maxIndT = -1;
         for (int maxInd = 0; maxInd < entropy.length; maxInd++) {
+//            System.out.println("Testing: "+entropy[maxInd]+" "+max);
             if (entropy[maxInd] > max) {
                 max = entropy[maxInd];
                 maxIndT = maxInd;
             }
         }
+        System.out.println("Entropy: "+Arrays.toString(entropy));
         return selectableAttributes.remove(maxIndT);
     }
 
     private static double log2(double d) {
         return Math.log(d) / Math.log(2);
+    }
+
+    public static void printGraph(Node root) {
+        printGraph(root, 0);
+    }
+
+    private static void printGraph(Node root, int indent) {
+        if (root == null) {
+            return;
+        }
+        for (int i = 0; i < indent; i++) {
+            System.out.print(" ");
+        }
+        System.out.println(root.toString());
+        for (Node c : root.getChildren()) {
+            printGraph(c, indent + 4);
+        }
     }
 }

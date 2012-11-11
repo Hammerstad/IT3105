@@ -1,4 +1,4 @@
-package classifier.decisiontree.AI2;
+package classifier.decisiontree;
 
 
 
@@ -7,6 +7,7 @@ import java.io.FileWriter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
+import util.DirectoryBrowser;
 
 /*
  * To change this template, choose Tools | Templates and open the template in
@@ -21,7 +22,7 @@ public class Graphviz {
     private boolean graphCreated = false;
     private static Map<String, String> colorMap = new HashMap<String, String>();
     private static String[] attrColors = new String[]{"aquamarine2", "cadetblue3", "deepskyblue3", "darkgreen", "cornflowerblue", "yellowgreen", "yellow4"};
-    private static String[] clsColors = new String[]{"Olivedrab2", "LightPink"};
+    private static String[] clsColors = new String[]{"red", "Olivedrab2", "LightPink", "moccasin", "royalblue", "slategray2", "tan2", "tomato", "thistle3", "violetred2", "yellow4", "salmon3", "rosybrown3"};
     
     static {
         attrColors = new String[]{"lemonchiffon3"};
@@ -32,7 +33,7 @@ public class Graphviz {
     }
 
     public void createGraph(Node root, double accuracy) throws Exception {
-        FileWriter fw = new FileWriter(new File("graph.dot"));
+        FileWriter fw = new FileWriter(DirectoryBrowser.getUnusedFile("graph", ".dot"));
         fw.append("digraph G{\n");
         StringBuilder attributeNodes = new StringBuilder();
         StringBuilder leafNodes = new StringBuilder();
@@ -64,7 +65,8 @@ public class Graphviz {
                     stack.push(e.child);
                 }
             } else if (current instanceof LeafNode) {
-                leafNodes.append(vizIdString).append(clsString(current.getName())).append("\n");
+                LeafNode ln = (LeafNode)current;
+                leafNodes.append(vizIdString).append(clsString(ln.getName(), ln.cls)).append("\n");
             }
         }
         fw.append(attributeNodes).append("\n");
@@ -86,8 +88,8 @@ public class Graphviz {
         return "[shape=\"box\", style=\"filled\" color=\"black\", fillcolor=\"" + attrColor(l) + "\", label=\"" + l + "\"]";
     }
 
-    private static String clsString(String l) {
-        return "[shape=\"box\", style=\"filled\" color=\"black\", fillcolor=\"" + clsColor(l) + "\", label=\"" + l + "\"]";
+    private static String clsString(String l, int cls) {
+        return "[shape=\"box\", style=\"filled\" color=\"black\", fillcolor=\"" + clsColor(cls) + "\", label=\"" + l + "\"]";
     }
 
     private static String attrColor(String nodeName) {
@@ -99,7 +101,7 @@ public class Graphviz {
             return attrColors[c];
         }
     }
-    private static String clsColor(String nodeString) {
-        return clsColors[nodeString.length()-4];
+    private static String clsColor(int nodeString) {
+        return clsColors[nodeString+1];
     }
 }

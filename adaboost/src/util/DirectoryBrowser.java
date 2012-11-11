@@ -13,4 +13,21 @@ public class DirectoryBrowser {
         }
         return sb.toString();
 	}
+        public static File getUnusedFile(String prefix, String postFix) {
+            File dir = new File("./resources/images");
+            if (!dir.exists()){
+                dir.mkdir();
+            }
+            File[] files = dir.listFiles();
+            String filenameWanted;
+            int index = 1;
+            while (true) {
+                filenameWanted = prefix+index+postFix;
+                File wanted = new File(dir, filenameWanted);
+                if (!wanted.exists()){
+                    return wanted;
+                }
+                index++;
+            }
+        }
 }

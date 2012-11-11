@@ -24,23 +24,33 @@ public abstract class IBuilder {
     protected abstract IClassifier generateHypothesis(DataSet ds);
 
     protected DataSet update(IClassifier classifier, DataSet dataSet) {
-    	System.err.println("UPDATING!!!");
+        System.err.println("UPDATING!!!");
         double error = 0.0;
         Instance currentInstance;
+        int corr = 0;
+        for (int i = 0; i < dataSet.length(); i++) {
+            currentInstance = dataSet.get(i);
+            if (classifier.guessClass(currentInstance) != currentInstance.getCategory()) {
+                System.out.println("I was wrong adding weight: "+currentInstance.getWeight());
+                error += currentInstance.getWeight();
+            }
+        }
         for (int i = 0; i < dataSet.length(); i++) {
             currentInstance = dataSet.get(i);
             if (classifier.guessClass(currentInstance) == currentInstance.getCategory()) {
                 currentInstance.setWeight(currentInstance.getWeight() * (error / (1 - error)));
-            } else {
-                error += currentInstance.getWeight();
+                corr++;
             }
         }
+
         double[] allWeights = dataSet.getInstanceWeights();
         double allWeightsSummed = MathHelper.sum(allWeights);
         for (Instance instance : dataSet.getInstances()) {
             instance.setWeight(instance.getWeight() / allWeightsSummed);
         }
-        dataSet.setWeight(Math.log((1 - error) / error));
+        System.out.println("Error: "+error+" "+((1-error)/error));
+        classifier.setWeight(Math.log((1-error)/error));
+        System.out.println("Classifier had "+corr+" out of "+dataSet.length()+" correct. Weight: "+classifier.getWeight());
         return dataSet;
     }
 }

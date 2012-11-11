@@ -22,6 +22,7 @@ import classifier.dataset.DataSet;
 import classifier.dataset.discretization.Discretization;
 import classifier.dataset.discretization.IDataSetPreProcess;
 import classifier.dataset.discretization.TenFoldSplitting;
+import classifier.decisiontree.DecisionTreeBuilder;
 
 /**
  *
@@ -29,7 +30,7 @@ import classifier.dataset.discretization.TenFoldSplitting;
  */
 public class AdaBooster implements IBooster {
 
-    public static Class[] availableClassifiers = new Class[]{BayesianBuilder.class};
+    public static Class[] availableClassifiers = new Class[]{BayesianBuilder.class, DecisionTreeBuilder.class};
     public static Class[] availablePreProcesses = new Class[]{TenFoldSplitting.class};
     private final IUserInterface ui;
     private DataSet data;
@@ -40,7 +41,6 @@ public class AdaBooster implements IBooster {
 
     public AdaBooster(IUserInterface ui) {
         this.ui = ui;
-        this.ensemble = new ClassifierEnsemble();
     }
 
     public void start() throws Exception {
@@ -62,6 +62,9 @@ public class AdaBooster implements IBooster {
         while ((classifierIndex = ui.requestChoice("Select classifier, end with -1", availableClassifiers)) != -1) {
             IBuilder ib = (IBuilder)availableClassifiers[classifierIndex-1].newInstance();
             int nof = ui.requestInt("How many would you like?");
+            if (ib.getClass().equals(DecisionTreeBuilder.class) && DecisionTreeBuilder.depth == -1){
+                DecisionTreeBuilder.depth = ui.requestInt("Specify the maximum depth of the three: ");
+            }
             builders.add(new Pair<>(ib, nof));
         }
 
@@ -77,10 +80,10 @@ public class AdaBooster implements IBooster {
         int trainingSize = (int) (data.length() * trainingTestSplit / 100);
         trainingData = data.subset(0, trainingSize);
         testingData = data.subset(trainingSize, data.length());
+        this.ensemble = new ClassifierEnsemble(data);
         buildClassifiers(builders, trainingData);
     }
     public void buildClassifiers(List<Pair<IBuilder, Integer>> builders, DataSet baseDataSet) {
-        this.ensemble = new ClassifierEnsemble();
         DataSet dataSet = baseDataSet.subset(0, baseDataSet.length());
         int x = 0;
         for (Pair<IBuilder, Integer> ib : builders) {

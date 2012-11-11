@@ -22,7 +22,7 @@ public class TenFoldSplitting extends IDataSetPreProcess {
         return untransposed;
     }
     private static double[] discreization(double[] arr) {
-        double min = Double.MAX_VALUE, max = Double.MIN_VALUE;
+        double min = Double.MAX_VALUE, max = -Double.MAX_VALUE;
         for (double d : arr) {
             if (d < min) {
                 min = d;
