@@ -24,6 +24,7 @@ public abstract class IBuilder {
     protected abstract IClassifier generateHypothesis(DataSet ds);
 
     protected DataSet update(IClassifier classifier, DataSet dataSet) {
+    	System.err.println("UPDATING!!!");
         double error = 0.0;
         Instance currentInstance;
         for (int i = 0; i < dataSet.length(); i++) {

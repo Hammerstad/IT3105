@@ -14,6 +14,7 @@ import ui.TextUI;
 import util.DataSetReader;
 import util.DirectoryBrowser;
 import util.Pair;
+import util.SexyPrinter;
 import classifier.IBuilder;
 import classifier.IClassifier;
 import classifier.bayesian.BayesianBuilder;
@@ -44,13 +45,13 @@ public class AdaBooster implements IBooster {
 
     public void start() throws Exception {
         String dataFile = ui.requestString("Pick a data set:\n" + DirectoryBrowser.resources());
-        double trainingTestSplit = ui.requestDouble("Percantage used for training? [ 0 , 100 ]");
         
+        double trainingTestSplit = ui.requestDouble("Percantage used for training? [ 0 , 100 ]");
         
         int discIndex;
         List<IDataSetPreProcess> preprocesses = new LinkedList<>();
         while ((discIndex = ui.requestChoice("Select discretization strategy, end with -1", availablePreProcesses)) != -1) {
-            preprocesses.add(((IDataSetPreProcess)availablePreProcesses[discIndex].newInstance()));
+            preprocesses.add(((IDataSetPreProcess)availablePreProcesses[discIndex-1].newInstance()));
         }
         IDataSetPreProcess[] processes = new IDataSetPreProcess[preprocesses.size()];
         processes = preprocesses.toArray(processes);
@@ -59,7 +60,7 @@ public class AdaBooster implements IBooster {
         int classifierIndex;
         List<Pair<IBuilder, Integer>> builders = new LinkedList<>();
         while ((classifierIndex = ui.requestChoice("Select classifier, end with -1", availableClassifiers)) != -1) {
-            IBuilder ib = (IBuilder)availableClassifiers[classifierIndex].newInstance();
+            IBuilder ib = (IBuilder)availableClassifiers[classifierIndex-1].newInstance();
             int nof = ui.requestInt("How many would you like?");
             builders.add(new Pair<>(ib, nof));
         }
@@ -76,20 +77,23 @@ public class AdaBooster implements IBooster {
         int trainingSize = (int) (data.length() * trainingTestSplit / 100);
         trainingData = data.subset(0, trainingSize);
         testingData = data.subset(trainingSize, data.length());
-        
         buildClassifiers(builders, trainingData);
     }
     public void buildClassifiers(List<Pair<IBuilder, Integer>> builders, DataSet baseDataSet) {
         this.ensemble = new ClassifierEnsemble();
         DataSet dataSet = baseDataSet.subset(0, baseDataSet.length());
+        int x = 0;
         for (Pair<IBuilder, Integer> ib : builders) {
             for (int i = 0; i < ib.second; i++) {
                 Pair<IClassifier, DataSet> r = ib.first.build(dataSet);
                 ensemble.addClassifier(r.first);
                 dataSet = r.second;
+                x++;
             }
         }
+        //SexyPrinter.print(dataSet);
         classifyTestSet();
+        System.err.println(x);
     }
 
     public void classifyTestSet() {

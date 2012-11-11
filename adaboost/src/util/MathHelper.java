@@ -4,7 +4,8 @@ public class MathHelper {
 
 	public static double sum(double[] array) {
 		double sum = 0;
-		for (int i = 0, size = array.length; i <= size; i++) {
+		int size = array.length;
+		for (int i = 0; i < size; i++) {
 			sum += array[i];
 		}
 		return sum;

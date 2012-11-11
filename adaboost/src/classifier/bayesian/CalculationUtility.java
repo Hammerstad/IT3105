@@ -28,7 +28,6 @@ public class CalculationUtility {
 				}
 			}
 		}
-		System.out.println(amountOfAttributeGivenClass + "\t" + amountOfClass);
 		return amountOfAttributeGivenClass/amountOfClass;
 	}
 

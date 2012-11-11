@@ -1,9 +1,12 @@
 package classifier.bayesian;
 
-import static classifier.bayesian.CalculationUtility.*;
+import static classifier.bayesian.CalculationUtility.probabilityOfAttributeGivenClass;
+import static classifier.bayesian.CalculationUtility.probabilityOfClass;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import classifier.IClassifier;
 import classifier.dataset.DataSet;
@@ -11,15 +14,17 @@ import classifier.dataset.Instance;
 
 public class BayesianClassifier implements IClassifier {
 
-	public double[] probabilityOfClass;
-	public List<List<double[]>> probabilityOfAttributeGivenClass; //List.get(class).get(attribute) = probabilities for attribute values
+	private List<List<double[]>> probabilityOfAttributeGivenClass; //List.get(class).get(attribute) = probabilities for attribute values
+	private Map<Integer, Double> probabilityOfClass;
+	
+	
 	public BayesianClassifier(DataSet ds) {
 		int[] classes = ds.getClasses();
 		int amountOfAttributes = ds.get(0).getAttributes().length;
 				
-		probabilityOfClass = new double[classes.length];
-		for(int i = 0; i < probabilityOfClass.length; i++){
-			probabilityOfClass[i] = probabilityOfClass(ds, classes[i]);
+		probabilityOfClass = new HashMap<>();
+		for(int i = 0; i < classes.length; i++){
+			probabilityOfClass.put(classes[i], probabilityOfClass(ds, classes[i]));
 		}
 		
 		probabilityOfAttributeGivenClass = new ArrayList<>();
@@ -38,7 +43,12 @@ public class BayesianClassifier implements IClassifier {
 
 	@Override
 	public int guessClass(Instance instance) {
-		// TODO Auto-generated method stub
+		int classOfInstance = instance.getCategory();
+		double probabilityOfClass = this.probabilityOfClass.get(classOfInstance);
+		int multipliedProbabilityOfAttributeGivenClass = 0;
+		for(int i = 0; i < instance.getAttributes().length; i++){
+			//multipliedProbabilityOfAttributeGivenClass *= probabilityOfAttributeGivenClass.get(classOfInstance).get(i);
+		}
 		return 0;
 	}
 
