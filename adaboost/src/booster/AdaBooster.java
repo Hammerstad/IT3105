@@ -100,7 +100,7 @@ public class AdaBooster implements IBooster {
         ensemble.test(testingData);
     }
 
-    public static void main(String[] args) throws Exception{
+    public static void main(String[] args) throws Exception {
         AdaBooster b = new AdaBooster(new TextUI());
         b.start();
     }

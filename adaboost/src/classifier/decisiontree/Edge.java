@@ -1,6 +1,4 @@
-package classifier.decisiontree.AI2;
-
-import classifier.decisiontree.*;
+package classifier.decisiontree;
 
 /*
  * To change this template, choose Tools | Templates
