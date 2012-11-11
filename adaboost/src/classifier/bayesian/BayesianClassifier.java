@@ -4,9 +4,12 @@ import static classifier.bayesian.CalculationUtility.probabilityOfAttributeGiven
 import static classifier.bayesian.CalculationUtility.probabilityOfClass;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import util.MathHelper;
 
 import classifier.IClassifier;
 import classifier.dataset.DataSet;
@@ -14,42 +17,59 @@ import classifier.dataset.Instance;
 
 public class BayesianClassifier extends IClassifier {
 
-	private List<List<double[]>> probabilityOfAttributeGivenClass; //List.get(class).get(attribute) = probabilities for attribute values
+	private Map<Integer, Category> probabilityOfAttributeGivenClass; //List.get(class).get(attribute) = probabilities for attribute values
 	private Map<Integer, Double> probabilityOfClass;
 	
 	
 	public BayesianClassifier(DataSet ds) {
 		int[] classes = ds.getClasses();
+		Arrays.sort(classes);
 		int amountOfAttributes = ds.get(0).getAttributes().length;
 				
 		probabilityOfClass = new HashMap<>();
 		for(int i = 0; i < classes.length; i++){
 			probabilityOfClass.put(classes[i], probabilityOfClass(ds, classes[i]));
 		}
-		
-		probabilityOfAttributeGivenClass = new ArrayList<>();
+		probabilityOfAttributeGivenClass = new HashMap<>();
 		for(int k = 0; k < classes.length; k++){
-			List<double[]> givenClass = new ArrayList<>();
+			List<Attribute> givenClass = new ArrayList<>();
 			for(int i = 0; i < amountOfAttributes; i++){
 				double[] attributeValues = ds.getAttributeValues(i);
+				Map<Double, Double> output = new HashMap<>();
 				for(int j = 0 ; j < attributeValues.length; j++){
-					attributeValues[j] = probabilityOfAttributeGivenClass(ds, classes[k], attributeValues[j], i);
+					output.put(attributeValues[j], probabilityOfAttributeGivenClass(ds, classes[k], attributeValues[j], i));
 				}
-				givenClass.add(attributeValues);
+				givenClass.add(new Attribute(output));
 			}
-			probabilityOfAttributeGivenClass.add(givenClass);
+			AttributeList probabilityOfAttributeGivenClass = new AttributeList(givenClass);
+			this.probabilityOfAttributeGivenClass.put(classes[k], new Category(classes[k],probabilityOfAttributeGivenClass));
 		}
+		
 	}
 
 	@Override
 	public int guessClass(Instance instance) {
-		int classOfInstance = instance.getCategory();
-		double probabilityOfClass = this.probabilityOfClass.get(classOfInstance);
-		int multipliedProbabilityOfAttributeGivenClass = 0;
-		for(int i = 0; i < instance.getAttributes().length; i++){
-			//multipliedProbabilityOfAttributeGivenClass *= probabilityOfAttributeGivenClass.get(classOfInstance).get(i);
+		double bestProbability = -1;
+		int bestClass = -1;
+		
+		for(int element : probabilityOfClass.keySet()){
+			double probabilityOfThisClass = probabilityOfClass.get(element);
+			
+			for(int i = 0; i < probabilityOfAttributeGivenClass.get(element).size(); i++){
+				double attributeOfCurrentInstance = instance.getAttributes()[i];
+				probabilityOfThisClass *= probabilityOfAttributeGivenClass.get(element).getAttribute(i).getValue(attributeOfCurrentInstance);
+			}
+
+			if(probabilityOfThisClass > bestProbability){
+				bestProbability = probabilityOfThisClass;
+				bestClass = element;
+			}
 		}
-		return 0;
+		
+		if(bestClass == -1){
+			bestClass = 0;
+		}
+		return bestClass;
 	}
 
 }
