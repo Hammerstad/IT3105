@@ -10,4 +10,14 @@ public class MathHelper {
 		}
 		return sum;
 	}
+	
+
+	public static double product(double[] array) {
+		double product = 1;
+		int size = array.length;
+		for (int i = 0; i < size; i++) {
+			product *= array[i];
+		}
+		return product;
+	}
 }

@@ -14,7 +14,6 @@ import ui.TextUI;
 import util.DataSetReader;
 import util.DirectoryBrowser;
 import util.Pair;
-import util.SexyPrinter;
 import classifier.IBuilder;
 import classifier.IClassifier;
 import classifier.bayesian.BayesianBuilder;
@@ -82,18 +81,14 @@ public class AdaBooster implements IBooster {
     public void buildClassifiers(List<Pair<IBuilder, Integer>> builders, DataSet baseDataSet) {
         this.ensemble = new ClassifierEnsemble();
         DataSet dataSet = baseDataSet.subset(0, baseDataSet.length());
-        int x = 0;
         for (Pair<IBuilder, Integer> ib : builders) {
             for (int i = 0; i < ib.second; i++) {
                 Pair<IClassifier, DataSet> r = ib.first.build(dataSet);
                 ensemble.addClassifier(r.first);
                 dataSet = r.second;
-                x++;
             }
         }
-        //SexyPrinter.print(dataSet);
         classifyTestSet();
-        System.err.println(x);
     }
 
     public void classifyTestSet() {

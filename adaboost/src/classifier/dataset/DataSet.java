@@ -173,4 +173,12 @@ public class DataSet {
         }
         return this.attributeValues.get(attribute);
     }
+    
+    public double totalWeights(){
+    	double weight = 0;
+    	for(Instance element : this.instances){
+    		weight += element.getWeight();
+    	}
+    	return weight;
+    }
 }

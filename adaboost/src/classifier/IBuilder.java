@@ -24,14 +24,17 @@ public abstract class IBuilder {
     protected abstract IClassifier generateHypothesis(DataSet ds);
 
     protected DataSet update(IClassifier classifier, DataSet dataSet) {
-    	System.err.println("UPDATING!!!");
+    	int misses = 0;
+    	int hits = 0;
         double error = 0.0;
         Instance currentInstance;
         for (int i = 0; i < dataSet.length(); i++) {
             currentInstance = dataSet.get(i);
             if (classifier.guessClass(currentInstance) == currentInstance.getCategory()) {
+            	hits++;
                 currentInstance.setWeight(currentInstance.getWeight() * (error / (1 - error)));
             } else {
+            	misses++;
                 error += currentInstance.getWeight();
             }
         }
@@ -41,6 +44,7 @@ public abstract class IBuilder {
             instance.setWeight(instance.getWeight() / allWeightsSummed);
         }
         dataSet.setWeight(Math.log((1 - error) / error));
+        System.out.println("Updated: \tHits: "+hits+"\tMisses: "+misses);
         return dataSet;
     }
 }
