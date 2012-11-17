@@ -9,16 +9,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import util.MathHelper;
-
 import classifier.IClassifier;
 import classifier.dataset.DataSet;
 import classifier.dataset.Instance;
 
 public class BayesianClassifier extends IClassifier {
 
-	private Map<Integer, Category> probabilityOfAttributeGivenClass; //List.get(class).get(attribute) = probabilities for attribute values
-	private Map<Integer, Double> probabilityOfClass;
+	private Map<Integer, Category> probabilityOfAttributeGivenClass; // <CategoryID, ProbabilityTable>
+	private Map<Integer, Double> probabilityOfClass; // <CategoryID, Probability> in case category doesn't start on 0 
 	
 	
 	public BayesianClassifier(DataSet ds) {
