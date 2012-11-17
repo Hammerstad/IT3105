@@ -20,8 +20,8 @@ import java.util.logging.Logger;
 import util.DataSetReader;
 
 /**
- *
- * @author Nicklas
+ * @author Eirik Mildestveit Hammerstad
+ * @author Nicklas Utgaard
  */
 public class Discretization {
     private IDataSetPreProcess[] processes;

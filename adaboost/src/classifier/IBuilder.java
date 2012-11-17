@@ -33,7 +33,7 @@ public abstract class IBuilder {
     protected DataSet update(IClassifier classifier, DataSet dataSet) {
         int misses = 0;
         int hits = 0;
-        double error = 0.0;
+        double error = Double.MIN_VALUE;
         Instance currentInstance;
         int corr = 0;
         double beta = 1.5;
