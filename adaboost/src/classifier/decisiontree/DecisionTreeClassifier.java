@@ -18,8 +18,8 @@ public class DecisionTreeClassifier extends IClassifier {
         try {
             this.root = root;
 
-            Graphviz gv = new Graphviz();
-            gv.createGraph(root, 1.0);
+//            Graphviz gv = new Graphviz();
+//            gv.createGraph(root, 1.0);
         } catch (Exception ex) {
             Logger.getLogger(DecisionTreeClassifier.class.getName()).log(Level.SEVERE, null, ex);
         }

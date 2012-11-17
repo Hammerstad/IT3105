@@ -21,7 +21,9 @@ import classifier.dataset.DataSet;
 import classifier.dataset.discretization.Discretization;
 import classifier.dataset.discretization.IDataSetPreProcess;
 import classifier.dataset.discretization.TenFoldSplitting;
+import classifier.decisiontree.AttributeNode;
 import classifier.decisiontree.DecisionTreeBuilder;
+import java.util.HashMap;
 
 /**
  *
@@ -35,10 +37,15 @@ public class AdaBooster implements IBooster {
     private DataSet data;
     private DataSet trainingData;
     private DataSet testingData;
-    private ClassifierEnsemble ensemble;
+    private ClassifierEnsemble ensemble;    
     private Discretization discretization;
 
     public AdaBooster(IUserInterface ui) {
+        HashMap<Integer, String> attr = new HashMap<>();
+        attr.put(0, "Shape");
+        attr.put(1, "Size");
+        attr.put(2, "Color");
+//        AttributeNode.attributeName = attr;
         this.ui = ui;
     }
 

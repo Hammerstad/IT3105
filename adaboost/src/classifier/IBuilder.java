@@ -22,11 +22,8 @@ public abstract class IBuilder {
         IClassifier classifier = null;
         DataSet modifiedDataSet = null;
         while (redo) {
-            System.out.println("Running generateHypothesis");
             classifier = generateHypothesis(ds);
             modifiedDataSet = update(classifier, ds);
-            System.out.println("Weight updated");
-            System.out.println("Classififer: "+classifier);
         }
         return new Pair<>(classifier, modifiedDataSet);
     }
@@ -44,7 +41,6 @@ public abstract class IBuilder {
         for (int i = 0; i < dataSet.length(); i++) {
             currentInstance = dataSet.get(i);
             if (classifier.guessClass(currentInstance) != currentInstance.getCategory()) {
-                System.out.println("I was wrong adding weight: " + currentInstance.getWeight());
                 error += currentInstance.getWeight();
             }
         }
@@ -66,9 +62,7 @@ public abstract class IBuilder {
             for (Instance instance : dataSet.getInstances()) {
                 instance.setWeight(instance.getWeight() / allWeightsSummed);
             }
-            System.out.println("Error: " + error + " " + ((1 - error) / error));
             classifier.setWeight(Math.log(((1 - error) / error)) * (numberOfClasses - 1));
-            System.out.println("Classifier had " + corr + " out of " + dataSet.length() + " correct. Weight: " + classifier.getWeight());
         }else if (error == 0) {
             jiggleWeight(dataSet, beta);
             classifier.setWeight(10+Math.log(numberOfClasses-1));

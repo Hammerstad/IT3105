@@ -11,10 +11,10 @@ import classifier.dataset.Instance;
 import classifier.dataset.matcher.DataSetMatcher;
 import classifier.dataset.matcher.attribute.AttributeEqualsMatcher;
 import classifier.dataset.matcher.matcher.CategoryMatcher;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import util.MathHelper;
+import util.Pair;
 
 /**
  *
@@ -37,8 +37,8 @@ public class DecisionTreeBuilder extends IBuilder {
     }
 
     private Node buildTree(DataSet ds, List<Integer> selectableAttributes, int depth) {
-        int attribute = findMinEntropyIndex(ds, selectableAttributes);
-        if (attribute == -1 || depth == 0) {
+        Pair<Integer, Double> attribute = findMinEntropyIndex(ds, selectableAttributes);
+        if (attribute.first == -1 || depth == 0) {
             int[] classes = ds.getClasses();
             int[] found = new int[classes.length];
             int foundInd = 0;
@@ -63,13 +63,13 @@ public class DecisionTreeBuilder extends IBuilder {
         } else if (hasUniqueClass(ds)) {
             return new LeafNode(ds.get(0).getCategory());
         } else {
-            Node n = new AttributeNode(attribute);
-            DataSet[] subsets = createSubSets(ds, attribute);
+            Node n = new AttributeNode(attribute.first, new EntropyNodeData(attribute.second));
+            DataSet[] subsets = createSubSets(ds, attribute.first);
             for (DataSet child : subsets) {
                 if (hasUniqueClass(child)) {
-                    n.addChild(new LeafNode(child.getClasses()[0]), child.get(0).getAttributes()[attribute]);
+                    n.addChild(new LeafNode(child.getClasses()[0]), child.get(0).getAttributes()[attribute.first]);
                 } else {
-                    n.addChild(buildTree(child, new LinkedList<>(selectableAttributes), depth - 1), child.get(0).getAttributes()[attribute]);
+                    n.addChild(buildTree(child, new LinkedList<>(selectableAttributes), depth - 1), child.get(0).getAttributes()[attribute.first]);
                 }
             }
             return n;
@@ -89,9 +89,9 @@ public class DecisionTreeBuilder extends IBuilder {
         return ds.getClasses().length == 1;
     }
 
-    private static int findMinEntropyIndex(DataSet ds, List<Integer> selectableIndices) {
+    private static Pair<Integer, Double> findMinEntropyIndex(DataSet ds, List<Integer> selectableIndices) {
         if (ds.length() == 0 || selectableIndices.isEmpty()) {
-            return -1;
+            return new Pair<>(-1, -1.0);
         }
         double min = Double.MAX_VALUE;
         int selectedIndex = -1;
@@ -103,8 +103,8 @@ public class DecisionTreeBuilder extends IBuilder {
             }
         }
         selectableIndices.remove((Integer) selectedIndex);
-        System.out.println("Choosing "+selectedIndex);
-        return selectedIndex;
+//        System.out.println("Choosing "+selectedIndex);
+        return new Pair<>(selectedIndex, min);
     }
 
     private static double entropy(DataSet ds, int splitAttribute) {

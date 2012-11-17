@@ -19,18 +19,21 @@ import java.util.Map.Entry;
  * @author Nicklas
  */
 public class ClassifierEnsemble {
+
     private List<IClassifier> classifiers;
     private int[] classesFoundInDataset;
-    
+
     public ClassifierEnsemble(DataSet dataset) {
-        this.classifiers = new LinkedList<>();   
-        classesFoundInDataset =  dataset.getClasses();
+        this.classifiers = new LinkedList<>();
+        classesFoundInDataset = dataset.getClasses();
     }
-    public void addClassifier(IClassifier classifier){
-        if (!classifiers.contains(classifier)){
+
+    public void addClassifier(IClassifier classifier) {
+        if (!classifiers.contains(classifier)) {
             this.classifiers.add(classifier);
         }
     }
+
     public void test(DataSet testData) {
         int correctlyClassified = 0;
         for (Instance i : testData.getInstances()) {
@@ -38,8 +41,9 @@ public class ClassifierEnsemble {
                 correctlyClassified++;
             }
         }
-        System.out.println("Correct: "+correctlyClassified+" of a total of "+testData.length());
+        System.out.println("Correct: " + correctlyClassified + " of a total of " + testData.length());
     }
+
     private int getConsensus(Instance i) {
         Map<Integer, Double> votes = new HashMap<>();
         for (int cls : classesFoundInDataset) {
@@ -47,10 +51,10 @@ public class ClassifierEnsemble {
         }
         for (IClassifier c : classifiers) {
             int guess = c.guessClass(i);
-            if (guess == -1){
+            if (guess == -1) {
                 continue;
             }
-            votes.put(guess, votes.get(guess)+c.getWeight());
+            votes.put(guess, votes.get(guess) + c.getWeight());
         }
         double min = -Double.MAX_VALUE;
         int minCls = -1;
@@ -60,6 +64,22 @@ public class ClassifierEnsemble {
                 minCls = entry.getKey();
             }
         }
+//        System.out.println("Entries: "+Arrays.toString(votes.entrySet().toArray()));
         return minCls;
+    }
+
+    public void diffLast(DataSet ds) {
+        if (classifiers.size() < 2) {
+            return;
+        }
+        IClassifier last = classifiers.get(classifiers.size() - 1);
+        IClassifier secondlast = classifiers.get(classifiers.size() - 1);
+        int diff = 0;
+        for (Instance i : ds.getInstances()) {
+            if (last.guessClass(i) != secondlast.guessClass(i)) {
+                diff++;
+            }
+        }
+        System.out.println("Diff between last to classifiers: "+diff);
     }
 }

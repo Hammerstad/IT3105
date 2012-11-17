@@ -13,8 +13,11 @@ import java.util.List;
  *
  * @author Nicklas
  */
-public abstract class Node {    
-    public Node() {
+public abstract class Node {   
+    protected NodeData data;
+    
+    public Node(NodeData data) {
+        this.data = data;
     }
     public abstract boolean isLeaf();
     public abstract void addChild(Node n, double choice);

@@ -15,8 +15,11 @@ import java.util.List;
  */
 public class LeafNode extends Node{
     int cls;
-    
     public LeafNode(int cls) {
+        this(cls, null);
+    }
+    public LeafNode(int cls, NodeData data) {
+        super(data);
         this.cls = cls;
     }
 
