@@ -7,7 +7,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Set;
@@ -74,9 +73,12 @@ public class DataSetConverter {
 	}
 
 	/**
-	 * Processes an unfinished DataSet. 
-	 * @param unfinishedDataSet - ArrayList<String[]>
-	 * @param dataset - name of the DataSet.
+	 * Processes an unfinished DataSet.
+	 * 
+	 * @param unfinishedDataSet
+	 *            - ArrayList<String[]>
+	 * @param dataset
+	 *            - name of the DataSet.
 	 */
 	private void processUnfinishedDataSet(ArrayList<String[]> unfinishedDataSet, String dataset) {
 		sc = new Scanner(System.in);
@@ -91,14 +93,28 @@ public class DataSetConverter {
 
 	/**
 	 * Process a column in an unfinished DataSet.
-	 * @param unfinishedDataSet - ArrayList<String[]>
-	 * @param columnNumber - which column.
+	 * 
+	 * @param unfinishedDataSet
+	 *            - ArrayList<String[]>
+	 * @param columnNumber
+	 *            - which column.
 	 */
 	private void processColumn(ArrayList<String[]> unfinishedDataSet, int columnNumber) {
 		Set<String> uniqueValues = new HashSet<>();
 		for (String[] element : unfinishedDataSet) {
 			uniqueValues.add(element[columnNumber]);
 		}
+		outerif: if (automatic) {
+			for (String element : uniqueValues) {
+				if (!element.matches("((-|\\+)?[0-9]+(\\.[0-9]+)?)+")) {
+					// This means it is not a numerical value, and we shall henceforth proceed as planned!
+					break outerif;
+				}
+			}
+			// Looks like it's all numeric values - never mind this column =)
+			return;
+		}
+
 		String answer = "auto";
 		if (!automatic) {
 			System.out.println("Distinct values: " + uniqueValues.toString());
@@ -136,8 +152,11 @@ public class DataSetConverter {
 
 	/**
 	 * Writes a finished DataSet (ArrayList<String[]>) to disk. In the /resources/ folder.
-	 * @param finishedDataSet - the DataSet
-	 * @param filename - filename of your choice
+	 * 
+	 * @param finishedDataSet
+	 *            - the DataSet
+	 * @param filename
+	 *            - filename of your choice
 	 */
 	private void writeToDisk(ArrayList<String[]> finishedDataSet, String filename) {
 		try {
@@ -169,6 +188,7 @@ public class DataSetConverter {
 
 	/**
 	 * Prints a string with all the "*.data" files you can choose to convert.
+	 * 
 	 * @return String with filenames
 	 */
 	private static String resources() {
@@ -184,20 +204,25 @@ public class DataSetConverter {
 		return sb.toString();
 	}
 
-	public void gottaReadThemAll(){
+	/**
+	 * Read and converts all files on the format "*.data" to "*.txt" files with proper format in the /resources/ folder.
+	 */
+	public void gottaReadThemAll() {
 		String[] files = resources().split("\t");
-		System.out.println("Processing "+files.length+" files.");
-		for(int i = 0; i < files.length; i++){
+		System.out.println("Processing " + files.length + " files.");
+		for (int i = 0; i < files.length; i++) {
 			ArrayList<String[]> unfinishedDataSet = read(files[i]);
 			processUnfinishedDataSet(unfinishedDataSet, files[i]);
-			System.out.println("Finished processing "+files[i]+". "+(files.length-i-1)+" files remaining.");
+			System.out.println("Finished processing " + files[i] + ". " + (files.length - i - 1) + " files remaining.");
 		}
 		System.out.println("Processing done.");
 	}
-	
+
 	/**
 	 * Converts stuff
-	 * @param args - meh
+	 * 
+	 * @param args
+	 *            - meh
 	 */
 	public static void main(String[] args) {
 		DataSetConverter dsc = new DataSetConverter(true);
