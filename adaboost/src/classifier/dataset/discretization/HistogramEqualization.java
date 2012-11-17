@@ -11,8 +11,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
- * @author Nicklas
+ * @author Eirik Mildestveit Hammerstad
+ * @author Nicklas Utgaard
  */
 public class HistogramEqualization extends IDataSetPreProcess {
 

@@ -5,15 +5,20 @@
 package util;
 
 /**
- *
- * @author Nicklas
+ * @author Eirik Mildestveit Hammerstad
+ * @author Nicklas Utgaard
  */
 public class Pair<S, T> {
-    public S first;
-    public T second;
-    
-    public Pair(S first, T second){
-        this.first = first;
-        this.second = second;
-    }
+	public S first;
+	public T second;
+
+	/**
+	 * Creates a pair!
+	 * @param first
+	 * @param second
+	 */
+	public Pair(S first, T second) {
+		this.first = first;
+		this.second = second;
+	}
 }

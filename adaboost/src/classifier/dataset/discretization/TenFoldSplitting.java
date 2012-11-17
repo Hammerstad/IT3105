@@ -5,8 +5,8 @@
 package classifier.dataset.discretization;
 
 /**
- *
- * @author Nicklas
+ * @author Eirik Mildestveit Hammerstad
+ * @author Nicklas Utgaard
  */
 public class TenFoldSplitting extends IDataSetPreProcess {
 
