@@ -105,24 +105,27 @@ public class DecisionTreeBuilder extends IBuilder {
                 for (Instance bi : DPVk.getInstances()){
                     branchWeight+=bi.getWeight();
                 }
-                branchWeight+=Double.MIN_VALUE;
+                branchWeight+=Double.MIN_VALUE; //Just to avoid log(0)
 //                double PVk = DataSetMatcher.filter(ds, new AttributeEqualsMatcher(attributeIndexD, attributeValue)).length() / (ds.length() * 1.0);
                 double PVk = branchWeight/allWeights;
                 
                 entropy[attributeIndex] += PVk * log2(PVk);
             }
         }
-        double max = -Double.MAX_VALUE;
-        int maxIndT = -1;
-        for (int maxInd = 0; maxInd < entropy.length; maxInd++) {
+        for (int i = 0; i < entropy.length; i++) {
+            entropy[i] *= -1;
+        }
+        double min = Double.MAX_VALUE;
+        int minIndT = -1;
+        for (int minInd = 0; minInd < entropy.length; minInd++) {
 //            System.out.println("Testing: "+entropy[maxInd]+" "+max);
-            if (entropy[maxInd] > max) {
-                max = entropy[maxInd];
-                maxIndT = maxInd;
+            if (entropy[minInd] < min) {
+                min = entropy[minInd];
+                minIndT = minInd;
             }
         }
         System.out.println("Entropy: "+Arrays.toString(entropy));
-        return selectableAttributes.remove(maxIndT);
+        return selectableAttributes.remove(minIndT);
     }
 
     private static double log2(double d) {
