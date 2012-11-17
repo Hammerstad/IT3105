@@ -8,8 +8,8 @@ import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 
 public class DataSetReader {
-	DecimalFormat df;
-	DecimalFormatSymbols symbols;
+	private DecimalFormat df;
+	private DecimalFormatSymbols symbols;
 
 	public DataSetReader() {
 		df = new DecimalFormat();
