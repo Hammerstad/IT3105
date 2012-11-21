@@ -1,0 +1,215 @@
+1. A single NBC.
+1. Weight: 8.07 HitRatio: 0.64 / 0.58
+Correct: 172 of a total of 297 0.58%
+InterChange: 0
+
+2. A single DTC (with max depth = A, the number of attributes in a case.)
+1. Weight: 15.59 HitRatio: 0.81 / 0.34
+Correct: 143 of a total of 297 0.48%
+InterChange: 0
+
+3. 5 NBCs
+1. Weight: 7.78 HitRatio: 0.63 / 0.57
+2. Weight: 15.14 HitRatio: 0.60 / 0.56
+3. Weight: 17.49 HitRatio: 0.56 / 0.51
+4. Weight: 27.25 HitRatio: 0.56 / 0.51
+5. Weight: 24.90 HitRatio: 0.53 / 0.48
+Correct: 150 of a total of 297 0.51%
+InterChange: 513
+
+4. 10 NBCs
+1. Weight: 8.04 HitRatio: 0.64 / 0.59
+2. Weight: 16.52 HitRatio: 0.61 / 0.53
+3. Weight: 21.94 HitRatio: 0.59 / 0.51
+4. Weight: 27.58 HitRatio: 0.57 / 0.47
+5. Weight: 33.37 HitRatio: 0.56 / 0.47
+6. Weight: 86.52 HitRatio: 0.56 / 0.47
+7. Weight: 192.81 HitRatio: 0.56 / 0.47
+8. Weight: 405.39 HitRatio: 0.56 / 0.47
+9. Weight: 830.56 HitRatio: 0.56 / 0.47
+10. Weight: 1680.89 HitRatio: 0.56 / 0.47
+Correct: 141 of a total of 297 0.47%
+InterChange: 424
+
+
+5. 20 NBCs
+1. Weight: 7.81 HitRatio: 0.63 / 0.59
+2. Weight: 17.55 HitRatio: 0.61 / 0.60
+3. Weight: 16.66 HitRatio: 0.57 / 0.54
+4. Weight: 27.38 HitRatio: 0.56 / 0.53
+5. Weight: 27.48 HitRatio: 0.54 / 0.53
+6. Weight: 26.31 HitRatio: 0.52 / 0.51
+7. Weight: 54.66 HitRatio: 0.52 / 0.52
+8. Weight: 129.10 HitRatio: 0.52 / 0.52
+9. Weight: 277.97 HitRatio: 0.52 / 0.52
+10. Weight: 575.71 HitRatio: 0.52 / 0.52
+11. Weight: 1171.20 HitRatio: 0.52 / 0.52
+12. Weight: 2362.18 HitRatio: 0.52 / 0.52
+13. Weight: 4744.13 HitRatio: 0.52 / 0.52
+14. Weight: 12.20 HitRatio: 0.52 / 0.52
+15. Weight: 15.00 HitRatio: 0.46 / 0.48
+16. Weight: 40.64 HitRatio: 0.46 / 0.46
+17. Weight: 101.06 HitRatio: 0.46 / 0.46
+18. Weight: 221.90 HitRatio: 0.46 / 0.46
+19. Weight: 463.58 HitRatio: 0.46 / 0.46
+20. Weight: 946.93 HitRatio: 0.46 / 0.46
+Correct: 154 of a total of 297 0.52%
+InterChange: 747
+
+6. 5 DTCs (maximum possible depth)
+1. Weight: 16.13 HitRatio: 0.82 / 0.35
+2. Weight: 49.63 HitRatio: 0.82 / 0.35
+3. Weight: 119.04 HitRatio: 0.82 / 0.35
+4. Weight: 257.86 HitRatio: 0.82 / 0.35
+5. Weight: 535.49 HitRatio: 0.82 / 0.35
+Correct: 136 of a total of 297 0.46%
+InterChange: 14
+
+7. 10 DTCs (maximum depth = 1; i.e. stubs)
+1. Weight: 1.34 HitRatio: 0.42 / 0.36
+2. Weight: 18.25 HitRatio: 0.42 / 0.36
+3. Weight: 56.28 HitRatio: 0.42 / 0.36
+4. Weight: 132.33 HitRatio: 0.42 / 0.36
+5. Weight: 284.44 HitRatio: 0.42 / 0.36
+6. Weight: 588.66 HitRatio: 0.42 / 0.36
+7. Weight: 1197.10 HitRatio: 0.42 / 0.36
+8. Weight: 2413.97 HitRatio: 0.42 / 0.36
+9. Weight: 4847.71 HitRatio: 0.42 / 0.36
+10. Weight: 12.20 HitRatio: 0.42 / 0.36
+Correct: 108 of a total of 297 0.36%
+InterChange: 0
+
+8. 10 DTCs (maximum depth = 2)
+1. Weight: 3.94 HitRatio: 0.51 / 0.45
+2. Weight: 24.07 HitRatio: 0.51 / 0.45
+3. Weight: 67.91 HitRatio: 0.51 / 0.45
+4. Weight: 155.59 HitRatio: 0.51 / 0.45
+5. Weight: 330.96 HitRatio: 0.51 / 0.45
+6. Weight: 681.70 HitRatio: 0.51 / 0.45
+7. Weight: 1383.17 HitRatio: 0.51 / 0.45
+8. Weight: 2786.12 HitRatio: 0.51 / 0.45
+9. Weight: 5592.02 HitRatio: 0.51 / 0.45
+10. Weight: 12.20 HitRatio: 0.51 / 0.45
+Correct: 136 of a total of 297 0.46%
+InterChange: 0
+
+9. 10 DTCs (maximum depth = A)
+1. Weight: 16.48 HitRatio: 0.83 / 0.35
+2. Weight: 50.35 HitRatio: 0.83 / 0.37
+3. Weight: 120.48 HitRatio: 0.83 / 0.37
+4. Weight: 260.73 HitRatio: 0.83 / 0.37
+5. Weight: 541.24 HitRatio: 0.83 / 0.37
+6. Weight: 1102.25 HitRatio: 0.83 / 0.37
+7. Weight: 2224.28 HitRatio: 0.83 / 0.37
+8. Weight: 4468.33 HitRatio: 0.83 / 0.37
+9. Weight: 12.20 HitRatio: 0.83 / 0.37
+10. Weight: 41.87 HitRatio: 0.83 / 0.37
+Correct: 125 of a total of 297 0.42%
+InterChange: 24
+
+10. 20 DTCs (maximum depth = A)
+1. Weight: 15.54 HitRatio: 0.81 / 0.38
+2. Weight: 48.45 HitRatio: 0.81 / 0.39
+3. Weight: 116.67 HitRatio: 0.81 / 0.39
+4. Weight: 253.11 HitRatio: 0.81 / 0.39
+5. Weight: 525.99 HitRatio: 0.81 / 0.39
+6. Weight: 1071.76 HitRatio: 0.81 / 0.39
+7. Weight: 2163.29 HitRatio: 0.81 / 0.39
+8. Weight: 4346.35 HitRatio: 0.81 / 0.39
+9. Weight: 12.20 HitRatio: 0.81 / 0.39
+10. Weight: 41.24 HitRatio: 0.81 / 0.40
+11. Weight: 102.25 HitRatio: 0.81 / 0.40
+12. Weight: 224.27 HitRatio: 0.81 / 0.40
+13. Weight: 468.31 HitRatio: 0.81 / 0.40
+14. Weight: 956.40 HitRatio: 0.81 / 0.40
+15. Weight: 1932.57 HitRatio: 0.81 / 0.40
+16. Weight: 3884.92 HitRatio: 0.81 / 0.40
+17. Weight: 12.20 HitRatio: 0.81 / 0.40
+18. Weight: 40.91 HitRatio: 0.81 / 0.40
+19. Weight: 101.60 HitRatio: 0.81 / 0.40
+20. Weight: 222.98 HitRatio: 0.81 / 0.40
+Correct: 141 of a total of 297 0.47%
+InterChange: 14
+
+11. 5 NBCs and 5 DTCs (maximum depth = 2)
+1. Weight: 7.83 HitRatio: 0.63 / 0.57
+2. Weight: 17.59 HitRatio: 0.62 / 0.55
+3. Weight: 18.65 HitRatio: 0.58 / 0.54
+4. Weight: 27.49 HitRatio: 0.57 / 0.53
+5. Weight: 30.80 HitRatio: 0.56 / 0.52
+6. Weight: 6.84 HitRatio: 0.49 / 0.43
+7. Weight: 33.45 HitRatio: 0.49 / 0.43
+8. Weight: 86.67 HitRatio: 0.49 / 0.43
+9. Weight: 193.11 HitRatio: 0.49 / 0.43
+10. Weight: 406.00 HitRatio: 0.49 / 0.43
+Correct: 140 of a total of 297 0.47%
+InterChange: 1084
+
+12. 10 NBCs and 10 DTCs (maximum depth = 2)
+1. Weight: 7.81 HitRatio: 0.63 / 0.57
+2. Weight: 18.45 HitRatio: 0.62 / 0.57
+3. Weight: 17.51 HitRatio: 0.58 / 0.51
+4. Weight: 23.37 HitRatio: 0.56 / 0.51
+5. Weight: 28.58 HitRatio: 0.54 / 0.50
+6. Weight: 76.93 HitRatio: 0.54 / 0.49
+7. Weight: 173.63 HitRatio: 0.54 / 0.49
+8. Weight: 367.04 HitRatio: 0.54 / 0.49
+9. Weight: 753.85 HitRatio: 0.54 / 0.49
+10. Weight: 1527.47 HitRatio: 0.54 / 0.49
+11. Weight: 8.99 HitRatio: 0.51 / 0.47
+12. Weight: 37.76 HitRatio: 0.51 / 0.47
+13. Weight: 95.29 HitRatio: 0.51 / 0.47
+14. Weight: 210.35 HitRatio: 0.51 / 0.47
+15. Weight: 440.48 HitRatio: 0.51 / 0.47
+16. Weight: 900.73 HitRatio: 0.51 / 0.47
+17. Weight: 1821.24 HitRatio: 0.51 / 0.47
+18. Weight: 3662.25 HitRatio: 0.51 / 0.47
+19. Weight: 12.20 HitRatio: 0.51 / 0.47
+20. Weight: 32.42 HitRatio: 0.51 / 0.47
+Correct: 145 of a total of 297 0.49%
+InterChange: 1053
+
+13. 20 NBCs and 20 DTCs (maximum depth = 2)
+1. Weight: 7.89 HitRatio: 0.63 / 0.56
+2. Weight: 14.42 HitRatio: 0.59 / 0.52
+3. Weight: 16.38 HitRatio: 0.55 / 0.49
+4. Weight: 34.63 HitRatio: 0.54 / 0.48
+5. Weight: 56.44 HitRatio: 0.54 / 0.48
+6. Weight: 56.67 HitRatio: 0.54 / 0.48
+7. Weight: 56.65 HitRatio: 0.54 / 0.48
+8. Weight: 133.08 HitRatio: 0.54 / 0.48
+9. Weight: 285.94 HitRatio: 0.54 / 0.48
+10. Weight: 591.66 HitRatio: 0.54 / 0.48
+11. Weight: 1203.09 HitRatio: 0.54 / 0.48
+12. Weight: 2425.95 HitRatio: 0.54 / 0.48
+13. Weight: 4871.68 HitRatio: 0.54 / 0.48
+14. Weight: 12.20 HitRatio: 0.54 / 0.48
+15. Weight: 15.74 HitRatio: 0.49 / 0.45
+16. Weight: 29.32 HitRatio: 0.48 / 0.42
+17. Weight: 48.63 HitRatio: 0.47 / 0.42
+18. Weight: 117.03 HitRatio: 0.47 / 0.42
+19. Weight: 253.83 HitRatio: 0.47 / 0.42
+20. Weight: 527.44 HitRatio: 0.47 / 0.42
+21. Weight: 11.45 HitRatio: 0.49 / 0.47
+22. Weight: 33.82 HitRatio: 0.49 / 0.46
+23. Weight: 87.42 HitRatio: 0.49 / 0.46
+24. Weight: 194.62 HitRatio: 0.49 / 0.46
+25. Weight: 409.01 HitRatio: 0.49 / 0.46
+26. Weight: 837.79 HitRatio: 0.49 / 0.46
+27. Weight: 1695.36 HitRatio: 0.49 / 0.46
+28. Weight: 3410.49 HitRatio: 0.49 / 0.46
+29. Weight: 12.20 HitRatio: 0.49 / 0.46
+30. Weight: 31.94 HitRatio: 0.49 / 0.46
+31. Weight: 83.65 HitRatio: 0.49 / 0.46
+32. Weight: 187.07 HitRatio: 0.49 / 0.46
+33. Weight: 393.91 HitRatio: 0.49 / 0.46
+34. Weight: 807.59 HitRatio: 0.49 / 0.46
+35. Weight: 1634.96 HitRatio: 0.49 / 0.46
+36. Weight: 3289.70 HitRatio: 0.49 / 0.46
+37. Weight: Infinity HitRatio: 0.49 / 0.46
+38. Weight: 0.00 HitRatio: 0.31 / 0.30
+39. Weight: 0.00 HitRatio: 0.31 / 0.30
+40. Weight: 0.00 HitRatio: 0.31 / 0.30
+Correct: 143 of a total of 297 0.48%
+InterChange: 2076
+
