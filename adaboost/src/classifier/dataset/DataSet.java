@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import util.ShallowCopy;
+
 /**
  * @author Eirik Mildestveit Hammerstad
  * @author Nicklas Utgaard
@@ -46,6 +48,22 @@ public class DataSet {
 			instances[i] = new Instance(list.get(i), 1.0 / list.size());
 		}
 		this.attributeValues = new HashMap<>();
+	}
+
+	public DataSet deepCopy() {
+		DataSet ds = new DataSet();
+		if (this.classes != null) {
+			ds.classes = ShallowCopy.copy(this.classes);
+		} else {
+			ds.classes = null;
+		}
+		ds.instances = new Instance[this.instances.length];
+		for (int i = 0; i < this.instances.length; i++) {
+			ds.instances[i] = new Instance(this.instances[i]);
+		}
+		ds.attributeValues = new HashMap<>();
+
+		return ds;
 	}
 
 	/**

@@ -18,6 +18,7 @@ public abstract class IBuilder {
     private boolean redo = true;
 
     public Pair<IClassifier, DataSet> build(DataSet ds) {
+    	ds = ds.deepCopy();
         redo = true;
         IClassifier classifier = null;
         DataSet modifiedDataSet = null;
