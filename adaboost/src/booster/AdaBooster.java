@@ -143,6 +143,6 @@ public class AdaBooster implements IBooster {
 
     public static void main(String[] args) throws Exception {
         AdaBooster b = new AdaBooster(new TextUI());
-        b.startTest();
+        b.start();
     }
 }
