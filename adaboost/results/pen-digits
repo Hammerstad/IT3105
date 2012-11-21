@@ -2,11 +2,13 @@
 1. Weight: 20.70 HitRatio: 0.89 / 0.87
 Correct: 1921 of a total of 2199 0.87%
 InterChange: 0
+Avg: 0.11 Stdev: 0
 
 2. A single DTC (with max depth = A, the number of attributes in a case.)
 1. Weight: 12.20 HitRatio: 1.00 / 0.87
 Correct: 1933 of a total of 2199 0.88%
 InterChange: 0
+Avg: 0.0 Stdev: 0
 
 3. 5 NBCs
 1. Weight: 20.85 HitRatio: 0.89 / 0.88
@@ -16,6 +18,7 @@ InterChange: 0
 5. Weight: 33.68 HitRatio: 0.84 / 0.83
 Correct: 1891 of a total of 2199 0.86%
 InterChange: 1070
+Avg: 0.07 Stdev: 0
 
 4. 10 NBCs
 1. Weight: 21.06 HitRatio: 0.89 / 0.88
@@ -30,6 +33,7 @@ InterChange: 1070
 10. Weight: 54.12 HitRatio: 0.80 / 0.79
 Correct: 1745 of a total of 2199 0.79%
 InterChange: 1497
+Avg: 0.07 Stdev: 0
 
 5. 20 NBCs
 1. Weight: 20.71 HitRatio: 0.89 / 0.89
@@ -54,8 +58,11 @@ InterChange: 1497
 20. Weight: 3146.52 HitRatio: 0.77 / 0.77
 Correct: 1691 of a total of 2199 0.77%
 InterChange: 1906
+Avg: 0.07 Stdev: 0
 
 6. 5 DTCs (maximum possible depth)
+Avg: 0.0 Stdev: 0
+
 7. 10 DTCs (maximum depth = 1; i.e. stubs)
 1. Weight: -0.55 HitRatio: 0.36 / 0.35
 2. Weight: 13.89 HitRatio: 0.36 / 0.35
@@ -69,6 +76,8 @@ InterChange: 1906
 10. Weight: 12.20 HitRatio: 0.36 / 0.35
 Correct: 772 of a total of 2199 0.35%
 InterChange: 0
+Avg: 0.64 Stdev: 0
+
 
 8. 10 DTCs (maximum depth = 2)
 1. Weight: 10.21 HitRatio: 0.70 / 0.68
@@ -83,6 +92,7 @@ InterChange: 0
 10. Weight: 12.20 HitRatio: 0.69 / 0.68
 Correct: 1508 of a total of 2199 0.69%
 InterChange: 1180
+Avg: 0.309 Stdev: 0,0031622
 
 9. 10 DTCs (maximum depth = A)
 1. Weight: 12.20 HitRatio: 1.00 / 0.87
@@ -97,6 +107,7 @@ InterChange: 1180
 10. Weight: 12.20 HitRatio: 1.00 / 0.87
 Correct: 1925 of a total of 2199 0.88%
 InterChange: 68
+Avg: 0. Stdev: 0
 
 10. 20 DTCs (maximum depth = A)
 1. Weight: 12.20 HitRatio: 1.00 / 0.87
@@ -121,6 +132,7 @@ InterChange: 68
 20. Weight: 12.20 HitRatio: 1.00 / 0.87
 Correct: 1920 of a total of 2199 0.87%
 InterChange: 107
+Avg: 0. Stdev: 0
 
 11. 5 NBCs and 5 DTCs (maximum depth = 2)
 1. Weight: 20.90 HitRatio: 0.89 / 0.89
@@ -135,6 +147,8 @@ InterChange: 107
 10. Weight: 315.56 HitRatio: 0.69 / 0.69
 Correct: 1526 of a total of 2199 0.69%
 InterChange: 6210
+NBC::Avg: 0.138 Stdev: 0,02280
+DTC::Avg: 0.308 Stdev: 0,004472
 
 12. 10 NBCs and 10 DTCs (maximum depth = 2)
 1. Weight: 20.72 HitRatio: 0.89 / 0.89
@@ -159,6 +173,8 @@ InterChange: 6210
 20. Weight: 45.54 HitRatio: 0.70 / 0.68
 Correct: 1496 of a total of 2199 0.68%
 InterChange: 5183
+NBC::Avg: 0.16 Stdev: 0,032317
+DTC::Avg: 0.30 Stdev: 0
 
 13. 20 NBCs and 20 DTCs (maximum depth = 2)
 1. Weight: 20.80 HitRatio: 0.89 / 0.88
@@ -202,3 +218,6 @@ InterChange: 5183
 39. Weight: 111.04 HitRatio: 0.70 / 0.69
 40. Weight: 241.85 HitRatio: 0.70 / 0.69
 Correct: 1519 of a total of 2199 0.69%
+NBC::Avg: 0.1775 Stdev: 0,02510
+DTC::Avg: 0.30 Stdev: 0
+

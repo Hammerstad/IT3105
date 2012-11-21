@@ -1,3 +1,11 @@
+\documentclass[12pt]{article}
+%\renewcommand{\thesection}{\Roman{section}}
+%\renewcommand{\thesubsection}{\indent{\textnormal{\arabic{subsection}}}}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{float}
+\usepackage{hyperref}
+\restylefloat{figure}
 
 
 \title{IT3105 - Exercise 1}
@@ -7,12 +15,8 @@
 				
 \date{\today}
 
-\documentclass[12pt]{article}
-%\renewcommand{\thesection}{\Roman{section}}
-%\renewcommand{\thesubsection}{\indent{\textnormal{\arabic{subsection}}}}
-\usepackage{graphicx}
-\usepackage{float}
-\restylefloat{figure}
+\newcommand{\NBC}{\textit{NBC}}
+\newcommand{\DTC}{\textit{DTC}}
 
 \begin{document}
 \maketitle
@@ -20,8 +24,8 @@
 \tableofcontents
 \pagebreak
 \section{Results}
-	\subsection{pen-digits}
-		\begin{tabular}{llll}
+	\subsection{pen-digits}\label{sec:pen-digits}
+		\begin{tabular}{lccc}
 			\textbf{Classifiers} & \textbf{Average} & \textbf{St.Dev} & \textbf{Test Error}\\
 			1 NBC & $0.11$ & $0.0$ & $0.13$\\
 			1 DTC & $0.00$ & $0.0$ & $0.12$\\
@@ -39,7 +43,7 @@
 		\end{tabular}
 		
 	\subsection{nursery}
-		\begin{tabular}{llll}
+		\begin{tabular}{lccc}
 		\textbf{Classifiers} & \textbf{Average} & \textbf{St.Dev} & \textbf{Test Error}\\
 			1 NBC & $0.09$ & $0.0$ & $0.10$\\
 			1 DTC & $0.00$ & $0.0$ & $0.02$\\
@@ -57,7 +61,7 @@
 		\end{tabular}
 		
 	\subsection{page-blocks}
-		\begin{tabular}{llll}
+		\begin{tabular}{lccc}
 		\textbf{Classifiers} & \textbf{Average} & \textbf{St.Dev} & \textbf{Test Error}\\
 			1 NBC & $0.07$ & $0.0$ & $0.08$\\
 			1 DTC & $0.04$ & $0.0$ & $0.06$\\
@@ -75,7 +79,7 @@
 		\end{tabular}
 		
 	\subsection{glass}
-		\begin{tabular}{llll}
+		\begin{tabular}{lccc}
 		\textbf{Classifiers} & \textbf{Average} & \textbf{St.Dev} & \textbf{Test Error}\\
 			1 NBC & $0.2$ & $0.0$ & $0.53$\\
 			1 DTC & $0.07$ & $0.0$ & $0.44$\\
@@ -93,7 +97,7 @@
 		\end{tabular}
 		
 	\subsection{yeast}
-		\begin{tabular}{llll}
+		\begin{tabular}{lccc}
 		\textbf{Classifiers} & \textbf{Average} & \textbf{St.Dev} & \textbf{Test Error}\\
 			1 NBC & $0.36$ & $0.0$ & $0.42$\\
 			1 DTC & $0.19$ & $0.0$ & $0.52$\\
@@ -109,6 +113,15 @@
 			10 NBC, 10 DTC & $\frac{0.437}{0.49}$ & $\frac{0.0352}{0.0}$ & $0.51$ \\
 			20 NBC, 20 DTC & $\frac{0.472}{0.48}$ & $\frac{0.042}{0.0}$ & $0.52$ \\
 		\end{tabular}
-		
+
+\pagebreak
 \section{Analysis}
+	We will here go through the dataset and point out some of the interesting trends that occurs.
+	\\\\
+	In section \ref{sec:pen-digits} on page \pageref{sec:pen-digits} looking at the \textit{pen-digits} dataset we see an interesting trend in that it seems like one \NBC{} classifier works better then twenty classifier. This also occurs in nursery and yeast. A reason for this might be overfitting of the later classifiers, which might occur when our learner starts to memorize trainingdata instead of generalizing from trend \footnote{Wikipedia, Overfitting\_(Machine\_learning)}. \\
+	As cited by Alexander Vezhnevets and Olga Barinove, "... overfitting is induced by fitting so called 'confusing samples', that are samples misclassified by 'perfect' Bayesian classifier. Overfitting in boosting seems to occur only when target distributions overlap or the noise is present ..."\footnote{\url{http://www.inf.ethz.ch/personal/vezhneva/Pubs/AvoidingBoostingOverfitting.pdf}}\\
+	
+	
+	
+	
 \end{document}
