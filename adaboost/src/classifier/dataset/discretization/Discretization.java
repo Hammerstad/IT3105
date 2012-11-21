@@ -31,6 +31,7 @@ public class Discretization {
     }
     public DataSet process(double[][] data) {
         for (IDataSetPreProcess dspp : processes) {
+            System.out.println("Processing with: "+dspp.getClass());
             data = dspp.process(data);
         }
         Instance[] instances = new Instance[data.length];

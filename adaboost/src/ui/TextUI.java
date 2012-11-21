@@ -21,7 +21,7 @@ public class TextUI implements IUserInterface {
     @Override
     public String requestString(String question) {
         System.out.println(question);
-        return in.next();
+        return in.nextLine();
     }
 
     @Override
