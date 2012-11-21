@@ -120,11 +120,13 @@
 	\subsection{Overfitting}
 	In section \ref{sec:pen-digits} on page \pageref{sec:pen-digits} looking at the \textit{pen-digits} dataset we see an interesting trend in that it seems like one \NBC{} classifier works better then twenty classifier. This also occurs in nursery and yeast. A reason for this might be overfitting of the later classifiers, which might occur when our learner starts to memorize trainingdata instead of generalizing from trend \footnote{Wikipedia, Overfitting\_(Machine\_learning)}. \\
 	As cited by Alexander Vezhnevets and Olga Barinove, "... overfitting is induced by fitting so called 'confusing samples', that are samples misclassified by 'perfect' Bayesian classifier. Overfitting in boosting seems to occur only when target distributions overlap or the noise is present ..."\footnote{\url{http://www.inf.ethz.ch/personal/vezhneva/Pubs/AvoidingBoostingOverfitting.pdf}}
-	\subsection{Underfitting}
 	
 	\subsection{Error propagation}
-		
-	
+			A thing we saw clearly when running our tests was that the error $\epsilon$ gradually became smaller and smaller for each classifier, which in turn increased the weights $\Omega_C$ of each classifier, making the first classifiers insignificant compared the latter ones. \\\\
+			Generally speaking we saw a big problem with \DTC{} and boosting, where the changes in the instance weights $\omega_i$ was in almost all cases so small that the entropy $S$ stayed pretty much the same, resulting equivalent classifiers. This was especially the case on 'easy' datasets, where the \DTC{} classifier had a very low error on the training data.
+
+	\subsection{Other trends}
+		Another thrends we can see from all of the datasets is that \DTC{} is in general better at classifying then the \NBC{}.
 	
 	
 \end{document}

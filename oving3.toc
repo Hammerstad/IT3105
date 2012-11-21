@@ -5,3 +5,5 @@
 \contentsline {subsection}{\numberline {1.4}glass}{4}{subsection.1.4}
 \contentsline {subsection}{\numberline {1.5}yeast}{5}{subsection.1.5}
 \contentsline {section}{\numberline {2}Analysis}{6}{section.2}
+\contentsline {subsection}{\numberline {2.1}Overfitting}{6}{subsection.2.1}
+\contentsline {subsection}{\numberline {2.2}Error propagation}{6}{subsection.2.2}
